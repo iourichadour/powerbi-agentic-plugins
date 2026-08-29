@@ -1,0 +1,327 @@
+{
+  "security": {
+    "score": 0.0,
+    "critical_count": 0,
+    "high_count": 0,
+    "medium_count": 25,
+    "low_count": 0,
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "eval-viewer\\generate_review.py",
+        "line_number": 257,
+        "code_snippet": "template_path = Path(__file__).parent / \"viewer.html\"",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "eval-viewer\\generate_review.py",
+        "line_number": 461,
+        "code_snippet": "webbrowser.open(url)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "scripts\\aggregate_benchmark.py",
+        "line_number": 90,
+        "code_snippet": "with open(metadata_path) as mf:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "scripts\\aggregate_benchmark.py",
+        "line_number": 120,
+        "code_snippet": "with open(grading_file) as f:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "scripts\\aggregate_benchmark.py",
+        "line_number": 142,
+        "code_snippet": "with open(timing_file) as tf:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "scripts\\aggregate_benchmark.py",
+        "line_number": 377,
+        "code_snippet": "with open(output_json, \"w\") as f:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "scripts\\aggregate_benchmark.py",
+        "line_number": 383,
+        "code_snippet": "with open(output_md, \"w\") as f:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\generate_report.py",
+        "line_number": 314,
+        "code_snippet": "data = json.loads(Path(args.input).read_text())",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\generate_report.py",
+        "line_number": 319,
+        "code_snippet": "Path(args.output).write_text(html_output)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\improve_description.py",
+        "line_number": 203,
+        "code_snippet": "skill_path = Path(args.skill_path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\improve_description.py",
+        "line_number": 208,
+        "code_snippet": "eval_results = json.loads(Path(args.eval_results).read_text())",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\improve_description.py",
+        "line_number": 211,
+        "code_snippet": "history = json.loads(Path(args.history).read_text())",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\quick_validate.py",
+        "line_number": 14,
+        "code_snippet": "skill_path = Path(skill_path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\run_eval.py",
+        "line_number": 53,
+        "code_snippet": "project_commands_dir = Path(project_root) / \".claude\" / \"commands\"",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\run_eval.py",
+        "line_number": 173,
+        "code_snippet": "# Clean up process on any exit path (return, exception, timeout)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\run_eval.py",
+        "line_number": 272,
+        "code_snippet": "eval_set = json.loads(Path(args.eval_set).read_text())",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\run_eval.py",
+        "line_number": 273,
+        "code_snippet": "skill_path = Path(args.skill_path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\run_loop.py",
+        "line_number": 261,
+        "code_snippet": "eval_set = json.loads(Path(args.eval_set).read_text())",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\run_loop.py",
+        "line_number": 262,
+        "code_snippet": "skill_path = Path(args.skill_path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\run_loop.py",
+        "line_number": 274,
+        "code_snippet": "live_report_path = Path(tempfile.gettempdir()) / f\"skill_description_report_{skill_path.name}_{times",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\run_loop.py",
+        "line_number": 276,
+        "code_snippet": "live_report_path = Path(args.report)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "scripts\\run_loop.py",
+        "line_number": 279,
+        "code_snippet": "webbrowser.open(str(live_report_path))",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\run_loop.py",
+        "line_number": 286,
+        "code_snippet": "results_dir = Path(args.results_dir) / timestamp",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Arbitrary File Ops",
+        "description": "File write without validation",
+        "file_path": "scripts\\aggregate_benchmark.py",
+        "line_number": 377,
+        "code_snippet": "with open(output_json, \"w\") as f:",
+        "recommendation": "Validate file paths and use temporary directories for untrusted operations."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Arbitrary File Ops",
+        "description": "File write without validation",
+        "file_path": "scripts\\aggregate_benchmark.py",
+        "line_number": 383,
+        "code_snippet": "with open(output_md, \"w\") as f:",
+        "recommendation": "Validate file paths and use temporary directories for untrusted operations."
+      }
+    ],
+    "layers": [
+      {
+        "name": "Layer 1: Input Validation & Sanitization",
+        "passed": true,
+        "score": 0.0,
+        "issue_count": 25
+      },
+      {
+        "name": "Layer 2: Execution Environment Control",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 3: Output Sanitization",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 4: Privilege Management",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 5: Self-Protection",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      }
+    ]
+  },
+  "quality": {
+    "score": 90.02767624020888,
+    "code_quality": 21.027676240208876,
+    "documentation": 20.0,
+    "structure": 25.0,
+    "functionality": 24.0,
+    "breakdown": {
+      "code_quality_max": 25,
+      "documentation_max": 25,
+      "structure_max": 25,
+      "functionality_max": 25
+    }
+  },
+  "utility": {
+    "score": 100.0,
+    "problem_solving": 25.0,
+    "usability": 25.0,
+    "scope": 25.0,
+    "effectiveness": 25.0
+  },
+  "compliance": {
+    "score": 82.0,
+    "violations": [
+      "SKILL.md body exceeds 5,000 words (consider moving content to references/)",
+      "Script utils.py missing shebang line",
+      "Script __init__.py is very short (0 lines) - consider including as instructions",
+      "Script __init__.py missing shebang line",
+      "Excessive second-person language (93 instances) - use imperative form",
+      "Uses second-person language - should use imperative/infinitive form"
+    ],
+    "standards_met": [
+      "\u2713 SKILL.md exists",
+      "\u2713 YAML frontmatter present",
+      "\u2713 Name field present",
+      "\u2713 Description field present",
+      "\u2713 Name matches directory",
+      "\u2713 Scripts directory exists",
+      "\u2713 References directory exists",
+      "\u2713 Assets directory exists"
+    ],
+    "auto_fail": false
+  },
+  "overall": {
+    "overall_score": 58.9,
+    "recommendation": "\u274c DO NOT INSTALL - Critical security risks",
+    "risk_level": "Critical",
+    "breakdown": {
+      "security": 0.0,
+      "quality": 90.02767624020888,
+      "utility": 100.0,
+      "compliance": 82.0
+    }
+  },
+  "metadata": {
+    "skill_name": "skill-creator",
+    "evaluation_date": "2026-08-29T01:14:50.444873",
+    "evaluator_version": "1.0.0",
+    "mode": "full"
+  }
+}

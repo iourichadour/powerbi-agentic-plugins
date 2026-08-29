@@ -1,0 +1,211 @@
+﻿[
+    {
+        "Type":  "skill",
+        "Name":  "azure-devops-standard-branch-policy",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\devops\\skills\\azure-devops-standard-branch-policy\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-azure-devops-standard-branch-policy.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "git-branch-guard",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\devops\\skills\\git-branch-guard\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-git-branch-guard.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "jira-workflow",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\devops\\skills\\jira-workflow\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-jira-workflow.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "fabric-cli",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\fabric\\skills\\fabric-cli\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-fabric-cli.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "check-updates",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\check-updates\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-check-updates.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "dax-data-quality",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\dax-data-quality\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-dax-data-quality.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "powerbi-report-authoring",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\powerbi-report-authoring\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-powerbi-report-authoring.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "powerbi-report-design",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\powerbi-report-design\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-powerbi-report-design.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "powerbi-report-management",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\powerbi-report-management\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-powerbi-report-management.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "powerbi-report-planning",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\powerbi-report-planning\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-powerbi-report-planning.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "prep-powerbi-for-report-copilot",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\prep-powerbi-for-report-copilot\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-prep-powerbi-for-report-copilot.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "semantic-model-authoring",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\semantic-model-authoring\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-semantic-model-authoring.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "skill-merge-planner",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\skill-merge-planner\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-skill-merge-planner.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "sql-data-quality",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\sql-data-quality\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-sql-data-quality.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "tmdl",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills\\tmdl\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-tmdl.md"
+    },
+    {
+        "Type":  "skill",
+        "Name":  "skill-creator",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\skill-creator\\skills\\skill-creator\\SKILL.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\skill-skill-creator.md"
+    },
+    {
+        "Type":  "agent",
+        "Name":  "devops",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\devops\\agents\\devops.agent.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\agent-devops.md"
+    },
+    {
+        "Type":  "agent",
+        "Name":  "powerbi-architect",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\agents\\powerbi-architect.agent.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\agent-powerbi-architect.md"
+    },
+    {
+        "Type":  "agent",
+        "Name":  "powerbi-developer",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\agents\\powerbi-developer.agent.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\agent-powerbi-developer.md"
+    }
+]

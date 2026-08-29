@@ -1,0 +1,175 @@
+{
+  "security": {
+    "score": 48.0,
+    "critical_count": 0,
+    "high_count": 0,
+    "medium_count": 9,
+    "low_count": 0,
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\cleanup_after_edit.py",
+        "line_number": 17,
+        "code_snippet": "script_dir = Path(__file__).parent",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\cleanup_after_edit.py",
+        "line_number": 88,
+        "code_snippet": "model_path = Path(\"IAM_FIELD_MAPPING.SemanticModel\") / \"definition\"",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\cleanup_after_edit.py",
+        "line_number": 91,
+        "code_snippet": "model_path = Path(model_path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\cleanup_after_edit.py",
+        "line_number": 102,
+        "code_snippet": "report_path = Path(\"IAM Portfolio Surverillance.Report\") / \"definition\"",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\cleanup_after_edit.py",
+        "line_number": 105,
+        "code_snippet": "report_path = Path(report_path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "scripts\\remove_bom.py",
+        "line_number": 28,
+        "code_snippet": "with open(file_path, 'rb') as f:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "scripts\\remove_bom.py",
+        "line_number": 35,
+        "code_snippet": "with open(file_path, 'w', encoding='utf-8') as f:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\remove_bom.py",
+        "line_number": 68,
+        "code_snippet": "root_path = Path(args.root_path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Arbitrary File Ops",
+        "description": "File write without validation",
+        "file_path": "scripts\\remove_bom.py",
+        "line_number": 35,
+        "code_snippet": "with open(file_path, 'w', encoding='utf-8') as f:",
+        "recommendation": "Validate file paths and use temporary directories for untrusted operations."
+      }
+    ],
+    "layers": [
+      {
+        "name": "Layer 1: Input Validation & Sanitization",
+        "passed": true,
+        "score": 10.0,
+        "issue_count": 9
+      },
+      {
+        "name": "Layer 2: Execution Environment Control",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 3: Output Sanitization",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 4: Privilege Management",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 5: Self-Protection",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      }
+    ]
+  },
+  "quality": {
+    "score": 93.7224880382775,
+    "code_quality": 23.72248803827751,
+    "documentation": 20.0,
+    "structure": 25.0,
+    "functionality": 25.0,
+    "breakdown": {
+      "code_quality_max": 25,
+      "documentation_max": 25,
+      "structure_max": 25,
+      "functionality_max": 25
+    }
+  },
+  "utility": {
+    "score": 100.0,
+    "problem_solving": 25.0,
+    "usability": 25.0,
+    "scope": 25.0,
+    "effectiveness": 25.0
+  },
+  "compliance": {
+    "score": 100.0,
+    "violations": [],
+    "standards_met": [
+      "\u2713 SKILL.md exists",
+      "\u2713 YAML frontmatter present",
+      "\u2713 Name field present",
+      "\u2713 Description field present",
+      "\u2713 Name matches directory",
+      "\u2713 Scripts directory exists",
+      "\u2713 References directory exists"
+    ],
+    "auto_fail": false
+  },
+  "overall": {
+    "overall_score": 80.2,
+    "recommendation": "\u274c DO NOT INSTALL - Critical security risks",
+    "risk_level": "Critical",
+    "breakdown": {
+      "security": 48.0,
+      "quality": 93.7224880382775,
+      "utility": 100.0,
+      "compliance": 100.0
+    }
+  },
+  "metadata": {
+    "skill_name": "tmdl",
+    "evaluation_date": "2026-08-29T01:14:50.126080",
+    "evaluator_version": "1.0.0",
+    "mode": "full"
+  }
+}

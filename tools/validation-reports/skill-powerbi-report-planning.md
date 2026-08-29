@@ -1,0 +1,17 @@
+﻿# Validation Report: powerbi-report-planning
+
+- **Type**: skill
+- **Status**: VALID
+- **Source**: `C:\Development\powerbi-agentic-plugins\plugins\powerbi\skills\powerbi-report-planning\SKILL.md`
+- **Checked**: 2026-08-29 01:06:32
+
+## Fields detected
+
+- **hasMetadata**: True
+- **description**: >-
+- **name**: powerbi-report-planning
+
+## Issues
+
+None. This file passed all checks.
+
