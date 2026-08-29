@@ -191,3 +191,58 @@ Note them, leave them.
 6. **Regression** — `.\setup-team-plugins.ps1 -Force` still succeeds and
    `copilot /plugin list` is unchanged (agent rename + frontmatter edits didn't
    break Copilot discovery).
+
+## Implementation summary (done)
+
+Landed on branch `feature/claude-code-setup` (commit `73939b2`).
+
+**Done as planned:**
+- `plugins/{powerbi,fabric,devops}/.claude-plugin/plugin.json` added (name,
+  description, version, author, keywords); `skill-creator/.claude-plugin/plugin.json`
+  got `"version": "1.0.0"`.
+- Persona agents renamed `*.agent.md` → `*.md` (`powerbi-architect`,
+  `powerbi-developer`, `devops`) with Claude Code frontmatter: `name:` added,
+  `tools:` mapped to real tool names, `model:` → `sonnet` / `haiku`.
+  `pbip-validator.md` `model:` → `haiku`.
+- `plugins/powerbi/.mcp.json` `type: "local"` → `"stdio"`; `plugins/fabric/.mcp.json`
+  got `"type": "stdio"` for parity.
+- `setup-claude-plugins.ps1` created at repo root — `-RepositoryPath`,
+  `-PluginName`, `-Force`, `-Uninstall`, `-SkipDesktopBridge`, `-Verbose`.
+- Docs: Claude Code sections in `README.md` and `DEVELOPER_SETUP.md`;
+  `CONTRIBUTING_TEAM.md` agent-path + local-test-loop updates; structure block in
+  `README.md` corrected. `marketplace.json` `metadata.version` `0.3.0` → `0.4.0`.
+
+**Deviations from the plan:**
+- `claude plugin install` has **no `--force` flag** (CLI is `install <plugin>`
+  with `-y`, `-s/--scope`). `-Force` is implemented as uninstall-then-install;
+  the script always passes `-y` for non-interactive runs.
+- `marketplace add` is idempotent (exits 0 whether new or "already on disk"), so
+  `Register-Marketplace` always runs `marketplace update <name>` afterward to
+  refresh from source rather than branching on an "already exists" error.
+- `powerbi-developer` was given `Write` in addition to `Edit` (plan's tool map
+  omitted it) — an implementation agent needs to create files, matching the
+  plan's own choice to grant `Write` to `powerbi-architect`.
+- `devops` MCP prefixes written as `mcp__atlassian-rovo-mcp` and
+  `mcp__atlassian-mcp-server` (the `com.atlassian/...` server name isn't a valid
+  MCP tool-prefix token).
+- Bonus: `tools/validate-skills.ps1` updated to discover `agents/*.md` (top-level
+  plugin agents only), not just legacy `*.agent.md`, so the rename didn't blind
+  the validator; reports regenerated.
+- `AGENTS.md` needed no change (no `*.agent.md` references); `CLAUDE.md` likewise
+  (its agent mention carries no file extension).
+
+**Verified on this machine (2026-08-29):**
+- `claude plugin validate` passes for `marketplace.json` and all four
+  `plugin.json` files.
+- `.\setup-claude-plugins.ps1 -Force` registers the marketplace, reinstalls all
+  four plugins, and they show `enabled` in `claude plugin list`.
+- `claude plugin details powerbi@…` lists 11 skills + 3 agents (`pbip-validator`,
+  `powerbi-architect`, `powerbi-developer`) + the `powerbi-modeling-mcp` server;
+  `devops@…` lists 3 skills + the `devops` agent.
+- `tools/validate-skills.ps1` → 20/20 valid, 0 warnings.
+
+**Not yet verified (needs a fresh Claude Code session / other env):**
+- `/plugin` and `/mcp` panes in an interactive session; `claude --debug` load
+  warnings.
+- `-Uninstall` round-trip and the single-plugin `-PluginName` path end-to-end.
+- Copilot regression (`.\setup-team-plugins.ps1 -Force` + `copilot /plugin list`).
