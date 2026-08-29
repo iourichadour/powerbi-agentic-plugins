@@ -9,6 +9,7 @@ Plugins that turn GitHub Copilot into a specialist for Power BI and Microsoft Fa
 | **[powerbi](./plugins/powerbi)** | Create semantic models, author reports in PBIR, write DAX queries, explore published datasets, apply modeling best practices, and **optimize reports for Report Copilot pane readiness**. | 
 | **[fabric](./plugins/fabric)**   | Navigate workspaces, import/export item definitions, call Fabric & Power BI REST APIs, run jobs, and manage OneLake files.        |
 | **[devops](./plugins/devops)**   | Enforce branch hygiene, standard Azure DevOps branch policies, and team-safe Git workflows.                                      |
+| **[skill-creator](./plugins/skill-creator)** | Official Anthropic skill-authoring toolkit — create new skills, run with-skill/baseline benchmark evals, optimize trigger descriptions, and package `.skill` files. Vendored unmodified from [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official). |
 
 Every plugin follows the same structure:
 
@@ -58,7 +59,7 @@ If you're setting up plugins for a **team or group**, use the team-friendly setu
    ```
 
 **Benefits:**
-- ✓ All plugins (powerbi + fabric + devops) install in one command
+- ✓ All plugins (powerbi + fabric + devops + skill-creator) install in one command
 - ✓ Both GitHub Copilot CLI and VS Code supported
 - ✓ MCP servers auto-configured
 - ✓ Team can pull updates via `git pull` and reinstall with `-Force`
@@ -85,7 +86,24 @@ If you're setting up plugins for a **team or group**, use the team-friendly setu
     .\setup-team-plugins.ps1 -RepositoryPath "C:\Development\powerbi-agentic-plugins"
     ```
 
-- To install only one plugin, add `-PluginName powerbi` (or `fabric`, `devops`).
+- To install only one plugin, add `-PluginName powerbi` (or `fabric`, `devops`, `skill-creator`). It installs to `~\.copilot\installed-plugins\<plugin>` and mirrors into `~\.copilot\extensions\<plugin>` so Copilot can discover it.
+
+### Sample install prompts
+
+Use these prompts when you want the assistant to install just one plugin:
+
+```text
+Use @setup-team-plugins.ps1 -PluginName powerbi to install only the Power BI plugin.
+```
+```text
+Use @setup-team-plugins.ps1 -PluginName fabric to install only the Fabric plugin.
+```
+```text
+Use @setup-team-plugins.ps1 -PluginName devops to install only the DevOps plugin.
+```
+```text
+Use @setup-team-plugins.ps1 -PluginName skill-creator to install only the Skill Creator plugin.
+```
 
 Once installed, plugins activate automatically. Skills fire when relevant — for example, asking Copilot to create a semantic model automatically pulls in the `powerbi-semantic-model` skill.
 

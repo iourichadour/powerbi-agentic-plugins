@@ -47,7 +47,7 @@ This guide walks your team through adopting the `prep-powerbi-for-report-copilot
 
 ## Installation & Setup
 
-**New team members:** Follow [DEVELOPER_SETUP.md](DEVELOPER_SETUP.md) to install all plugins (powerbi + fabric + devops) in 3 steps.
+**New team members:** Follow [DEVELOPER_SETUP.md](DEVELOPER_SETUP.md) to install all plugins (powerbi + fabric + devops + skill-creator) in 3 steps.
 
 ---
 
@@ -290,7 +290,7 @@ After full rollout, monitor:
 | Problem | Solution |
 |---------|----------|
 | "Skill not found" | Re-run `.\setup-team-plugins.ps1 -RepositoryPath "C:\Development\powerbi-agentic-plugins"` from the local repo |
-| PowerShell version error | Upgrade to PowerShell 7: https://github.com/PowerShell/PowerShell |
+| PowerShell version error | Upgrade to PowerShell 5.1+ (ships with Windows) or PowerShell 7: https://github.com/PowerShell/PowerShell |
 | "Cannot connect to GitHub" | Check firewall; try manual clone (Option B) |
 | Plugin loads but skill missing | Run `copilot /skill list` to verify; restart Copilot |
 

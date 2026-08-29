@@ -1,0 +1,62 @@
+/// Earliest date that is used in the data. Ths is needed for proper date dimension
+expression StartDate = #date(2019, 1, 1) meta [IsParameterQuery=true, Type="Date", IsParameterQueryRequired=true]
+	lineageTag: 5791edce-805b-4816-ab1c-8f236d623f5f
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Date
+
+/// Latest date that is used in the data. Ths is needed for proper date dimension
+expression EndDate = #date(2026, 12, 31) meta [IsParameterQuery=true, Type="Date", IsParameterQueryRequired=true]
+	lineageTag: 70bb63fb-0bcd-4dbd-aefd-803c3d435139
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Date
+
+/// Sharepoint site URL. If using OneDrive use the following
+/// https://bayview0-my.sharepoint.com/personal/iourichadour_bftg_com
+expression SharepointURL = "https://bayview0-my.sharepoint.com/personal/iourichadour_bftg_com/" meta [IsParameterQuery=true, List={"https://bayview0-my.sharepoint.com/personal/iourichadour_bftg_com/Documents/"}, DefaultValue="https://bayview0-my.sharepoint.com/personal/iourichadour_bftg_com/Documents/", Type="Any", IsParameterQueryRequired=true]
+	lineageTag: 9d05ea04-d804-4de6-bf5d-b550ec1c4a40
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression raw_OneDriveAsSharepoint =
+		let
+		    Source = SharePoint.Files(SharepointURL , [ApiVersion = 15])
+		in
+		    Source
+	lineageTag: 8a055fbf-5c02-4085-b709-f891dd336c40
+	queryGroup: raw
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression fact =
+		let
+		    Source = raw_OneDriveAsSharepoint,
+		    #"Filtered Rows" = Table.SelectRows(Source, each (Text.Upper([Folder Path]) = Text.Upper(SharepointURL & SharepointFolder) ))
+		in
+		    #"Filtered Rows"
+	lineageTag: 5631f9c7-93c6-4265-ba13-3a94ed778dfd
+	queryGroup: Facts
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+/// Sharepoint folder. If using OneDrive any path after the initial SharepointURL base. Note no beginning slash and you have to have ending /
+expression SharepointFolder = "Documents/powerbi/" meta [IsParameterQuery=true, List={"Documents/powerbi/"}, DefaultValue="Documents/powerbi/", Type="Any", IsParameterQueryRequired=true]
+	lineageTag: b12e7e07-1530-4fb2-af19-cd9f26e945f7
+	queryGroup: Parameters
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

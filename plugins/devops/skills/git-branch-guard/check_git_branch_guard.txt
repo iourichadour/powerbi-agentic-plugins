@@ -2,7 +2,8 @@
 
 $ErrorActionPreference = "Stop"
 
-$protectedBranches = @("main", "master", "prod", "production", "dev", "develop")
+$protectedBranches = @("main", "master", "prod", "production", "dev", "develop", "test")
+$allowedPrefixes = @("bugfix/", "feature/")
 $currentBranch = (git branch --show-current).Trim()
 
 if ([string]::IsNullOrWhiteSpace($currentBranch)) {
@@ -11,12 +12,12 @@ if ([string]::IsNullOrWhiteSpace($currentBranch)) {
 }
 
 if ($protectedBranches -contains $currentBranch) {
-    Write-Host "Current branch '$currentBranch' is protected. Create a drv branch with a Jira key before continuing." -ForegroundColor Red
+    Write-Host "Current branch '$currentBranch' is protected. Create a bugfix/ or feature/ branch with a Jira key before continuing." -ForegroundColor Red
     exit 1
 }
 
-if (-not $currentBranch.StartsWith("drv/")) {
-    Write-Host "Branch '$currentBranch' must start with 'drv/'." -ForegroundColor Red
+if (-not ($allowedPrefixes | Where-Object { $currentBranch.StartsWith($_) })) {
+    Write-Host "Branch '$currentBranch' must start with 'bugfix/' or 'feature/'." -ForegroundColor Red
     exit 1
 }
 

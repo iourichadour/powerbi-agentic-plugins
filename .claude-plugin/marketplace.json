@@ -5,14 +5,14 @@
     },
     "metadata": {
         "description": "Skills and tools for agentic Power BI and Fabric development including Semantic Modeling, TMDL, PBIR, Best Practices, and CRUD operations on Fabric resources.",
-        "version": "0.2.0"
+        "version": "0.3.0"
     },
     "plugins": [
         {
             "name": "powerbi",
             "description": "Skills and tools for agentic Power BI development including Semantic Modeling, TMDL, PBIR, Best Practices.",
             "source": "./plugins/powerbi",
-            "version": "0.2.1",
+            "version": "0.3.0",
             "keywords": [
                 "power-bi",
                 "tmdl",
@@ -42,6 +42,18 @@
                 "azure-devops",
                 "branch-policy",
                 "branch-guard"
+            ]
+        },
+        {
+            "name": "skill-creator",
+            "description": "Official Anthropic skill-authoring toolkit — create new skills, run with-skill/baseline benchmark evals, optimize trigger descriptions, and package .skill files. Vendored unmodified from anthropics/claude-plugins-official.",
+            "source": "./plugins/skill-creator",
+            "version": "1.0.0",
+            "keywords": [
+                "skill-creator",
+                "skill-authoring",
+                "evals",
+                "anthropic"
             ]
         }
     ]

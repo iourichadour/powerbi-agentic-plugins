@@ -1,9 +1,10 @@
 param (    
     <#
-    .PARAMETER models
-    Specifies the path to the PBIR (Power BI Report) file or folder to analyze with BPA.    
+    .PARAMETER reports
+    Specifies the path(s) to the PBIR (Power BI Report) definition folder(s) to analyze with BPA.    
     #>
-    $reports = @("C:\temp\202602\PBIP\Sales.Report\definition") 
+    [Parameter(Mandatory=$true)]
+    [string[]]$reports
     ,
     $rulesFilePath = $null
 )
@@ -12,44 +13,113 @@ param (
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
   
 $currentFolder = (Split-Path $MyInvocation.MyCommand.Definition -Parent)
-
-# Download tabular editor
-
 $toolsPath = "$currentFolder\_tools"
+$pbiInspectorEXE = "$toolsPath\PBIInspector\win-x64\CLI\PBIRInspectorCLI.exe"
 
-$tools = @(
-    @{"tool" = "PBIInspector"; "downloadUrl" = "https://github.com/NatVanG/PBI-InspectorV2/releases/latest/download/win-x64-CLI.zip"; "rulesUrl" = "https://raw.githubusercontent.com/NatVanG/PBI-InspectorV2/refs/heads/main/Rules/Base-rules.json" }    
-)
-
-foreach ($tool in $tools) {
-
-    $toolName = $tool.tool
-    $downloadUrl = $tool.downloadUrl
-    $rulesUrl = $tool.rulesUrl
-
-    $destinationPath = "$toolsPath\$toolName"
-
-    if (!(Test-Path $destinationPath)) {
-
-        New-Item -ItemType Directory -Path $destinationPath -ErrorAction SilentlyContinue | Out-Null            
-
-        Write-Host "Downloading $toolName"
-
-        $zipFile = "$destinationPath\$toolName.zip"
-
-        Invoke-WebRequest -Uri $downloadUrl -OutFile $zipFile
-
-        Expand-Archive -Path $zipFile -DestinationPath $destinationPath -Force     
-
-        Remove-Item $zipFile        
-
-        # Downloading default rules
-
-        Invoke-WebRequest -Uri $rulesUrl -OutFile "$destinationPath\defaultRules.json"
-    }    
+if (!(Test-Path $pbiInspectorEXE)) {
+    throw "Cannot find bundled PBI Inspector executable at path: '$pbiInspectorEXE'."
 }
 
-$pbiInspectorEXE = "$toolsPath\PBIInspector\win-x64\CLI\PBIRInspectorCLI.exe"
+function Get-VersionPrefix {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$VersionText
+    )
+
+    $normalizedVersion = $VersionText.Trim()
+    if ($normalizedVersion.StartsWith('v')) {
+        $normalizedVersion = $normalizedVersion.Substring(1)
+    }
+
+    return $normalizedVersion.Split('+')[0]
+}
+
+function ConvertTo-ReleaseVersion {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$VersionText
+    )
+
+    $normalizedVersion = Get-VersionPrefix -VersionText $VersionText
+    if ($normalizedVersion -match '^(\d+\.\d+\.\d+)') {
+        return [version]$Matches[1]
+    }
+
+    return $null
+}
+
+function Get-LatestPbiInspectorRelease {
+    $releaseApiUrl = "https://api.github.com/repos/NatVanG/PBI-InspectorV2/releases/latest"
+    $headers = @{
+        "User-Agent" = "powerbi-report-authoring-bpa"
+        "Accept"     = "application/vnd.github+json"
+    }
+
+    return Invoke-RestMethod -Uri $releaseApiUrl -Headers $headers -Method Get
+}
+
+function Test-ShouldCheckLatestRelease {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$StateFilePath
+    )
+
+    if (!(Test-Path $StateFilePath)) {
+        return $true
+    }
+
+    try {
+        $state = Get-Content -Path $StateFilePath -Raw | ConvertFrom-Json
+        $lastChecked = [datetime]::Parse($state.lastCheckedUtc)
+        return ((Get-Date).ToUniversalTime() - $lastChecked).TotalDays -ge 7
+    }
+    catch {
+        return $true
+    }
+}
+
+function Save-ReleaseCheckState {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$StateFilePath,
+        [Parameter(Mandatory = $true)]
+        [string]$LatestTag,
+        [Parameter(Mandatory = $true)]
+        [string]$BundledVersion
+    )
+
+    $state = [ordered]@{
+        lastCheckedUtc = (Get-Date).ToUniversalTime().ToString("o")
+        latestTag      = $LatestTag
+        bundledVersion  = $BundledVersion
+    }
+
+    $state | ConvertTo-Json -Depth 4 | Set-Content -Path $StateFilePath -Encoding UTF8
+}
+
+$releaseStatePath = Join-Path $toolsPath "PBIInspector\release-check.json"
+$bundledVersion = ConvertTo-ReleaseVersion -VersionText ([System.Diagnostics.FileVersionInfo]::GetVersionInfo($pbiInspectorEXE).ProductVersion)
+
+if ($null -eq $bundledVersion) {
+    throw "Cannot determine bundled PBI Inspector version from '$pbiInspectorEXE'."
+}
+
+if (Test-ShouldCheckLatestRelease -StateFilePath $releaseStatePath) {
+    try {
+        $latestRelease = Get-LatestPbiInspectorRelease
+        $latestTag = [string]$latestRelease.tag_name
+        $latestVersion = ConvertTo-ReleaseVersion -VersionText $latestTag
+
+        if ($null -ne $latestVersion -and $latestVersion -gt $bundledVersion) {
+            Write-Warning "A newer PBI Inspector release is available: $latestTag. The bundled version is $bundledVersion. Update the checked-in executable manually if you want the newer release."
+        }
+
+        Save-ReleaseCheckState -StateFilePath $releaseStatePath -LatestTag $latestTag -BundledVersion $bundledVersion
+    }
+    catch {
+        Write-Warning "Unable to check the latest PBI Inspector release on GitHub: $($_.Exception.Message)"
+    }
+}
 
 if ($rulesFilePath -eq $null) {
     $rulesFilePath = "$currentFolder\bpa-rules-report.json"

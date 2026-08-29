@@ -1,0 +1,8 @@
+RuleId,TableName,ColumnName,RuleType,ExpectedType,AllowBlank,MinValue,MaxValue,AllowedValues,RefTable,RefColumn,ConditionDAX,Severity,Notes
+FD_DealID_KeyNotBlank,Fact_Deals,DealID,KeyNotBlank,Text,FALSE,,,,,,,Error,DealID is required
+FD_DealID_KeyUnique,Fact_Deals,DealID,KeyUnique,Text,FALSE,,,,,,,Error,DealID must be unique
+FD_Amount_TypeNumber,Fact_Deals,Amount,TypeNumber,Number,FALSE,,,,,,,Error,Amount must be numeric
+FD_Amount_NonNegative,Fact_Deals,Amount,Range,Number,FALSE,0,, ,,,,Error,Amount must be >= 0
+FD_Stage_Domain,Fact_Deals,Stage,Domain,Text,TRUE,,,Prospecting|Underwriting|Approved|Closed Won|Closed Lost,,,,Error,Stage must be in allowed list
+FD_CustomerID_RI,Fact_Deals,CustomerID,RI,Text,FALSE,,,,DimCustomer,CustomerID,,Error,CustomerID must exist in DimCustomer
+FD_CloseDate_TypeDate,Fact_Deals,CloseDate,TypeDate,Date,TRUE,,,,,,,Warn,CloseDate should be a valid date

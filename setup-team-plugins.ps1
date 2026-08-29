@@ -1,4 +1,4 @@
-#Requires -Version 7.0
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Setup script for installing Power BI Agentic Plugins for the team
@@ -8,8 +8,16 @@
     powerbi-agentic-plugins repository to $USERPROFILE\.copilot\extensions for GitHub Copilot CLI
     and VS Code.
     
-    It validates prerequisites, copies plugins, registers with GitHub Copilot CLI,
-    integrates with VS Code, and configures MCP servers.
+    It validates prerequisites, backs up and removes any existing copies of the
+    targeted plugins already installed under $USERPROFILE\.copilot (both the
+    installed-plugins cache and the extensions discovery folder), copies the
+    current plugins, registers with GitHub Copilot CLI, integrates with VS Code,
+    configures MCP servers, and installs the Power BI Desktop Bridge CLI
+    (@microsoft/powerbi-desktop-bridge-cli) when the powerbi plugin is targeted.
+    
+    Backups are timestamped and stored under
+    $USERPROFILE\.copilot\backups\<yyyyMMdd-HHmmss>, so previous plugin versions
+    can be restored manually if needed.
     
 .PARAMETER RepositoryPath
     Path to the local powerbi-agentic-plugins repository.
@@ -17,7 +25,7 @@
 
 .PARAMETER PluginName
     Install only the specified plugin instead of all plugins.
-    Valid values: powerbi, fabric, devops
+    Valid values: powerbi, fabric, devops, skill-creator
      
 .PARAMETER SkipCopilotCLI
     Skip GitHub Copilot CLI registration and verification.
@@ -45,14 +53,14 @@
     .\setup-team-plugins.ps1 -PluginName powerbi
     
 .NOTES
-    Requires PowerShell 7.0 or later
+    Requires PowerShell 5.1 or later (Windows PowerShell 5.1 or PowerShell 7+)
     Requires Git installed and in PATH
     Requires GitHub Copilot CLI or VS Code with GitHub Copilot Chat extension
 #>
 
 param(
     [string]$RepositoryPath,
-    [ValidateSet("powerbi", "fabric", "devops")]
+    [ValidateSet("powerbi", "fabric", "devops", "skill-creator")]
     [string]$PluginName,
     [switch]$SkipCopilotCLI,
     [switch]$SkipVSCode,
@@ -109,7 +117,96 @@ function Get-TargetPlugins {
         return @($PluginName)
     }
 
-    return @("powerbi", "fabric", "devops")
+    return @("powerbi", "fabric", "devops", "skill-creator")
+}
+
+function Get-MarketplaceName {
+    param([string]$RepositoryPath)
+    $marketplacePath = Join-Path $RepositoryPath ".claude-plugin\marketplace.json"
+    if (Test-Path $marketplacePath) {
+        $marketplace = Get-Content $marketplacePath -Raw | ConvertFrom-Json
+        return $marketplace.name
+    }
+    return "powerbi-agentic-plugins"
+}
+
+function Get-PluginVersion {
+    param([string]$RepositoryPath, [string]$PluginName)
+    $marketplacePath = Join-Path $RepositoryPath ".claude-plugin\marketplace.json"
+    if (Test-Path $marketplacePath) {
+        $marketplace = Get-Content $marketplacePath -Raw | ConvertFrom-Json
+        $plugin = $marketplace.plugins | Where-Object { $_.name -eq $PluginName }
+        if ($plugin) { return $plugin.version }
+    }
+    return "0.1.0"
+}
+
+function Get-InstallRoot {
+    param([string]$MarketplaceName)
+    return (Join-Path $env:USERPROFILE ".copilot\installed-plugins\$MarketplaceName")
+}
+
+function Get-DiscoveryRoot {
+    return (Join-Path $env:USERPROFILE ".copilot\extensions")
+}
+
+function ConvertFrom-JsonWithComments {
+    # Some .copilot config files ship with leading // comment lines, which
+    # ConvertFrom-Json cannot parse ("Invalid JSON primitive").
+    param([string]$RawContent)
+
+    $stripped = ($RawContent -split "`r?`n" | Where-Object { $_.TrimStart() -notmatch '^//' }) -join "`n"
+    return $stripped | ConvertFrom-Json
+}
+
+function Backup-ExistingPlugins {
+    param(
+        [string]$InstallRoot,
+        [string]$DiscoveryRoot,
+        [string[]]$Plugins
+    )
+
+    Write-Header "Backing Up Existing Plugins"
+
+    $backupRoot = Join-Path $env:USERPROFILE ".copilot\backups\$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+    $anyBackedUp = $false
+
+    # (label, root) pairs so both the install cache and the discovery/extensions
+    # copy of each plugin get backed up and removed before the fresh install.
+    $locations = @(
+        @{ Label = "installed-plugins"; Root = $InstallRoot },
+        @{ Label = "extensions"; Root = $DiscoveryRoot }
+    )
+
+    foreach ($location in $locations) {
+        foreach ($pluginName in $Plugins) {
+            $existingPath = Join-Path $location.Root $pluginName
+            if (-not (Test-Path $existingPath)) {
+                continue
+            }
+
+            $backupDest = Join-Path (Join-Path $backupRoot $location.Label) $pluginName
+            $backupParent = Split-Path $backupDest -Parent
+            if (-not (Test-Path $backupParent)) {
+                New-Item -ItemType Directory -Path $backupParent -Force | Out-Null
+            }
+
+            Write-Info "Backing up existing $pluginName plugin ($($location.Label)) to: $backupDest"
+            Copy-Item -Path $existingPath -Destination $backupDest -Recurse -Force
+            $anyBackedUp = $true
+
+            Write-Info "Removing existing $pluginName plugin ($($location.Label))..."
+            Remove-Item -Path $existingPath -Recurse -Force
+        }
+    }
+
+    if ($anyBackedUp) {
+        Write-Success "Existing plugins backed up to: $backupRoot"
+    } else {
+        Write-Info "No existing plugins found to back up."
+    }
+
+    return $backupRoot
 }
 
 function Test-Prerequisites {
@@ -119,11 +216,11 @@ function Test-Prerequisites {
     
     # Check PowerShell version
     Write-Info "PowerShell version: $($PSVersionTable.PSVersion)"
-    if ($PSVersionTable.PSVersion.Major -lt 7) {
-        Write-Error-Custom "PowerShell 7.0 or later required. Current: $($PSVersionTable.PSVersion)"
+    if ($PSVersionTable.PSVersion -lt [Version]"5.1") {
+        Write-Error-Custom "PowerShell 5.1 or later required. Current: $($PSVersionTable.PSVersion)"
         $prereqsMet = $false
     } else {
-        Write-Success "PowerShell 7.0+ ✓"
+        Write-Success "PowerShell 5.1+ ✓"
     }
     
     # Check Git
@@ -190,6 +287,7 @@ function Find-Repository {
     
     # Search common locations
     $commonLocations = @(
+        $PSScriptRoot,
         "$(Split-Path $PSScriptRoot -Parent)",
         "$env:USERPROFILE\repos\powerbi-agentic-plugins",
         "$env:USERPROFILE\git\powerbi-agentic-plugins",
@@ -251,7 +349,7 @@ function Install-Plugins {
     for ($i = 0; $i -lt $Plugins.Count; $i++) {
         $pluginName = $Plugins[$i]
         
-        $sourcePath_Local = Join-Path $SourcePath "plugins" $pluginName
+        $sourcePath_Local = Join-Path (Join-Path $SourcePath "plugins") $pluginName
         $destPath_Local = Join-Path $DestinationPath $pluginName
         
         Write-Verbose "DEBUG: Processing plugin $($i+1) of $($Plugins.Count): $pluginName"
@@ -287,6 +385,139 @@ function Install-Plugins {
     }
     
     return $successCount -eq $Plugins.Count
+}
+
+function Sync-PluginsToDiscoveryRoot {
+    param(
+        [string]$InstallRoot,
+        [string]$DiscoveryRoot,
+        [string[]]$Plugins,
+        [bool]$Force
+    )
+
+    if ($InstallRoot -eq $DiscoveryRoot) {
+        return $true
+    }
+
+    foreach ($pluginName in $Plugins) {
+        $sourcePath = Join-Path $InstallRoot $pluginName
+        $destPath = Join-Path $DiscoveryRoot $pluginName
+
+        if (-not (Test-Path $sourcePath)) {
+            Write-Error-Custom "Installed plugin not found at: $sourcePath"
+            return $false
+        }
+
+        if ($Force -and (Test-Path $destPath)) {
+            Write-Info "Removing existing discovered $pluginName plugin..."
+            Remove-Item -Path $destPath -Recurse -Force
+        }
+
+        if (-not (Test-Path $destPath)) {
+            New-Item -ItemType Directory -Path $destPath -Force | Out-Null
+        }
+
+        Copy-Item -Path "$sourcePath\*" -Destination $destPath -Recurse -Force
+        Write-Info "Mirrored $pluginName plugin to discovery path: $destPath"
+    }
+
+    return $true
+}
+
+function Register-PluginsInCopilotConfig {
+    param(
+        [string]$InstallRoot,
+        [string]$MarketplaceName,
+        [string[]]$Plugins,
+        [string]$RepositoryPath
+    )
+
+    $configPath = "$env:USERPROFILE\.copilot\config.json"
+    if (-not (Test-Path $configPath)) {
+        Write-Warning-Custom "config.json not found — skipping plugin registration in config"
+        return $false
+    }
+
+    Write-Header "Registering Plugins in Copilot Config"
+
+    try {
+        $config = ConvertFrom-JsonWithComments -RawContent (Get-Content $configPath -Raw)
+    } catch {
+        Write-Warning-Custom "Could not parse config.json ($_) — skipping plugin registration in config"
+        return $false
+    }
+
+    if (-not $config.PSObject.Properties['installedPlugins']) {
+        $config | Add-Member -NotePropertyName 'installedPlugins' -NotePropertyValue @() -Force
+    }
+
+    foreach ($pluginName in $Plugins) {
+        $cachePath = Join-Path $InstallRoot $pluginName
+        $version   = Get-PluginVersion -RepositoryPath $RepositoryPath -PluginName $pluginName
+
+        $existing = $config.installedPlugins | Where-Object { $_.name -eq $pluginName -and $_.marketplace -eq $MarketplaceName }
+
+        if ($existing) {
+            $existing.version    = $version
+            $existing.cache_path = $cachePath
+            $existing.enabled    = $true
+            Write-Info "Updated $pluginName in config.json (version $version)"
+        } else {
+            $entry = [PSCustomObject]@{
+                name         = $pluginName
+                marketplace  = $MarketplaceName
+                installed_at = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss.fffZ")
+                enabled      = $true
+                version      = $version
+                cache_path   = $cachePath
+            }
+            $config.installedPlugins += $entry
+            Write-Info "Registered $pluginName in config.json (version $version)"
+        }
+    }
+
+    $config | ConvertTo-Json -Depth 20 | Set-Content $configPath -Encoding UTF8
+    Write-Success "Plugin registrations saved to config.json ✓"
+    return $true
+}
+
+function Register-PluginsInSettings {
+    param(
+        [string]$MarketplaceName,
+        [string[]]$Plugins
+    )
+
+    $settingsPath = "$env:USERPROFILE\.copilot\settings.json"
+    if (-not (Test-Path $settingsPath)) {
+        Write-Warning-Custom "settings.json not found — skipping enabledPlugins update"
+        return $false
+    }
+
+    try {
+        $settings = ConvertFrom-JsonWithComments -RawContent (Get-Content $settingsPath -Raw)
+    } catch {
+        Write-Warning-Custom "Could not parse settings.json ($_) — skipping enabledPlugins update"
+        return $false
+    }
+
+    if (-not $settings.PSObject.Properties['enabledPlugins']) {
+        $settings | Add-Member -NotePropertyName 'enabledPlugins' -NotePropertyValue ([PSCustomObject]@{}) -Force
+    }
+
+    foreach ($pluginName in $Plugins) {
+        $key = "$pluginName@$MarketplaceName"
+        if (-not $settings.enabledPlugins.PSObject.Properties[$key]) {
+            $settings.enabledPlugins | Add-Member -NotePropertyName $key -NotePropertyValue $true -Force
+            Write-Info "Enabled $key in settings.json"
+        } else {
+            Write-Info "$key already enabled in settings.json"
+        }
+    }
+
+    $settings | ConvertTo-Json -Depth 10 | Set-Content $settingsPath -Encoding UTF8
+
+    Write-Success "Plugin settings saved to settings.json ✓"
+    return $true
 }
 
 function Register-CopilotCLI {
@@ -355,6 +586,42 @@ function Register-VSCode {
     }
 }
 
+function Install-DesktopBridgeCli {
+    param([bool]$Force)
+
+    Write-Header "Installing Power BI Desktop Bridge CLI"
+
+    $npmCmd = Get-Command npm -ErrorAction SilentlyContinue
+    if (-not $npmCmd) {
+        Write-Warning-Custom "npm not found — skipping powerbi-desktop-bridge-cli install. Install Node.js from https://nodejs.org, then run: npm install -g @microsoft/powerbi-desktop-bridge-cli"
+        return $false
+    }
+
+    $existing = Get-Command powerbi-desktop -ErrorAction SilentlyContinue
+    if ($existing -and -not $Force) {
+        Write-Success "powerbi-desktop CLI already installed ✓ ($($existing.Source))"
+        return $true
+    }
+
+    Write-Info "Running: npm install -g @microsoft/powerbi-desktop-bridge-cli"
+    try {
+        npm install -g "@microsoft/powerbi-desktop-bridge-cli" 2>&1 | ForEach-Object { Write-Verbose "$_" }
+
+        $installed = Get-Command powerbi-desktop -ErrorAction SilentlyContinue
+        if ($installed) {
+            $version = & powerbi-desktop --version 2>&1
+            Write-Success "powerbi-desktop CLI installed ✓ ($version)"
+            return $true
+        }
+
+        Write-Warning-Custom "npm install completed but 'powerbi-desktop' was not found on PATH. You may need to restart your shell."
+        return $false
+    } catch {
+        Write-Warning-Custom "Failed to install powerbi-desktop-bridge-cli: $_. Install manually with: npm install -g @microsoft/powerbi-desktop-bridge-cli"
+        return $false
+    }
+}
+
 function Validate-Installation {
     param(
         [string]$ExtensionsPath,
@@ -378,18 +645,12 @@ function Validate-Installation {
         $hasAgents = Test-Path "$pluginPath\agents"
         $hasSkills = Test-Path "$pluginPath\skills"
         $hasMCP = Test-Path "$pluginPath\.mcp.json"
-        $hasRootAgent = Test-Path "$pluginPath\agent.md"
 
-        if ($hasSkills -and ($plugin -ne "devops" -or $hasRootAgent)) {
+        if ($hasSkills) {
             $agentStatus = if ($hasAgents) { "agents ✓" } else { "agents (optional)" }
-            $devopsStatus = if ($plugin -eq "devops") { "agent.md ✓ " } else { "" }
-            Write-Success "$plugin plugin: $devopsStatus$agentStatus skills ✓ $(if ($hasMCP) { 'mcp ✓' } else { 'mcp (optional)' })"
+            Write-Success "$plugin plugin: $agentStatus skills ✓ $(if ($hasMCP) { 'mcp ✓' } else { 'mcp (optional)' })"
         } else {
-            if ($plugin -eq "devops" -and -not $hasRootAgent) {
-                Write-Error-Custom "$plugin plugin missing required agent.md file"
-            } else {
-                Write-Error-Custom "$plugin plugin missing required skills directory"
-            }
+            Write-Error-Custom "$plugin plugin missing required skills directory"
             $allValid = $false
         }
     }
@@ -406,8 +667,11 @@ function Validate-Installation {
                 Write-Info "  • $plugin/$skill"
             }
         }
-        if ($plugin -eq "devops" -and (Test-Path "$pluginPath\agent.md")) {
-            Write-Info "  • $plugin/agent.md"
+        if (Test-Path "$pluginPath\agents") {
+            $agents = Get-ChildItem -Path "$pluginPath\agents" -File -Name
+            foreach ($agent in $agents) {
+                Write-Info "  • $plugin/agents/$agent"
+            }
         }
     }
     
@@ -417,7 +681,8 @@ function Validate-Installation {
 function Show-NextSteps {
     param(
         [string]$ExtensionsPath,
-        [string[]]$Plugins
+        [string[]]$Plugins,
+        [string]$BackupPath
     )
     
     Write-Header "Installation Complete!"
@@ -425,6 +690,10 @@ function Show-NextSteps {
     Write-Info "Plugins installed to:"
     Write-Host "  $ExtensionsPath" -ForegroundColor $ColorInfo
     Write-Info "Installed plugin(s): $($Plugins -join ', ')"
+    if ($BackupPath -and (Test-Path $BackupPath)) {
+        Write-Info "Previous plugins (if any) were backed up to:"
+        Write-Host "  $BackupPath" -ForegroundColor $ColorInfo
+    }
     
     Write-Info "Next steps:"
     Write-Host "  1. Restart GitHub Copilot CLI or VS Code to load plugins" -ForegroundColor $ColorInfo
@@ -467,34 +736,62 @@ try {
         Write-Error-Custom "Could not locate repository. Exiting."
         exit 1
     }
+
+    # Resolve marketplace name and target plugins
+    $marketplaceName = Get-MarketplaceName -RepositoryPath $repoPath
+    $targetPlugins   = Get-TargetPlugins -PluginName $PluginName
     
     # Set up destination paths
-    $extensionsPath = Join-Path $env:USERPROFILE ".copilot" "extensions"
-    if (-not (Test-Path $extensionsPath)) {
-        New-Item -ItemType Directory -Path $extensionsPath -Force | Out-Null
+    $installRoot   = Get-InstallRoot -MarketplaceName $marketplaceName
+    $discoveryRoot = Get-DiscoveryRoot
+
+    if (-not (Test-Path $installRoot)) {
+        New-Item -ItemType Directory -Path $installRoot -Force | Out-Null
+    }
+
+    if (-not (Test-Path $discoveryRoot)) {
+        New-Item -ItemType Directory -Path $discoveryRoot -Force | Out-Null
     }
     
-    Write-Info "Destination: $extensionsPath"
-    $targetPlugins = Get-TargetPlugins -PluginName $PluginName
-    
+    Write-Info "Install root: $installRoot"
+    Write-Info "Discovery root: $discoveryRoot"
+
+    # Always back up and remove any existing plugins before installing the current ones
+    $backupPath = Backup-ExistingPlugins -InstallRoot $installRoot -DiscoveryRoot $discoveryRoot -Plugins $targetPlugins
+
     # Install plugins
-    if (-not (Install-Plugins -SourcePath $repoPath -DestinationPath $extensionsPath -Force $Force -Plugins $targetPlugins)) {
+    if (-not (Install-Plugins -SourcePath $repoPath -DestinationPath $installRoot -Force $Force -Plugins $targetPlugins)) {
         Write-Error-Custom "Failed to install plugins."
         exit 1
     }
+
+    if (-not (Sync-PluginsToDiscoveryRoot -InstallRoot $installRoot -DiscoveryRoot $discoveryRoot -Plugins $targetPlugins -Force $Force)) {
+        Write-Error-Custom "Failed to sync plugins to discovery path."
+        exit 1
+    }
+
+    # Install Power BI Desktop Bridge CLI (needed for the powerbi-report-authoring skill's
+    # Desktop reload/screenshot verification loop)
+    if ($targetPlugins -contains "powerbi") {
+        Install-DesktopBridgeCli -Force $Force | Out-Null
+    }
+
+    # Register plugins in Copilot config and settings
+    Register-PluginsInCopilotConfig -InstallRoot $installRoot -MarketplaceName $marketplaceName -Plugins $targetPlugins -RepositoryPath $repoPath | Out-Null
+    Register-PluginsInSettings -MarketplaceName $marketplaceName -Plugins $targetPlugins | Out-Null
     
     # Register with tools
-    $cliRegistered = Register-CopilotCLI -ExtensionsPath $extensionsPath
-    $vscodeRegistered = Register-VSCode -ExtensionsPath $extensionsPath
+    $cliRegistered = Register-CopilotCLI -ExtensionsPath $discoveryRoot
+    $vscodeRegistered = Register-VSCode -ExtensionsPath $discoveryRoot
     
     # Validate
-    if (-not (Validate-Installation -ExtensionsPath $extensionsPath -Plugins $targetPlugins)) {
+    if (-not (Validate-Installation -ExtensionsPath $discoveryRoot -Plugins $targetPlugins)) {
         Write-Error-Custom "Installation validation failed."
         exit 1
     }
     
     # Show next steps
-    Show-NextSteps -ExtensionsPath $extensionsPath -Plugins $targetPlugins
+    Show-NextSteps -ExtensionsPath $discoveryRoot -Plugins $targetPlugins -BackupPath $backupPath
     
     Write-Success "Setup complete!"
     exit 0

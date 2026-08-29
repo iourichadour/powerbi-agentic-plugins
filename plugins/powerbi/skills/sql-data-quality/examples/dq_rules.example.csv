@@ -1,0 +1,9 @@
+RuleId,TableName,ColumnName,RuleType,ExpectedType,AllowBlank,MinValue,MaxValue,AllowedValues,RefTable,RefColumn,ConditionSQL,Severity,Notes
+FactLoan_LoanID_KeyNotBlank,FactLoan,LoanID,KeyNotBlank,Text,0,,,,,,,Error,Primary key must be present
+FactLoan_LoanID_KeyUnique,FactLoan,LoanID,KeyUnique,Text,0,,,,,,,Error,Detect duplicate loan IDs
+FactLoan_CommitmentBalance_TypeNumber,FactLoan,CommitmentBalance,TypeNumber,Number,1,,,,,,,Warn,Amount must be numeric
+FactLoan_CommitmentBalance_Range,FactLoan,CommitmentBalance,Range,Number,1,100,9999999,,,,,Warn,Typical commitment balance range
+FactLoan_GLDate_TypeDate,FactLoan,GLDate,TypeDate,Date,1,,,,,,,Warn,General ledger date must be valid
+FactLoan_Stage_Domain,FactLoan,Stage,Domain,Text,1,,,Prospecting|Approved|Closed Won,,,,Warn,Low-cardinality stage domain
+FactLoan_OriginatorID_RI,FactLoan,OriginatorID,RI,Text,0,,,,DimOriginator,OriginatorID,,Error,Foreign key to originator dimension
+FactLoan_ClosedAmount_Range_WhenClosed,FactLoan,CommitmentBalance,Range,Number,0,50000,9999999,,,,"src.[Stage] = 'Closed Won'",Warn,Only enforce amount floor for closed deals

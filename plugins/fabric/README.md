@@ -22,6 +22,12 @@ Activated when a user needs to interact with Microsoft Fabric programmatically. 
 
 Activated for any Fabric platform task — managing workspaces, importing or exporting item definitions, running jobs, calling Fabric and Power BI REST APIs, and orchestrating deployments across environments. Uses the `fabric-cli` skill to drive the `fab` CLI.
 
+### Sample install prompt
+
+```text
+Use @setup-team-plugins.ps1 -PluginName fabric to install only the Fabric plugin.
+```
+
 ## Skills
 
 ### `fabric-cli`

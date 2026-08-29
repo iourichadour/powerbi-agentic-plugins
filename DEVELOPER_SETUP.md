@@ -31,11 +31,13 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 The script will:
 - ✓ Set execution policy to Bypass for the current PowerShell session only
-- ✓ Validate your system (PowerShell 7+, Git, GitHub Copilot CLI or VS Code)
-- ✓ Copy all plugins to `$env:USERPROFILE\.copilot\extensions\`
+- ✓ Validate your system (PowerShell 5.1+, Git, GitHub Copilot CLI or VS Code)
+- ✓ Copy all plugins to `$env:USERPROFILE\.copilot\installed-plugins\powerbi-agentic-plugins\` and mirror them to `extensions\` for discovery
+- ✓ Register plugins in `config.json` and `settings.json` so Copilot CLI picks them up on next start
 - ✓ Register plugins with GitHub Copilot CLI (if installed)
 - ✓ Configure plugins for VS Code (if installed)
 - ✓ Set up MCP servers
+- ✓ Install the Power BI Desktop Bridge CLI (`@microsoft/powerbi-desktop-bridge-cli`) globally via npm, when the `powerbi` plugin is included
 - ✓ Validate the installation
 
 ### Step 3: Verify Installation
@@ -43,7 +45,7 @@ The script will:
 # GitHub Copilot CLI
 copilot
 /plugin list
-# Should show: powerbi, fabric, devops ✓
+# Should show: powerbi, fabric, devops, skill-creator ✓
 
 # VS Code
 # Restart VS Code and open Settings (Ctrl+,)
@@ -60,11 +62,11 @@ Done! Your plugins are ready to use.
 
 Before you start, ensure you have:
 
-- **PowerShell 7.0 or later**
+- **PowerShell 5.1 or later** (Windows PowerShell 5.1, ships with Windows, or PowerShell 7+)
   ```powershell
-  $PSVersionTable.PSVersion  # Should show 7.0 or higher
+  $PSVersionTable.PSVersion  # Should show 5.1 or higher
   ```
-  Not installed? Get it from https://github.com/PowerShell/PowerShell
+  Not on 5.1+? Get PowerShell 7 from https://github.com/PowerShell/PowerShell
 
 - **Git installed**
   ```powershell
@@ -146,10 +148,11 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 1. **Validates prerequisites** — checks PowerShell version, Git, Node.js, Copilot CLI/VS Code
 2. **Finds the repository** — uses the current directory or searches common locations
-3. **Copies plugins** — installs all plugins by default, or just one when `-PluginName` is provided
-4. **Registers with tools** — registers plugins with GitHub Copilot CLI and/or VS Code
-5. **Configures MCP servers** — sets up Model Context Protocol servers from `.mcp.json` files
-6. **Validates installation** — verifies all plugins loaded correctly
+3. **Copies plugins** — installs all plugins by default, or just one when `-PluginName` is provided, to `~\.copilot\installed-plugins\powerbi-agentic-plugins\`
+4. **Registers plugins** — writes entries into `config.json` and `settings.json` so Copilot CLI discovers them on next start
+5. **Mirrors to extensions** — copies plugins to `~\.copilot\extensions\` for VS Code discovery
+6. **Configures MCP servers** — sets up Model Context Protocol servers from `.mcp.json` files
+7. **Validates installation** — verifies all plugins loaded correctly
 
 #### 4. Restart Your Tools
 
@@ -223,9 +226,9 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 ## Troubleshooting
 
-### Issue: "PowerShell 7.0 or later required"
+### Issue: "PowerShell 5.1 or later required"
 
-**Solution:** Install PowerShell 7 from https://github.com/PowerShell/PowerShell
+**Solution:** Install PowerShell 7 from https://github.com/PowerShell/PowerShell, or use the Windows PowerShell 5.1 that ships with Windows.
 
 To check your version:
 ```powershell
@@ -258,12 +261,19 @@ git --version
 **Steps:**
 1. Verify the plugin files are in the right location:
    ```powershell
-   ls "$env:USERPROFILE\.copilot\extensions\powerbi"
-   ls "$env:USERPROFILE\.copilot\extensions\fabric"
+   ls "$env:USERPROFILE\.copilot\installed-plugins\powerbi-agentic-plugins\powerbi"
+   ls "$env:USERPROFILE\.copilot\installed-plugins\powerbi-agentic-plugins\fabric"
+   ls "$env:USERPROFILE\.copilot\installed-plugins\powerbi-agentic-plugins\devops"
    ```
-   Both should show `agents`, `skills`, and `.mcp.json`
+   Each should show `agents` and `skills` folders.
 
-2. Restart Copilot CLI:
+2. Verify Copilot config registration:
+   ```powershell
+   (Get-Content "$env:USERPROFILE\.copilot\config.json" | ConvertFrom-Json).installedPlugins | Select-Object name, marketplace, enabled
+   ```
+   All four plugins (`powerbi`, `fabric`, `devops`, `skill-creator`) should appear with `enabled = True`.
+
+3. Restart Copilot CLI:
    ```powershell
    copilot
    /exit
@@ -271,7 +281,7 @@ git --version
    /plugin list
    ```
 
-3. Check for errors:
+4. Check for errors:
    ```powershell
    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
    .\setup-team-plugins.ps1 -Verbose
@@ -306,16 +316,20 @@ If still not working:
 A: Yes! Once installed, you can modify skills and agents. See `CONTRIBUTING_TEAM.md` for guidelines.
 
 **Q: What if I want to install only certain plugins?**  
-A: Pass `-PluginName powerbi`, `-PluginName fabric`, or `-PluginName devops` to install just one plugin.
+A: Pass `-PluginName powerbi`, `-PluginName fabric`, `-PluginName devops`, or `-PluginName skill-creator` to install just one plugin.
 
 **Q: Do I need both GitHub Copilot CLI and VS Code?**  
 A: No. Install one or both, depending on your preference. The setup script supports both.
 
 **Q: How do I uninstall plugins?**  
-A: Delete the folders from `$env:USERPROFILE\.copilot\extensions\`:
+A: Remove the plugin folders and re-run the setup with `-Force` to clean up:
   ```powershell
+  rm -r "$env:USERPROFILE\.copilot\installed-plugins\powerbi-agentic-plugins\powerbi"
+  rm -r "$env:USERPROFILE\.copilot\installed-plugins\powerbi-agentic-plugins\fabric"
+  rm -r "$env:USERPROFILE\.copilot\installed-plugins\powerbi-agentic-plugins\devops"
   rm -r "$env:USERPROFILE\.copilot\extensions\powerbi"
   rm -r "$env:USERPROFILE\.copilot\extensions\fabric"
+  rm -r "$env:USERPROFILE\.copilot\extensions\devops"
   ```
 
 **Q: What if the setup script fails?**  
