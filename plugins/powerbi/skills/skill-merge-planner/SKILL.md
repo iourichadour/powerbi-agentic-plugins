@@ -5,18 +5,15 @@ description: >-
   collection (e.g. skills-for-fabric-1's powerbi-authoring plugin), scores each
   matched skill pair against a 7-dimension Skill-authoring quality rubric,
   identifies cost-effective content to graft from either side, and generates a
-  structured merge/migration plan saved under plans/<name>.plan.md. Use when
-  the user wants to: (1) check whether local skills have drifted from an
-  upstream/reference skill collection, (2) rate skill authoring quality
-  (conciseness, progressive disclosure, duplication, degrees-of-freedom,
-  description quality, version hygiene), (3) decide which skill should become
-  the "base" in a merge, (4) produce a phased implementation plan before
-  actually copying/merging files. Does NOT check plugin version numbers or
-  marketplace releases — this repo tracks skills as a maintained fork, not a
-  marketplace subscriber; use a dedicated update-check mechanism for that if
-  one is ever wired up. Triggers: "compare skills to upstream", "generate
-  merge plan", "check skill drift", "rate skill quality vs external", "should
-  we adopt X as base", "sync skills plan".
+  phased merge/migration plan saved under the plans directory. Use when the
+  user wants to: (1) check whether local skills have drifted from an upstream
+  reference collection, (2) rate skill authoring quality (conciseness,
+  progressive disclosure, duplication, degrees-of-freedom, description quality,
+  version hygiene), (3) decide which skill should become the "base" in a merge,
+  (4) produce an implementation plan before copying/merging files. Does NOT
+  check plugin version numbers or marketplace releases. Triggers: "compare
+  skills to upstream", "generate merge plan", "check skill drift", "rate skill
+  quality vs external", "should we adopt X as base", "sync skills plan".
 metadata:
   version: 0.2.0
 ---
