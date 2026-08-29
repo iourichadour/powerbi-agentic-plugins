@@ -28,6 +28,8 @@ Activated when a user needs to implement Power BI solutions — creating and edi
 Use @setup-team-plugins.ps1 -PluginName powerbi to install only the Power BI plugin.
 ```
 
+For Claude Code: `.\setup-claude-plugins.ps1 -PluginName powerbi`
+
 ### `powerbi-architect`
 
 Activated when a user needs to design a Power BI solution before implementation. Analyzes data sources, designs star schemas, and produces detailed spec documents (`specs/*.spec.md`) for the `powerbi-developer` agent to execute. Does not implement — only designs.

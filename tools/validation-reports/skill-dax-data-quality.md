@@ -3,7 +3,7 @@
 - **Type**: skill
 - **Status**: VALID
 - **Source**: `C:\Development\powerbi-agentic-plugins\plugins\powerbi\skills\dax-data-quality\SKILL.md`
-- **Checked**: 2026-08-29 01:06:32
+- **Checked**: 2026-08-29 01:31:37
 
 ## Fields detected
 

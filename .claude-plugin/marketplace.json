@@ -5,7 +5,7 @@
     },
     "metadata": {
         "description": "Skills and tools for agentic Power BI and Fabric development including Semantic Modeling, TMDL, PBIR, Best Practices, and CRUD operations on Fabric resources.",
-        "version": "0.3.0"
+        "version": "0.4.0"
     },
     "plugins": [
         {

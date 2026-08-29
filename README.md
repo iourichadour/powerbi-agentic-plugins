@@ -15,14 +15,14 @@ Every plugin follows the same structure:
 
 ```
 plugin-name/
-├── .claude-plugin/plugin.json   # Manifest
-├── .mcp.json                    # Tool connections
-├── agents/ or agent.md          # Agent personas with role-specific instructions
-└── skills/                      # Domain knowledge Copilot draws on automatically
+├── .claude-plugin/plugin.json   # Manifest (name, version, description)
+├── .mcp.json                    # Tool connections (optional)
+├── agents/                      # Agent personas with role-specific instructions (optional)
+└── skills/                      # Domain knowledge the assistant draws on automatically
 ```
 
-- **Skills** encode domain expertise, best practices, command references, and step-by-step workflows. Copilot draws on them automatically when relevant.
-- **Agents** define personas with specific responsibilities (e.g., a Power BI architect vs. developer) and declare which skills and tools to use. Some single-purpose plugins package one top-level `agent.md` instead of an `agents/` folder.
+- **Skills** encode domain expertise, best practices, command references, and step-by-step workflows. The assistant draws on them automatically when relevant.
+- **Agents** define personas with specific responsibilities (e.g., a Power BI architect vs. developer) and declare which skills and tools to use. Each agent is a plain `.md` file under the plugin's `agents/` folder.
 - **Connectors** wire Copilot to external tools — the Fabric CLI and Power BI Modeling MCP — via [MCP servers](https://modelcontextprotocol.io/).
 
 **These plugins are starting points.** They become much more useful when you customize them for how your team actually works:
@@ -66,6 +66,32 @@ If you're setting up plugins for a **team or group**, use the team-friendly setu
 - ✓ Easy to contribute improvements back to the team fork
 
 **See [DEVELOPER_SETUP.md](DEVELOPER_SETUP.md) for full team setup guide including troubleshooting.**
+
+### 🤖 Claude Code Setup
+
+Claude Code installs these plugins through its own marketplace system. From a local clone:
+
+```powershell
+git clone https://github.com/iourichadour/powerbi-agentic-plugins.git
+cd powerbi-agentic-plugins
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+.\setup-claude-plugins.ps1
+```
+
+The script registers `.claude-plugin/marketplace.json` as a local marketplace, runs
+`claude plugin install <name>@powerbi-agentic-plugins` for all four plugins, and installs
+the Power BI Desktop Bridge CLI when the `powerbi` plugin is in scope.
+
+```powershell
+claude plugin list                              # verify: powerbi, fabric, devops, skill-creator
+.\setup-claude-plugins.ps1 -PluginName devops   # install just one
+.\setup-claude-plugins.ps1 -Force               # reinstall after a git pull
+.\setup-claude-plugins.ps1 -Uninstall           # remove them
+```
+
+Restart Claude Code (or run `/plugin`) after installing so the new skills and agents load.
+The Copilot/VS Code path (`setup-team-plugins.ps1`) is independent — running one does not
+affect the other.
 
 ### GitHub Copilot CLI Setup (Individual Users)
 
@@ -191,9 +217,9 @@ See [prep-powerbi-for-report-copilot skill](plugins/powerbi/skills/prep-powerbi-
 ### Spec driven development
 
 - Create a Fabric workspace
-- Using the [powerbi-architect](plugins/powerbi/agents/powerbi-architect.agent.md) agent
+- Using the [powerbi-architect](plugins/powerbi/agents/powerbi-architect.md) agent
 - Run the prompt below
-- Using the [powerbi-developer](plugins/powerbi/agents/powerbi-developer.agent.md) agent ask to implement the spec created by the architect agent
+- Using the [powerbi-developer](plugins/powerbi/agents/powerbi-developer.md) agent ask to implement the spec created by the architect agent
 
 Prompt:
 ```

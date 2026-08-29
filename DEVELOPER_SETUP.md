@@ -56,6 +56,40 @@ Done! Your plugins are ready to use.
 
 ---
 
+## Claude Code Quick Start
+
+Claude Code uses its own `claude plugin` marketplace system instead of the `~/.copilot`
+folders, so it has a separate script. Run it from the same clone:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+.\setup-claude-plugins.ps1
+
+# Or point at a clone elsewhere / install one plugin
+.\setup-claude-plugins.ps1 -RepositoryPath "C:\Development\powerbi-agentic-plugins"
+.\setup-claude-plugins.ps1 -PluginName powerbi
+```
+
+The script will:
+- ✓ Validate PowerShell 5.1+ and the `claude` CLI (hard-fails if `claude` is not on PATH)
+- ✓ Register `.claude-plugin/marketplace.json` as a local marketplace and refresh it from source
+- ✓ Run `claude plugin install <name>@powerbi-agentic-plugins` for each plugin
+- ✓ Install the Power BI Desktop Bridge CLI via npm when the `powerbi` plugin is included
+- ✓ Run `claude plugin list` to verify
+
+Verify and manage:
+
+```powershell
+claude plugin list                     # powerbi, fabric, devops, skill-creator
+.\setup-claude-plugins.ps1 -Force       # reinstall after a git pull
+.\setup-claude-plugins.ps1 -Uninstall   # remove the plugins + optionally the marketplace
+```
+
+Restart Claude Code (or run `/plugin`) so the new skills and agents load. This path and the
+Copilot/VS Code path are independent — you can run either or both.
+
+---
+
 ## Detailed Setup Guide
 
 ### Prerequisites
@@ -215,9 +249,10 @@ git pull
 
 # Reinstall plugins (this updates them to the latest version)
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
-.\setup-team-plugins.ps1 -Force
+.\setup-team-plugins.ps1 -Force      # Copilot CLI / VS Code
+.\setup-claude-plugins.ps1 -Force    # Claude Code
 
-# Restart your tools (Copilot CLI or VS Code)
+# Restart your tools (Copilot CLI, VS Code, or Claude Code)
 ```
 
 **Recommended:** Pull updates weekly or when your team notifies you of changes.

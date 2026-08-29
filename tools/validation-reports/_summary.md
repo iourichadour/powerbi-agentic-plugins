@@ -1,14 +1,15 @@
 ﻿# Skill & Agent Validation Summary
 
-Generated: 2026-08-29 01:06:32
+Generated: 2026-08-29 01:31:37
 
-- Total files checked: 19
-- Valid: 19
+- Total files checked: 20
+- Valid: 20
 - Warnings: 0
 
 | Type | Name | Status | Issues | Report |
 |------|------|--------|--------|--------|
 | agent | devops | VALID | 0 | [agent-devops.md](agent-devops.md) |
+| agent | pbip-validator | VALID | 0 | [agent-pbip-validator.md](agent-pbip-validator.md) |
 | agent | powerbi-architect | VALID | 0 | [agent-powerbi-architect.md](agent-powerbi-architect.md) |
 | agent | powerbi-developer | VALID | 0 | [agent-powerbi-developer.md](agent-powerbi-developer.md) |
 | skill | azure-devops-standard-branch-policy | VALID | 0 | [skill-azure-devops-standard-branch-policy.md](skill-azure-devops-standard-branch-policy.md) |

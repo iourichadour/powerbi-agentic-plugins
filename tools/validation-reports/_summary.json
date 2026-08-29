@@ -183,8 +183,19 @@
         "Issues":  [
 
                    ],
-        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\devops\\agents\\devops.agent.md",
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\devops\\agents\\devops.md",
         "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\agent-devops.md"
+    },
+    {
+        "Type":  "agent",
+        "Name":  "pbip-validator",
+        "Status":  "VALID",
+        "IssueCount":  0,
+        "Issues":  [
+
+                   ],
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\agents\\pbip-validator.md",
+        "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\agent-pbip-validator.md"
     },
     {
         "Type":  "agent",
@@ -194,7 +205,7 @@
         "Issues":  [
 
                    ],
-        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\agents\\powerbi-architect.agent.md",
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\agents\\powerbi-architect.md",
         "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\agent-powerbi-architect.md"
     },
     {
@@ -205,7 +216,7 @@
         "Issues":  [
 
                    ],
-        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\agents\\powerbi-developer.agent.md",
+        "SourcePath":  "C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\agents\\powerbi-developer.md",
         "ReportPath":  "C:\\Development\\powerbi-agentic-plugins\\tools\\validation-reports\\agent-powerbi-developer.md"
     }
 ]

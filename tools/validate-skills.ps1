@@ -219,7 +219,15 @@ function Write-PerFileReport {
 # --- Main ---
 
 $skillFiles = Get-ChildItem -Path $PluginsRoot -Filter "SKILL.md" -Recurse -ErrorAction SilentlyContinue
-$agentFiles = Get-ChildItem -Path $PluginsRoot -Filter "*.agent.md" -Recurse -ErrorAction SilentlyContinue
+# Agent files: any *.md inside a top-level `plugins/<plugin>/agents/` folder
+# (Claude Code style), plus legacy *.agent.md anywhere (Copilot style). Nested
+# skills/*/agents/ prompt fragments are not plugin agents and are skipped.
+$agentFiles = Get-ChildItem -Path $PluginsRoot -Filter "*.md" -Recurse -ErrorAction SilentlyContinue |
+    Where-Object {
+        ($_.Directory.Name -eq "agents" -and $_.Directory.Parent.Parent.Name -eq (Split-Path $PluginsRoot -Leaf)) `
+            -or $_.Name -like "*.agent.md"
+    } |
+    Sort-Object FullName -Unique
 
 $summary = @()
 
@@ -249,7 +257,7 @@ foreach ($file in $skillFiles) {
 
 Write-Host "`n=== Validating *.agent.md files ===" -ForegroundColor Cyan
 foreach ($file in $agentFiles) {
-    $agentName = [IO.Path]::GetFileNameWithoutExtension([IO.Path]::GetFileNameWithoutExtension($file.Name))
+    $agentName = ([IO.Path]::GetFileNameWithoutExtension($file.Name)) -replace '\.agent$', ''
     $result = Test-AgentFile -Path $file.FullName
     $report = Write-PerFileReport -ReportsDir $ReportsDir -Type "agent" -LogicalName $agentName `
         -SourcePath $file.FullName -Issues $result.Issues -Fields $result.Fields

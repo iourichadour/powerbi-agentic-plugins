@@ -28,6 +28,8 @@ guide safe team workflows.
 Use @setup-team-plugins.ps1 -PluginName devops to install only the DevOps plugin.
 ```
 
+For Claude Code: `.\setup-claude-plugins.ps1 -PluginName devops`
+
 ## Skills
 
 ### `jira-workflow`
