@@ -9,3 +9,6 @@ chats/
 
 **/scripts/_tools
 
+# Cygwin/MSYS crash artifacts
+*.stackdump
+

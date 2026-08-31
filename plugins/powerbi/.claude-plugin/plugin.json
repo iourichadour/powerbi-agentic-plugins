@@ -1,0 +1,15 @@
+{
+  "name": "powerbi",
+  "description": "Skills and tools for agentic Power BI development including Semantic Modeling, TMDL, PBIR, Best Practices.",
+  "version": "0.3.0",
+  "author": {
+    "name": "Rui Romano"
+  },
+  "keywords": [
+    "power-bi",
+    "tmdl",
+    "pbir",
+    "semantic-modeling",
+    "powerbi"
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "security": {
+    "score": 100.0,
+    "critical_count": 0,
+    "high_count": 0,
+    "medium_count": 0,
+    "low_count": 0,
+    "issues": [],
+    "layers": [
+      {
+        "name": "Layer 1: Input Validation & Sanitization",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 2: Execution Environment Control",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 3: Output Sanitization",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 4: Privilege Management",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 5: Self-Protection",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      }
+    ]
+  },
+  "quality": {
+    "score": 87.0,
+    "code_quality": 25.0,
+    "documentation": 17.0,
+    "structure": 25.0,
+    "functionality": 20.0,
+    "breakdown": {
+      "code_quality_max": 25,
+      "documentation_max": 25,
+      "structure_max": 25,
+      "functionality_max": 25
+    }
+  },
+  "utility": {
+    "score": 70.0,
+    "problem_solving": 10.0,
+    "usability": 10.0,
+    "scope": 25.0,
+    "effectiveness": 25.0
+  },
+  "compliance": {
+    "score": 95.0,
+    "violations": [
+      "Description is too long (maximum 500 characters recommended)",
+      "Consider moving detailed content to references/ for progressive disclosure"
+    ],
+    "standards_met": [
+      "\u2713 SKILL.md exists",
+      "\u2713 YAML frontmatter present",
+      "\u2713 Name field present",
+      "\u2713 Description field present",
+      "\u2713 Name matches directory"
+    ],
+    "auto_fail": false
+  },
+  "overall": {
+    "overall_score": 89.8,
+    "recommendation": "\u2705 RECOMMENDED",
+    "risk_level": "Low-Medium",
+    "breakdown": {
+      "security": 100.0,
+      "quality": 87.0,
+      "utility": 70.0,
+      "compliance": 95.0
+    }
+  },
+  "metadata": {
+    "skill_name": "powerbi-report-management",
+    "evaluation_date": "2026-08-29T01:14:48.986648",
+    "evaluator_version": "1.0.0",
+    "mode": "full"
+  }
+}

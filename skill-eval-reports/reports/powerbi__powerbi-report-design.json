@@ -1,0 +1,96 @@
+{
+  "security": {
+    "score": 100.0,
+    "critical_count": 0,
+    "high_count": 0,
+    "medium_count": 0,
+    "low_count": 0,
+    "issues": [],
+    "layers": [
+      {
+        "name": "Layer 1: Input Validation & Sanitization",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 2: Execution Environment Control",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 3: Output Sanitization",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 4: Privilege Management",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 5: Self-Protection",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      }
+    ]
+  },
+  "quality": {
+    "score": 98.0,
+    "code_quality": 25.0,
+    "documentation": 23.0,
+    "structure": 25.0,
+    "functionality": 25.0,
+    "breakdown": {
+      "code_quality_max": 25,
+      "documentation_max": 25,
+      "structure_max": 25,
+      "functionality_max": 25
+    }
+  },
+  "utility": {
+    "score": 100.0,
+    "problem_solving": 25.0,
+    "usability": 25.0,
+    "scope": 25.0,
+    "effectiveness": 25.0
+  },
+  "compliance": {
+    "score": 95.0,
+    "violations": [
+      "Description is too long (maximum 500 characters recommended)",
+      "Reference typography.md contains code - should be in scripts/"
+    ],
+    "standards_met": [
+      "\u2713 SKILL.md exists",
+      "\u2713 YAML frontmatter present",
+      "\u2713 Name field present",
+      "\u2713 Description field present",
+      "\u2713 Name matches directory",
+      "\u2713 References directory exists",
+      "\u2713 Assets directory exists"
+    ],
+    "auto_fail": false
+  },
+  "overall": {
+    "overall_score": 98.5,
+    "recommendation": "\u2705 HIGHLY RECOMMENDED",
+    "risk_level": "Low",
+    "breakdown": {
+      "security": 100.0,
+      "quality": 98.0,
+      "utility": 100.0,
+      "compliance": 95.0
+    }
+  },
+  "metadata": {
+    "skill_name": "powerbi-report-design",
+    "evaluation_date": "2026-08-29T01:14:48.822697",
+    "evaluator_version": "1.0.0",
+    "mode": "full"
+  }
+}

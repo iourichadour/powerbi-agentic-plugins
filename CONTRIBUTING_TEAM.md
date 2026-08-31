@@ -56,7 +56,7 @@ Examples:
 
 Edit files in your branch:
 - `plugins/<plugin>/skills/[skill-name]/SKILL.md` — Update skill workflows
-- `plugins/devops/agent.md` or `plugins/<plugin>/agents/[agent-name].agent.md` — Update agent instructions
+- `plugins/<plugin>/agents/[agent-name].md` — Update agent instructions
 - `plugins/<plugin>/.mcp.json` — Update MCP server configuration
 - Documentation and tests
 
@@ -194,7 +194,7 @@ git branch -d feature/improve-copilot-instructions
   - Troubleshooting guidance
   - Best practices
 
-- **Agents** (`plugins/<plugin>/agents/*.agent.md` or `plugins/devops/agent.md`)
+- **Agents** (`plugins/<plugin>/agents/*.md`)
   - Instructions and prompts
   - Skills referenced
   - Role descriptions
@@ -281,7 +281,7 @@ To add a new skill (requires team lead approval):
 
 3. Update agent files to reference the new skill:
    ```powershell
-   code plugins/devops/agent.md
+   code plugins/devops/agents/devops.md
    # Add to "## Skills to use" section
    ```
 
@@ -297,7 +297,7 @@ Agents are markdown files that define personas and tool usage. When editing:
 
 1. **Locate the agent:**
    ```powershell
-   code plugins/devops/agent.md
+   code plugins/devops/agents/devops.md
    ```
 
 2. **Update agent properties:**
@@ -307,8 +307,9 @@ Agents are markdown files that define personas and tool usage. When editing:
    - Instructions and guidelines
 
 3. **Test:**
-   - Reinstall: run `Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force` then `.\setup-team-plugins.ps1 -Force`
-   - Ask Copilot to take on the agent role
+   - Reinstall for Copilot: run `Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force` then `.\setup-team-plugins.ps1 -Force`
+   - Reinstall for Claude Code: `.\setup-claude-plugins.ps1 -Force`
+   - Ask the assistant to take on the agent role
 
 4. **Commit:**
    ```powershell

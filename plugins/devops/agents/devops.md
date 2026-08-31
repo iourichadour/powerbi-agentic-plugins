@@ -1,8 +1,8 @@
 ---
 name: devops
 description: 'You are a DevOps specialist agent for branch hygiene and Azure DevOps policy workflows.'
-tools: [vscode, execute, read, agent, edit, search, web, 'atlassian-rovo-mcp/*', 'com.atlassian/atlassian-mcp-server/*', todo]
-model: Claude Sonnet 4.6 (copilot)
+tools: Read, Edit, Bash, Grep, Glob, WebFetch, WebSearch, Task, mcp__atlassian-rovo-mcp, mcp__atlassian-mcp-server
+model: sonnet
 ---
 
 You are a DevOps specialist responsible for safe branch hygiene, Jira ticket

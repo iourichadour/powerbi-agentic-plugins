@@ -1,0 +1,150 @@
+{
+  "security": {
+    "score": 60.0,
+    "critical_count": 0,
+    "high_count": 0,
+    "medium_count": 5,
+    "low_count": 1,
+    "issues": [
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "scripts\\parse_diagnostics_v2.1.py",
+        "line_number": 707,
+        "code_snippet": "with open(path, \"w\", newline=\"\", encoding=\"utf-8\") as f:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\parse_diagnostics_v2.1.py",
+        "line_number": 729,
+        "code_snippet": "input_path = Path(args.input)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\parse_diagnostics_v2.1.py",
+        "line_number": 733,
+        "code_snippet": "out_dir = Path(args.output_dir) if args.output_dir else input_path.parent",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\parse_diagnostics_v2.1.py",
+        "line_number": 736,
+        "code_snippet": "out_dir = Path(args.output_dir) if args.output_dir else input_path",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Arbitrary File Ops",
+        "description": "File write without validation",
+        "file_path": "scripts\\parse_diagnostics_v2.1.py",
+        "line_number": 707,
+        "code_snippet": "with open(path, \"w\", newline=\"\", encoding=\"utf-8\") as f:",
+        "recommendation": "Validate file paths and use temporary directories for untrusted operations."
+      },
+      {
+        "severity": "LOW",
+        "category": "Information Disclosure",
+        "description": "Exposing stack traces",
+        "file_path": "scripts\\parse_diagnostics_v2.1.py",
+        "line_number": 765,
+        "code_snippet": "import traceback; traceback.print_exc()",
+        "recommendation": "Never log credentials or sensitive data. Use proper error handling."
+      }
+    ],
+    "layers": [
+      {
+        "name": "Layer 1: Input Validation & Sanitization",
+        "passed": true,
+        "score": 50.0,
+        "issue_count": 5
+      },
+      {
+        "name": "Layer 2: Execution Environment Control",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 3: Output Sanitization",
+        "passed": true,
+        "score": 95.0,
+        "issue_count": 1
+      },
+      {
+        "name": "Layer 4: Privilege Management",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 5: Self-Protection",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      }
+    ]
+  },
+  "quality": {
+    "score": 89.5,
+    "code_quality": 20.5,
+    "documentation": 21.0,
+    "structure": 23.0,
+    "functionality": 25.0,
+    "breakdown": {
+      "code_quality_max": 25,
+      "documentation_max": 25,
+      "structure_max": 25,
+      "functionality_max": 25
+    }
+  },
+  "utility": {
+    "score": 100.0,
+    "problem_solving": 25.0,
+    "usability": 25.0,
+    "scope": 25.0,
+    "effectiveness": 25.0
+  },
+  "compliance": {
+    "score": 95.0,
+    "violations": [
+      "Description is too long (maximum 500 characters recommended)",
+      "Consider moving detailed content to references/ for progressive disclosure"
+    ],
+    "standards_met": [
+      "\u2713 SKILL.md exists",
+      "\u2713 YAML frontmatter present",
+      "\u2713 Name field present",
+      "\u2713 Description field present",
+      "\u2713 Name matches directory",
+      "\u2713 Scripts directory exists"
+    ],
+    "auto_fail": false
+  },
+  "overall": {
+    "overall_score": 82.4,
+    "recommendation": "\u2705 RECOMMENDED",
+    "risk_level": "Low-Medium",
+    "breakdown": {
+      "security": 60.0,
+      "quality": 89.5,
+      "utility": 100.0,
+      "compliance": 95.0
+    }
+  },
+  "metadata": {
+    "skill_name": "prep-powerbi-for-report-copilot",
+    "evaluation_date": "2026-08-29T01:14:49.385247",
+    "evaluator_version": "1.0.0",
+    "mode": "full"
+  }
+}
