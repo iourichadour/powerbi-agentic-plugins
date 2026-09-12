@@ -1,35 +1,35 @@
 # Skill Evaluation Report
 
 **Skill Name:** `git-branch-guard`
-**Evaluation Date:** 2026-08-29 01:14:47
+**Evaluation Date:** 2026-09-11 21:25:11
 **Evaluator Version:** 1.2.3
 
 ---
 
 ## Executive Summary
 
-### Overall Score: 91.0/100
+### Overall Score: 1.1/100
 
-**Recommendation:** ✅ HIGHLY RECOMMENDED
+**Recommendation:** ❌ DO NOT INSTALL - Critical security risks
 
-**Risk Level:** Low
+**Risk Level:** Critical
 
 ### Score Breakdown
 
 | Dimension | Score | Weight |
 |-----------|-------|--------|
-| **Security** | 100.0/100 | 35% |
-| **Quality** | 92.0/100 | 25% |
-| **Utility** | 70.0/100 | 20% |
-| **Compliance** | 95.0/100 | 20% |
-| **Overall** | **91.0/100** | **100%** |
+| **Security** | -165.0/100 | 35% |
+| **Quality** | 93.0/100 | 25% |
+| **Utility** | 85.0/100 | 20% |
+| **Compliance** | 93.0/100 | 20% |
+| **Overall** | **1.1/100** | **100%** |
 
 ### Key Findings
 
-- ✅ **Strong security posture** with no major vulnerabilities
+- ⚠️ **43 HIGH-risk security issues** identified
 - ✅ **Excellent code quality** and documentation
 - ✅ **Fully compliant** with skill-creator guidelines
-- **Overall Recommendation:** ✅ HIGHLY RECOMMENDED
+- **Overall Recommendation:** ❌ DO NOT INSTALL - Critical security risks
 
 ---
 
@@ -37,36 +37,59 @@
 
 ### 1. Security Analysis
 
-**Score:** 100.0/100
-**Risk Level:** Low
+**Score:** -165.0/100
+**Risk Level:** Critical
 
 #### Vulnerabilities Found
 
-No security vulnerabilities detected.
+#### ⚠️ High-Risk Issues
+
+- **Command Injection** in `assets\pbip-pr-summary\pbip_change_reviewer.py:12`
+  - compile() with external code
+
+- **Command Injection** in `assets\pbip-pr-summary\pbip_change_reviewer.py:677`
+  - compile() with external code
+
+- **Command Injection** in `assets\pbip-pr-summary\pbip_change_reviewer.py:678`
+  - compile() with external code
+
+- **Command Injection** in `assets\pbip-pr-summary\pbip_change_reviewer.py:679`
+  - compile() with external code
+
+- **Command Injection** in `assets\pbip-pr-summary\pbip_change_reviewer.py:680`
+  - compile() with external code
+
+#### Medium-Risk Issues (26 found)
+
+- Path Traversal and other issues found. Review security report for details.
+
 
 #### Security Strengths
 
-- No major security vulnerabilities detected
-- Follows security best practices
-- Implements safe coding patterns
+- Limited security issues detected
 
 #### Security Recommendations
 
-- Continue following security best practices
-- Regularly update dependencies
-- Stay informed about new vulnerabilities
+**Priority Actions:**
+- Fix Command Injection: Use subprocess with list arguments and shell=False. Validate all inputs.
+- Fix Path Traversal: Use Path.resolve() and validate paths are within allowed directories.
+
+**General Recommendations:**
+- Review all flagged security issues
+- Implement input validation and sanitization
+- Follow principle of least privilege
 
 ---
 
 ### 2. Quality Assessment
 
-**Score:** 92.0/100
+**Score:** 93.0/100
 
 #### Breakdown
 - **Code Quality:** 25.0/25
-- **Documentation:** 22.0/25
-- **Structure & Organization:** 25.0/25
-- **Functionality:** 20.0/25
+- **Documentation:** 21.0/25
+- **Structure & Organization:** 22.0/25
+- **Functionality:** 25.0/25
 
 #### Strengths
 
@@ -87,17 +110,17 @@ No security vulnerabilities detected.
 
 ### 3. Utility Evaluation
 
-**Score:** 70.0/100
+**Score:** 85.0/100
 
 #### Breakdown
-- **Problem-Solving Value:** 10.0/25
+- **Problem-Solving Value:** 25.0/25
 - **Usability:** 10.0/25
 - **Scope Appropriateness:** 25.0/25
 - **Effectiveness:** 25.0/25
 
 #### Value Assessment
 
-This skill provides moderate value but could be more impactful.
+This skill provides good practical value with clear use cases.
 
 #### Use Cases
 
@@ -111,15 +134,14 @@ This skill provides moderate value but could be more impactful.
 
 #### Utility Recommendations
 
-- Clarify the specific problems this skill solves
-- Add concrete usage examples
-- Ensure functionality delivers real value
+- Consider additional features to expand utility
+- Gather user feedback for improvements
 
 ---
 
 ### 4. Compliance Validation
 
-**Score:** 95.0/100
+**Score:** 93.0/100
 
 #### Standards Met
 
@@ -128,9 +150,11 @@ This skill provides moderate value but could be more impactful.
 ✓ Name field present
 ✓ Description field present
 ✓ Name matches directory
+✓ Assets directory exists
 
 #### Violations Found
 
+- Asset azure-devops-cli-setup.md is markdown - should be in references/
 - Description doesn't clearly specify when to use the skill
 
 #### Progressive Disclosure Assessment
@@ -144,6 +168,7 @@ Writing style follows imperative/infinitive form guidelines.
 #### Compliance Recommendations
 
 **Address the following violations:**
+- Asset azure-devops-cli-setup.md is markdown - should be in references/
 - Description doesn't clearly specify when to use the skill
 
 ---
@@ -174,7 +199,7 @@ No critical fixes required.
 
 ## Conclusion
 
-This skill demonstrates excellent quality, security, and compliance. It is highly recommended for installation and use.
+This skill has critical issues that must be addressed before it can be safely used or distributed. Do not install until security and compliance issues are resolved.
 
 ---
 

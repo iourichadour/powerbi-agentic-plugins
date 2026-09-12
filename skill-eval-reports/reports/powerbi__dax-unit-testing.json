@@ -1,0 +1,339 @@
+{
+  "security": {
+    "score": -50.0,
+    "critical_count": 0,
+    "high_count": 20,
+    "medium_count": 7,
+    "low_count": 0,
+    "issues": [
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\scripts\\generate_measure_tests.py",
+        "line_number": 41,
+        "code_snippet": "_HASH_LINE_RE = re.compile(r\"^// content-hash: ([0-9a-f]{16})$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 75,
+        "code_snippet": "_ISO_DATE_RE = re.compile(r\"^\\d{4}-\\d{2}-\\d{2}$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 77,
+        "code_snippet": "_NUMERIC_RE = re.compile(r\"^-?\\d+(\\.\\d+)?$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 207,
+        "code_snippet": "_MEASURE_LINE_RE = re.compile(",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 258,
+        "code_snippet": "_TABLE_LINE_RE = re.compile(r\"^table\\s+(?:'(?P<quoted>[^']+)'|(?P<bare>\\S+))\\s*$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 259,
+        "code_snippet": "_DOC_COMMENT_RE = re.compile(r\"^\\s*///\\s?(.*)$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 260,
+        "code_snippet": "_FORMAT_STRING_RE = re.compile(r\"^\\s*formatString\\s*:\\s*(.+?)\\s*$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 261,
+        "code_snippet": "_DISPLAY_FOLDER_RE = re.compile(r\"^\\s*displayFolder\\s*:\\s*(.+?)\\s*$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "tests\\test_scripts.py",
+        "line_number": 80,
+        "code_snippet": "with target.open(\"a\", encoding=\"utf-8\") as fh:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Path Traversal",
+        "description": "Directory traversal sequence",
+        "file_path": "assets\\scripts\\certify_measures.py",
+        "line_number": 11,
+        "code_snippet": "See ../references/certification-registry-schema.md and ../references/legacy-registry-migration.md.",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\scripts\\certify_measures.py",
+        "line_number": 220,
+        "code_snippet": "mapping = json.loads(Path(args.mapping).read_text(encoding=\"utf-8\"))",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Path Traversal",
+        "description": "Directory traversal sequence",
+        "file_path": "assets\\scripts\\coverage_report.py",
+        "line_number": 11,
+        "code_snippet": "../references/certification-registry-schema.md#test-coverage-statistics-and-scan-vs-coverage).",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Path Traversal",
+        "description": "Directory traversal sequence",
+        "file_path": "assets\\scripts\\generate_measure_tests.py",
+        "line_number": 8,
+        "code_snippet": "Behavior (see ../references/certification-registry-schema.md and the",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "assets\\scripts\\generate_measure_tests.py",
+        "line_number": 155,
+        "code_snippet": "with path.open(\"w\", encoding=\"utf-8\", newline=\"\\n\") as fh:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "assets\\scripts\\generate_measure_tests.py",
+        "line_number": 178,
+        "code_snippet": "with json_path.open(\"w\", encoding=\"utf-8\", newline=\"\\n\") as fh:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Path Traversal",
+        "description": "Directory traversal sequence",
+        "file_path": "assets\\scripts\\setup_project.py",
+        "line_number": 24,
+        "code_snippet": "SKILL_ROOT = Path(__file__).resolve().parent.parent.parent  # .../skills/dax-unit-testing",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Path Traversal",
+        "description": "Directory traversal sequence",
+        "file_path": "assets\\scripts\\validate_registry.py",
+        "line_number": 8,
+        "code_snippet": "See ../references/certification-registry-schema.md for the full rule list. Every violation is",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Path Traversal",
+        "description": "Directory traversal sequence",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 7,
+        "code_snippet": "See ../references/certification-registry-schema.md for the full column contract this",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Path Traversal",
+        "description": "Directory traversal sequence",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 8,
+        "code_snippet": "module implements, and ../references/legacy-registry-migration.md for the 11-column",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 112,
+        "code_snippet": "with path.open(\"r\", encoding=\"utf-8-sig\", newline=\"\") as fh:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 148,
+        "code_snippet": "with path.open(\"w\", encoding=\"utf-8\", newline=\"\") as fh:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "assets\\scripts\\_registry_common.py",
+        "line_number": 156,
+        "code_snippet": "with path.open(\"r\", encoding=\"utf-8-sig\", newline=\"\") as fh:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Arbitrary File Ops",
+        "description": "File operations without validation",
+        "file_path": "tests\\test_scripts.py",
+        "line_number": 113,
+        "code_snippet": "shutil.copyfile(FIXTURES_DIR / \"valid_registry.csv\", registry_file)",
+        "recommendation": "Validate file paths and use temporary directories for untrusted operations."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Arbitrary File Ops",
+        "description": "File operations without validation",
+        "file_path": "tests\\test_scripts.py",
+        "line_number": 161,
+        "code_snippet": "shutil.copyfile(FIXTURES_DIR / \"coverage_registry.csv\", registry)",
+        "recommendation": "Validate file paths and use temporary directories for untrusted operations."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Arbitrary File Ops",
+        "description": "File operations without validation",
+        "file_path": "tests\\test_scripts.py",
+        "line_number": 186,
+        "code_snippet": "shutil.copyfile(FIXTURES_DIR / \"coverage_registry.csv\", registry)",
+        "recommendation": "Validate file paths and use temporary directories for untrusted operations."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Arbitrary File Ops",
+        "description": "File operations without validation",
+        "file_path": "tests\\test_scripts.py",
+        "line_number": 248,
+        "code_snippet": "shutil.copyfile(FIXTURES_DIR / \"coverage_registry.csv\", registry)",
+        "recommendation": "Validate file paths and use temporary directories for untrusted operations."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Arbitrary File Ops",
+        "description": "File operations without validation",
+        "file_path": "assets\\scripts\\setup_project.py",
+        "line_number": 34,
+        "code_snippet": "shutil.copyfile(source, dest)",
+        "recommendation": "Validate file paths and use temporary directories for untrusted operations."
+      }
+    ],
+    "layers": [
+      {
+        "name": "Layer 1: Input Validation & Sanitization",
+        "passed": false,
+        "score": 0.0,
+        "issue_count": 27
+      },
+      {
+        "name": "Layer 2: Execution Environment Control",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 3: Output Sanitization",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 4: Privilege Management",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 5: Self-Protection",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      }
+    ]
+  },
+  "quality": {
+    "score": 94.0,
+    "code_quality": 25.0,
+    "documentation": 21.0,
+    "structure": 23.0,
+    "functionality": 25.0,
+    "breakdown": {
+      "code_quality_max": 25,
+      "documentation_max": 25,
+      "structure_max": 25,
+      "functionality_max": 25
+    }
+  },
+  "utility": {
+    "score": 90.0,
+    "problem_solving": 25.0,
+    "usability": 15.0,
+    "scope": 25.0,
+    "effectiveness": 25.0
+  },
+  "compliance": {
+    "score": 98.0,
+    "violations": [
+      "Description is too long (maximum 500 characters recommended)"
+    ],
+    "standards_met": [
+      "\u2713 SKILL.md exists",
+      "\u2713 YAML frontmatter present",
+      "\u2713 Name field present",
+      "\u2713 Description field present",
+      "\u2713 Name matches directory",
+      "\u2713 References directory exists",
+      "\u2713 Assets directory exists"
+    ],
+    "auto_fail": false
+  },
+  "overall": {
+    "overall_score": 43.6,
+    "recommendation": "\u274c DO NOT INSTALL - Critical security risks",
+    "risk_level": "Critical",
+    "breakdown": {
+      "security": -50.0,
+      "quality": 94.0,
+      "utility": 90.0,
+      "compliance": 98.0
+    }
+  },
+  "metadata": {
+    "skill_name": "dax-unit-testing",
+    "evaluation_date": "2026-09-11T21:25:14.557329",
+    "evaluator_version": "1.0.0",
+    "mode": "full"
+  }
+}

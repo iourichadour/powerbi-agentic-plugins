@@ -24,7 +24,7 @@
 
 .PARAMETER PluginName
     Install only the specified plugin instead of all plugins.
-    Valid values: powerbi, fabric, devops, skill-creator
+    Valid values: powerbi, fabric, devops, skill-creator, spec-lifecycle
 
 .PARAMETER Force
     Reinstall plugins even if already present (uninstall + reinstall). Use this
@@ -59,7 +59,7 @@
 
 param(
     [string]$RepositoryPath,
-    [ValidateSet("powerbi", "fabric", "devops", "skill-creator")]
+    [ValidateSet("powerbi", "fabric", "devops", "skill-creator", "spec-lifecycle")]
     [string]$PluginName,
     [switch]$Force,
     [switch]$Uninstall,

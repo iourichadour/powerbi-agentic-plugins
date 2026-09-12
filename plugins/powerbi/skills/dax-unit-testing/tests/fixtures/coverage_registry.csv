@@ -1,0 +1,7 @@
+MeasureName,TestName,TestCategory,FilterExpression,ExpectedValue,Tolerance,Owner,Status,ApprovalSource,ApprovedBy,ApprovedOn,Severity,RequirementId,LastReviewed
+Total Sales,Total Sales Structural Test,Structural,,NOT_BLANK,0,N/A,Approved,Structural,N/A,N/A,Major,,2025-01-01
+Developer Certified Measure,Developer Certified Measure Structural Test,Structural,,NOT_BLANK,0,N/A,Approved,Structural,N/A,N/A,Major,,2025-01-01
+Developer Certified Measure,Developer Certified Measure Baseline,Certification,"Sales[Amount] > 0",42,5,dev@example.com,Approved,Developer,dev@example.com,2025-02-01,Major,REQ-10,2025-02-01
+Business Certified Measure,Business Certified Measure Structural Test,Structural,,NOT_BLANK,0,N/A,Approved,Structural,N/A,N/A,Major,,2025-01-01
+Business Certified Measure,Business Certified Measure Approved,Certification,"Sales[Amount] > 100",500,10,finance@example.com,Approved,Business,finance@example.com,2025-03-01,Critical,REQ-11,2025-03-01
+Business Certified Measure,Business Certified Measure Pending,Certification,,TBD,0,TBD,Pending,,,,Major,TBD,2025-01-01

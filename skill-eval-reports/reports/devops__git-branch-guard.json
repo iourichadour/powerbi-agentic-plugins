@@ -1,17 +1,639 @@
 {
   "security": {
-    "score": 100.0,
+    "score": -165.0,
     "critical_count": 0,
-    "high_count": 0,
-    "medium_count": 0,
+    "high_count": 43,
+    "medium_count": 26,
     "low_count": 0,
-    "issues": [],
+    "issues": [
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 12,
+        "code_snippet": "re.compile(r\"(^|/)\\.pbi/\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 677,
+        "code_snippet": "(re.compile(r\"^visual\\.position\\.x$\"), \"X position\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 678,
+        "code_snippet": "(re.compile(r\"^visual\\.position\\.y$\"), \"Y position\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 679,
+        "code_snippet": "(re.compile(r\"^visual\\.position\\.width$\"), \"Width\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 680,
+        "code_snippet": "(re.compile(r\"^visual\\.position\\.height$\"), \"Height\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 681,
+        "code_snippet": "(re.compile(r\"^visual\\.position\\.z$\"), \"Z-order\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 682,
+        "code_snippet": "(re.compile(r\"^visual\\.position\\.tabOrder$\"), \"Tab order\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 683,
+        "code_snippet": "(re.compile(r\"^visual\\.visualType$\"), \"Visual type\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 684,
+        "code_snippet": "(re.compile(r\"^visual\\.howCreated$\"), \"Visual creation source\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 686,
+        "code_snippet": "(re.compile(r\"^pageBindings\\.\"), \"Page binding\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 687,
+        "code_snippet": "(re.compile(r\"^width$\"), \"Page width\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 688,
+        "code_snippet": "(re.compile(r\"^height$\"), \"Page height\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 689,
+        "code_snippet": "(re.compile(r\"^displayOption$\"), \"Page display option\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 691,
+        "code_snippet": "(re.compile(r\"\\.title.*\\.text\\.expr\\.Literal\\.Value$\"), \"Title text\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 693,
+        "code_snippet": "(re.compile(r\"\\.background.*\\.ThemeDataColor\\.ColorId$\"), \"Background theme color slot\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 694,
+        "code_snippet": "(re.compile(r\"\\.background.*\\.ThemeDataColor\\.Percent$\"), \"Background color tint\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 695,
+        "code_snippet": "(re.compile(r\"\\.background.*\\.solid\\.color$\"), \"Background color\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 696,
+        "code_snippet": "(re.compile(r\"\\.fontColor.*\\.ThemeDataColor\\.ColorId$\"), \"Font theme color slot\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 697,
+        "code_snippet": "(re.compile(r\"\\.fontColor.*\\.solid\\.color$\"), \"Font color\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 698,
+        "code_snippet": "(re.compile(r\"\\.color.*\\.ThemeDataColor\\.ColorId$\"), \"Theme color slot\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 699,
+        "code_snippet": "(re.compile(r\"\\.color.*\\.ThemeDataColor\\.Percent$\"), \"Color tint\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 700,
+        "code_snippet": "(re.compile(r\"\\.color.*\\.solid\\.color$\"), \"Color\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 702,
+        "code_snippet": "(re.compile(r\"\\.queryRef$\"), \"Field reference\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 703,
+        "code_snippet": "(re.compile(r\"\\.nativeQueryRef$\"), \"Native field reference\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 704,
+        "code_snippet": "(re.compile(r\"\\.Property$\"), \"Property reference\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 706,
+        "code_snippet": "(re.compile(r\"\\.expression$\"), \"Expression\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 708,
+        "code_snippet": "(re.compile(r\"^filterConfig\\.filters\\[\\d+\\]\\.name$\"), \"Filter target\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 709,
+        "code_snippet": "(re.compile(r\"\\.visualContainerObjects\\.title.*\\.text\\.expr\\.Literal\\.Value$\"), \"Container title tex",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 712,
+        "code_snippet": "(re.compile(r\"\\.decomposedIdentities\\.values$\"), \"Field parameter values\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 713,
+        "code_snippet": "(re.compile(r\"\\.valueMap$\"), \"Field parameter display values\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 714,
+        "code_snippet": "(re.compile(r\"\\.Condition\\.In\\.Values$\"), \"Filter values\"),",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1007,
+        "code_snippet": "TMDL_OBJECT_HEADER = re.compile(",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1454,
+        "code_snippet": "name_re = re.compile(",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1538,
+        "code_snippet": "_BOOKMARK_FILTER_ID_RENAME = re.compile(r\"^Value changed at .*\\.filters\\.byExpr\\[\\d+\\]\\.name: \")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1681,
+        "code_snippet": "pattern = re.compile(",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1712,
+        "code_snippet": "_DIAGRAM_NODE_CHANGE = re.compile(r\"^- Value changed at diagrams\\[\\d+\\]\\.nodes\\[(\\d+)\\]\\.\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1713,
+        "code_snippet": "_DIAGRAM_HIDDEN_COUNT = re.compile(r\"^- Additional changes hidden: \\d+ \\(in `diagramLayout\\.json`\\)\"",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1749,
+        "code_snippet": "_ENTITY_RENAME_LINE = re.compile(",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1753,
+        "code_snippet": "_HEXY_TOKEN = re.compile(r\"^[0-9a-fA-F]{6,}$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1754,
+        "code_snippet": "_NUMERICY_TOKEN = re.compile(r\"^-?\\d+(\\.\\d+)?[A-Za-z]?$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "Command substitution with variables",
+        "file_path": "assets\\pbip-pr-summary\\commit_diff_summary.sh",
+        "line_number": 12,
+        "code_snippet": "OLD_SHA=$(git rev-parse \"$OLD_REF\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "Command substitution with variables",
+        "file_path": "assets\\pbip-pr-summary\\commit_diff_summary.sh",
+        "line_number": 13,
+        "code_snippet": "NEW_SHA=$(git rev-parse \"$NEW_REF\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 162,
+        "code_snippet": "def join_path(base: str, key: str) -> str:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 232,
+        "code_snippet": "def humanize_path(path: str) -> Optional[str]:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 328,
+        "code_snippet": "def _field_role_from_path(path: str) -> Optional[str]:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 340,
+        "code_snippet": "role = _field_role_from_path(path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 354,
+        "code_snippet": "role = _field_role_from_path(path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 515,
+        "code_snippet": "or humanize_path(parent_path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 526,
+        "code_snippet": "label = humanize_path(path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 541,
+        "code_snippet": "label = humanize_path(path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 584,
+        "code_snippet": "label = _friendly_path_label(path) or humanize_path(path) or \"List\"",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 607,
+        "code_snippet": "label = _friendly_path_label(path) or humanize_path(path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 626,
+        "code_snippet": "child_path = join_path(path, key)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 630,
+        "code_snippet": "child_path = join_path(path, key)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 634,
+        "code_snippet": "changes.extend(json_diff_summary(old[key], new[key], join_path(path, key)))",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 741,
+        "code_snippet": "file_name = Path(current_file.replace(\"\\\\\", \"/\")).name.lower()",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 755,
+        "code_snippet": "label = humanize_path(path)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 857,
+        "code_snippet": "def describe_pbip_path(path: str, metadata: Dict[str, Dict[str, str]]) -> str:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 925,
+        "code_snippet": "file_name = Path(normalized_path).name.lower()",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Path Traversal",
+        "description": "Directory traversal sequence",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1626,
+        "code_snippet": "The trailing slash requirement excludes `.../pages/pages.json`.\"\"\"",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1658,
+        "code_snippet": "def _pick_link_path(paths: List[str]) -> str:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1843,
+        "code_snippet": "link = file_link(_pick_link_path(proj_paths))",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 1935,
+        "code_snippet": "context = describe_pbip_path(path, metadata)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 2050,
+        "code_snippet": "old_root = Path(args.old)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 2051,
+        "code_snippet": "new_root = Path(args.new)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "assets\\pbip-pr-summary\\pbip_change_reviewer.py",
+        "line_number": 2070,
+        "code_snippet": "output_path = Path(args.output)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "assets\\pbip-pr-summary\\post_pr_comment_ado.py",
+        "line_number": 29,
+        "code_snippet": "with urllib.request.urlopen(req) as resp:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Information Disclosure",
+        "description": "Logging sensitive data",
+        "file_path": "assets\\pbip-pr-summary\\post_pr_comment_ado.py",
+        "line_number": 60,
+        "code_snippet": "print(\"error: no token provided (--token or $SYSTEM_ACCESSTOKEN)\", file=sys.stderr)",
+        "recommendation": "Never log credentials or sensitive data. Use proper error handling."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Ssrf",
+        "description": "URL fetch without validation",
+        "file_path": "assets\\pbip-pr-summary\\post_pr_comment_ado.py",
+        "line_number": 29,
+        "code_snippet": "with urllib.request.urlopen(req) as resp:",
+        "recommendation": "Validate and allowlist URLs. Restrict access to internal networks."
+      }
+    ],
     "layers": [
       {
         "name": "Layer 1: Input Validation & Sanitization",
-        "passed": true,
-        "score": 100.0,
-        "issue_count": 0
+        "passed": false,
+        "score": 0.0,
+        "issue_count": 67
       },
       {
         "name": "Layer 2: Execution Environment Control",
@@ -22,8 +644,8 @@
       {
         "name": "Layer 3: Output Sanitization",
         "passed": true,
-        "score": 100.0,
-        "issue_count": 0
+        "score": 90.0,
+        "issue_count": 1
       },
       {
         "name": "Layer 4: Privilege Management",
@@ -34,17 +656,17 @@
       {
         "name": "Layer 5: Self-Protection",
         "passed": true,
-        "score": 100.0,
-        "issue_count": 0
+        "score": 90.0,
+        "issue_count": 1
       }
     ]
   },
   "quality": {
-    "score": 92.0,
+    "score": 93.0,
     "code_quality": 25.0,
-    "documentation": 22.0,
-    "structure": 25.0,
-    "functionality": 20.0,
+    "documentation": 21.0,
+    "structure": 22.0,
+    "functionality": 25.0,
     "breakdown": {
       "code_quality_max": 25,
       "documentation_max": 25,
@@ -53,15 +675,16 @@
     }
   },
   "utility": {
-    "score": 70.0,
-    "problem_solving": 10.0,
+    "score": 85.0,
+    "problem_solving": 25.0,
     "usability": 10.0,
     "scope": 25.0,
     "effectiveness": 25.0
   },
   "compliance": {
-    "score": 95.0,
+    "score": 93.0,
     "violations": [
+      "Asset azure-devops-cli-setup.md is markdown - should be in references/",
       "Description doesn't clearly specify when to use the skill"
     ],
     "standards_met": [
@@ -69,24 +692,25 @@
       "\u2713 YAML frontmatter present",
       "\u2713 Name field present",
       "\u2713 Description field present",
-      "\u2713 Name matches directory"
+      "\u2713 Name matches directory",
+      "\u2713 Assets directory exists"
     ],
     "auto_fail": false
   },
   "overall": {
-    "overall_score": 91.0,
-    "recommendation": "\u2705 HIGHLY RECOMMENDED",
-    "risk_level": "Low",
+    "overall_score": 1.1,
+    "recommendation": "\u274c DO NOT INSTALL - Critical security risks",
+    "risk_level": "Critical",
     "breakdown": {
-      "security": 100.0,
-      "quality": 92.0,
-      "utility": 70.0,
-      "compliance": 95.0
+      "security": -165.0,
+      "quality": 93.0,
+      "utility": 85.0,
+      "compliance": 93.0
     }
   },
   "metadata": {
     "skill_name": "git-branch-guard",
-    "evaluation_date": "2026-08-29T01:14:47.622602",
+    "evaluation_date": "2026-09-11T21:25:11.601512",
     "evaluator_version": "1.0.0",
     "mode": "full"
   }

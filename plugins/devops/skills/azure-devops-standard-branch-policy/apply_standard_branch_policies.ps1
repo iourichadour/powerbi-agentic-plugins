@@ -1,7 +1,3 @@
-#Requires -Version 7.0
-
-$ErrorActionPreference = "Stop"
-
 param(
     [Parameter(Mandatory = $true)]
     [string]$Repo,
@@ -13,6 +9,8 @@ param(
     [string]$Project,
     [string]$BuildDefinitionId
 )
+
+$ErrorActionPreference = "Stop"
 
 Write-Host "Applying standard branch policies for $Repo on branches: $Branches"
 if ($BuildDefinitionId) {

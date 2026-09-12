@@ -1,14 +1,14 @@
 # Skill Evaluation Report
 
 **Skill Name:** `azure-devops-standard-branch-policy`
-**Evaluation Date:** 2026-08-29 01:14:47
+**Evaluation Date:** 2026-09-11 21:25:10
 **Evaluator Version:** 1.2.3
 
 ---
 
 ## Executive Summary
 
-### Overall Score: 91.0/100
+### Overall Score: 90.2/100
 
 **Recommendation:** ✅ HIGHLY RECOMMENDED
 
@@ -19,15 +19,14 @@
 | Dimension | Score | Weight |
 |-----------|-------|--------|
 | **Security** | 100.0/100 | 35% |
-| **Quality** | 92.0/100 | 25% |
+| **Quality** | 89.0/100 | 25% |
 | **Utility** | 70.0/100 | 20% |
 | **Compliance** | 95.0/100 | 20% |
-| **Overall** | **91.0/100** | **100%** |
+| **Overall** | **90.2/100** | **100%** |
 
 ### Key Findings
 
 - ✅ **Strong security posture** with no major vulnerabilities
-- ✅ **Excellent code quality** and documentation
 - ✅ **Fully compliant** with skill-creator guidelines
 - **Overall Recommendation:** ✅ HIGHLY RECOMMENDED
 
@@ -60,12 +59,12 @@ No security vulnerabilities detected.
 
 ### 2. Quality Assessment
 
-**Score:** 92.0/100
+**Score:** 89.0/100
 
 #### Breakdown
 - **Code Quality:** 25.0/25
 - **Documentation:** 22.0/25
-- **Structure & Organization:** 25.0/25
+- **Structure & Organization:** 22.0/25
 - **Functionality:** 20.0/25
 
 #### Strengths

@@ -1,0 +1,39 @@
+{
+  "skill_name": "dax-test-framework",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run our DAX Query View tests against the DEV Power BI Desktop instance for the FinanceModel project, using the dax-test-framework skill. If Desktop isn't reachable or PQL.Assert isn't deployed, stop and tell me exactly why rather than reporting the suite as failed.",
+      "expected_output": "The agent invokes run_dax_tests.py (or the equivalent helper functions) with --profile DEV, runs the smoke gate first, and — since no real Desktop instance is reachable in this environment — reports a CONNECTION_ERROR (or a clearly explained inability to connect) rather than fabricating pass/fail results for the suite. It does not claim the suite ran successfully.",
+      "expectations": [
+        "The agent identifies and reads plugins/powerbi/skills/dax-test-framework/SKILL.md (or scripts/dax_test_helpers.py / run_dax_tests.py) before acting",
+        "The agent explicitly mentions or performs a smoke gate check before reporting suite-level results",
+        "The agent's final answer reports a CONNECTION_ERROR (or equivalent, clearly-stated connection failure) rather than inventing passing or failing assertion results",
+        "The agent does not claim specific assertion pass/fail counts it could not have actually observed"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Using dax-test-framework, run only the generated MeasureCertification.ANY.Business.Tests.dax suite against our deployed Fabric model (CLOUD profile). Our service principal credentials are already set as environment variables. Show me the results but don't print my credentials anywhere.",
+      "expected_output": "The agent uses the CLOUD profile path (reading PBI_WORKSPACE/PBI_MODEL/PBI_CLIENT_ID/PBI_TENANT_ID/PBI_CLIENT_SECRET from the environment only), applies a --file filter targeting MeasureCertification.ANY.Business (recognizing the ANY environment token rather than also passing a conflicting --environment DEV/PROD filter that would exclude it), and at no point echoes, logs, or writes any of the five credential values in its response or in any file it creates. It describes reports/junit.xml and reports/failures.md as containing per-assertion test-file/expected/actual/status fields, not just a pass/fail count.",
+      "expectations": [
+        "The agent selects the CLOUD profile and mentions the correct five environment variable names (PBI_WORKSPACE, PBI_MODEL, PBI_CLIENT_ID, PBI_TENANT_ID, PBI_CLIENT_SECRET)",
+        "The agent applies a filename filter scoped to MeasureCertification.ANY.Business rather than running every discovered test file, and does not apply an --environment filter value that would exclude an ANY-tagged file",
+        "The agent's response contains no credential values (no client secret, no literal environment variable values)",
+        "No file the agent creates (reports, logs, transcripts) contains a credential value",
+        "The agent describes the resulting report(s) as containing per-assertion fields (test file, test name, expected, actual, status/error type), not just an aggregate count"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our last DAX test run failed and I don't have a way to fetch reports/junit.xml automatically in my browser. Help me review the failures using the dax-test-dashboard.html from dax-test-framework.",
+      "expected_output": "The agent explains that opening the HTML file directly from disk blocks the automatic fetch (browser file-origin rules), and offers the two documented remedies: serving the folder locally (e.g. python -m http.server) and refreshing, or using the dashboard's local XML file-picker to select reports/junit.xml manually. It does not claim the dashboard embeds results or requires regenerating the HTML file itself.",
+      "expectations": [
+        "The agent explains why a directly-opened (file://) dashboard can fail to auto-load the XML report",
+        "The agent recommends serving the assets folder locally (e.g. a simple HTTP server) as one remedy",
+        "The agent also mentions the dashboard's local XML file-picker (\"Open local XML\") as a fallback",
+        "The agent does not suggest editing dax-test-dashboard.html itself to embed the results"
+      ]
+    }
+  ]
+}

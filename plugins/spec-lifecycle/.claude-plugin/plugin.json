@@ -1,0 +1,14 @@
+{
+  "name": "spec-lifecycle",
+  "description": "Optional OpenSpec bridge for powerbi-architect specs — adds change-tracking, status, and archive history on top of specs/<Name>.spec.md without altering how those specs are authored.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Rui Romano"
+  },
+  "keywords": [
+    "openspec",
+    "spec-tracking",
+    "archive",
+    "change-management"
+  ]
+}

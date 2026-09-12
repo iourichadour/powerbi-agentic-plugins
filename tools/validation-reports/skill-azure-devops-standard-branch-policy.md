@@ -1,14 +1,14 @@
-﻿# Validation Report: azure-devops-standard-branch-policy
+# Validation Report: azure-devops-standard-branch-policy
 
 - **Type**: skill
 - **Status**: VALID
 - **Source**: `C:\Development\powerbi-agentic-plugins\plugins\devops\skills\azure-devops-standard-branch-policy\SKILL.md`
-- **Checked**: 2026-08-29 01:31:37
+- **Checked**: 2026-09-11 22:57:21
 
 ## Fields detected
 
-- **hasMetadata**: False
 - **description**: Applies standard Azure DevOps branch policies to one or more branches for a repository after showing the plan and getting explicit user confirmation.
+- **hasMetadata**: False
 - **name**: azure-devops-standard-branch-policy
 
 ## Issues

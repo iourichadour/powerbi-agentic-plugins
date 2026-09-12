@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>DAX Test Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root { --pass:#1a7f37; --fail:#d1242f; --err:#9a6700; --bg:#f6f8fa; --border:#d0d7de; }
+  body { font-family: -apple-system, Segoe UI, Arial, sans-serif; margin: 0; background: var(--bg); color: #1f2328; }
+  header { background: #24292f; color: #fff; padding: 16px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  header h1 { font-size: 18px; margin: 0; flex: 1; }
+  header input[type=text] { padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); min-width: 220px; }
+  header button, header label.file-btn {
+    background: #2f81f7; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;
+  }
+  main { padding: 24px; max-width: 1100px; margin: 0 auto; }
+  .summary { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; min-width: 140px; }
+  .card .n { font-size: 28px; font-weight: 600; }
+  .card.pass .n { color: var(--pass); } .card.fail .n { color: var(--fail); } .card.err .n { color: var(--err); }
+  .suite { background: #fff; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  .suite-header { padding: 10px 16px; background: #f6f8fa; border-bottom: 1px solid var(--border); font-weight: 600; display:flex; justify-content: space-between; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 8px 16px; border-bottom: 1px solid #eaeef2; font-size: 13px; }
+  td.status-pass { color: var(--pass); font-weight: 600; }
+  td.status-fail { color: var(--fail); font-weight: 600; }
+  td.status-error { color: var(--err); font-weight: 600; }
+  .hint, #picker-panel { background: #fff8c5; border: 1px solid #d4a72c; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  #empty { color: #57606a; padding: 40px; text-align: center; }
+  .hidden { display: none; }
+  code { background: #eef1f4; padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>DAX Test Dashboard</h1>
+  <input id="search" type="text" placeholder="Search test name..." />
+  <select id="status-filter">
+    <option value="">All statuses</option>
+    <option value="pass">Passed</option>
+    <option value="fail">Failed</option>
+    <option value="error">Error</option>
+  </select>
+  <button id="refresh-btn">Refresh results</button>
+  <label class="file-btn">Open local XML…<input id="file-input" type="file" accept=".xml" multiple class="hidden" /></label>
+</header>
+<main>
+  <div id="hint" class="hint hidden"></div>
+  <div id="summary" class="summary hidden"></div>
+  <div id="suites"></div>
+  <div id="empty">Loading <code id="xml-path-label"></code>…</div>
+</main>
+<script>
+// ---------------------------------------------------------------------------------------------
+// Repository-agnostic JUnit XML viewer. No results are embedded in this file — everything below
+// is viewer logic and configuration only. Point XML_PATH at any JUnit XML artifact produced by
+// dax-test-framework's CLI/pytest runners (or a compatible one), relative to this HTML file.
+// ---------------------------------------------------------------------------------------------
+const XML_PATH = "reports/junit.xml"; // change to point at a different relative report path
+
+let allTests = []; // flattened {suite, name, status, message, classname}
+
+function statusOf(testcaseEl) {
+  if (testcaseEl.querySelector("failure")) return "fail";
+  if (testcaseEl.querySelector("error")) return "error";
+  if (testcaseEl.querySelector("skipped")) return "skip";
+  return "pass";
+}
+
+function parseJUnit(xmlText) {
+  const doc = new DOMParser().parseFromString(xmlText, "application/xml");
+  if (doc.querySelector("parsererror")) {
+    throw new Error("The file is not valid XML.");
+  }
+  const suiteEls = doc.querySelector("testsuites")
+    ? Array.from(doc.querySelectorAll("testsuite"))
+    : Array.from(doc.querySelectorAll("testsuite")).length
+      ? Array.from(doc.querySelectorAll("testsuite"))
+      : [doc.documentElement];
+
+  const suites = [];
+  const tests = [];
+  for (const suiteEl of suiteEls) {
+    const suiteName = suiteEl.getAttribute("name") || "(suite)";
+    const testcases = Array.from(suiteEl.querySelectorAll("testcase"));
+    const suiteTests = testcases.map((tc) => {
+      const status = statusOf(tc);
+      const failureEl = tc.querySelector("failure") || tc.querySelector("error");
+      return {
+        suite: suiteName,
+        classname: tc.getAttribute("classname") || "",
+        name: tc.getAttribute("name") || "(unnamed)",
+        status,
+        message: failureEl ? (failureEl.getAttribute("message") || failureEl.textContent || "") : "",
+      };
+    });
+    suites.push({ name: suiteName, tests: suiteTests });
+    tests.push(...suiteTests);
+  }
+  return { suites, tests };
+}
+
+function render() {
+  const search = document.getElementById("search").value.trim().toLowerCase();
+  const statusFilter = document.getElementById("status-filter").value;
+
+  const filtered = allTests.filter((t) => {
+    if (statusFilter && t.status !== statusFilter) return false;
+    if (search && !(`${t.name} ${t.classname}`.toLowerCase().includes(search))) return false;
+    return true;
+  });
+
+  const passCount = allTests.filter((t) => t.status === "pass").length;
+  const failCount = allTests.filter((t) => t.status === "fail").length;
+  const errCount = allTests.filter((t) => t.status === "error").length;
+
+  const summaryEl = document.getElementById("summary");
+  summaryEl.classList.remove("hidden");
+  summaryEl.innerHTML = `
+    <div class="card pass"><div class="n">${passCount}</div>Passed</div>
+    <div class="card fail"><div class="n">${failCount}</div>Failed</div>
+    <div class="card err"><div class="n">${errCount}</div>Errors</div>
+    <div class="card"><div class="n">${allTests.length}</div>Total</div>
+  `;
+
+  const bySuite = {};
+  for (const t of filtered) {
+    (bySuite[t.suite] = bySuite[t.suite] || []).push(t);
+  }
+
+  const suitesEl = document.getElementById("suites");
+  const emptyEl = document.getElementById("empty");
+  if (filtered.length === 0) {
+    suitesEl.innerHTML = "";
+    emptyEl.classList.remove("hidden");
+    emptyEl.textContent = allTests.length ? "No tests match the current filters." : "No test results found.";
+    return;
+  }
+  emptyEl.classList.add("hidden");
+
+  suitesEl.innerHTML = Object.entries(bySuite).map(([suiteName, tests]) => {
+    const failuresInSuite = tests.filter((t) => t.status !== "pass").length;
+    const rows = tests.map((t) => `
+      <tr>
+        <td class="status-${t.status}">${t.status.toUpperCase()}</td>
+        <td>${escapeHtml(t.name)}</td>
+        <td>${escapeHtml(t.classname)}</td>
+        <td>${escapeHtml(t.message)}</td>
+      </tr>`).join("");
+    return `
+      <div class="suite">
+        <div class="suite-header"><span>${escapeHtml(suiteName)}</span><span>${tests.length} test(s), ${failuresInSuite} failure(s)</span></div>
+        <table><thead><tr><th>Status</th><th>Test</th><th>File</th><th>Message</th></tr></thead><tbody>${rows}</tbody></table>
+      </div>`;
+  }).join("");
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function loadFromText(xmlText) {
+  const { tests } = parseJUnit(xmlText);
+  allTests = tests;
+  document.getElementById("hint").classList.add("hidden");
+  render();
+}
+
+function showHint(message) {
+  const hintEl = document.getElementById("hint");
+  hintEl.classList.remove("hidden");
+  hintEl.innerHTML = message;
+}
+
+async function fetchAndLoad() {
+  document.getElementById("xml-path-label").textContent = XML_PATH;
+  try {
+    const url = `${XML_PATH}?_=${Date.now()}`; // cache-busting query parameter
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const text = await response.text();
+    loadFromText(text);
+  } catch (err) {
+    showHint(
+      `Could not automatically load <code>${XML_PATH}</code> (${escapeHtml(err.message)}).<br/>` +
+      `This usually means the dashboard was opened directly from disk (browsers block local file ` +
+      `fetches) rather than served over HTTP, or the report file is at a different path.<br/>` +
+      `Serve this folder locally (e.g. <code>python -m http.server</code>) and click <b>Refresh results</b>, ` +
+      `or use <b>Open local XML…</b> to pick one or more report files manually.`
+    );
+  }
+}
+
+document.getElementById("refresh-btn").addEventListener("click", fetchAndLoad);
+document.getElementById("search").addEventListener("input", render);
+document.getElementById("status-filter").addEventListener("change", render);
+document.getElementById("file-input").addEventListener("change", async (e) => {
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
+  const combined = [];
+  for (const file of files) {
+    const text = await file.text();
+    try {
+      combined.push(...parseJUnit(text).tests);
+    } catch (err) {
+      showHint(`Could not parse <code>${escapeHtml(file.name)}</code>: ${escapeHtml(err.message)}`);
+      return;
+    }
+  }
+  allTests = combined;
+  document.getElementById("hint").classList.add("hidden");
+  render();
+});
+
+fetchAndLoad();
+</script>
+</body>
+</html>

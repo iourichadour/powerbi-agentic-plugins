@@ -56,8 +56,10 @@ Before making any changes, ALWAYS:
 
 ## Script to run
 
+On Windows / PowerShell environments:
+
 ```powershell
-powershell -ExecutionPolicy Bypass -File apply_standard_branch_policies.txt `
+powershell -ExecutionPolicy Bypass -File apply_standard_branch_policies.ps1 `
   -Repo "<repo-name>" `
   -Branches "<dev,main>" `
   -Org "<https://dev.azure.com/yourorg>" `
@@ -65,7 +67,20 @@ powershell -ExecutionPolicy Bypass -File apply_standard_branch_policies.txt `
   -BuildDefinitionId "<build-id>"
 ```
 
-If org/project are already configured in Azure DevOps CLI defaults, they may be omitted.
+On Bash-based environments (e.g. Claude Code):
+
+```bash
+bash apply_standard_branch_policies.sh \
+  --repo "<repo-name>" \
+  --branches "<dev,main>" \
+  --org "<https://dev.azure.com/yourorg>" \
+  --project "<project-name>" \
+  --build-definition-id "<build-id>"
+```
+
+Both scripts are equivalent, native implementations — use whichever matches
+the current environment. If org/project are already configured in Azure
+DevOps CLI defaults, they may be omitted.
 
 ## Example prompts
 - Apply standard branch policies to repo "skills-for-fabric" for dev and main, no build validation. Show plan first.

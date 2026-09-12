@@ -1,7 +1,7 @@
 # Skill Evaluation Report
 
 **Skill Name:** `jira-workflow`
-**Evaluation Date:** 2026-08-29 01:14:47
+**Evaluation Date:** 2026-09-11 21:25:11
 **Evaluator Version:** 1.2.3
 
 ---

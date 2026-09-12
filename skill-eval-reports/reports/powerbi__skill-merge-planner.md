@@ -1,7 +1,7 @@
 # Skill Evaluation Report
 
 **Skill Name:** `skill-merge-planner`
-**Evaluation Date:** 2026-08-29 01:14:49
+**Evaluation Date:** 2026-09-11 21:25:18
 **Evaluator Version:** 1.2.3
 
 ---

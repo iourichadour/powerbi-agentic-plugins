@@ -40,10 +40,10 @@
     ]
   },
   "quality": {
-    "score": 92.0,
+    "score": 89.0,
     "code_quality": 25.0,
     "documentation": 22.0,
-    "structure": 25.0,
+    "structure": 22.0,
     "functionality": 20.0,
     "breakdown": {
       "code_quality_max": 25,
@@ -74,19 +74,19 @@
     "auto_fail": false
   },
   "overall": {
-    "overall_score": 91.0,
+    "overall_score": 90.2,
     "recommendation": "\u2705 HIGHLY RECOMMENDED",
     "risk_level": "Low",
     "breakdown": {
       "security": 100.0,
-      "quality": 92.0,
+      "quality": 89.0,
       "utility": 70.0,
       "compliance": 95.0
     }
   },
   "metadata": {
     "skill_name": "azure-devops-standard-branch-policy",
-    "evaluation_date": "2026-08-29T01:14:47.455699",
+    "evaluation_date": "2026-09-11T21:25:10.968225",
     "evaluator_version": "1.0.0",
     "mode": "full"
   }

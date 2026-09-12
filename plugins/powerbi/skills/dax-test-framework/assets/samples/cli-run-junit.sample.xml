@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="dax-test-framework" tests="4" failures="2">
+  <testcase classname="Sales Measures.ANY.Tests.dax" name="Total Sales Structural Test" />
+  <testcase classname="Sales Measures.ANY.Tests.dax" name="Total Sales West Region Certification">
+    <failure message="Expected: '125000', Actual: '119500'" type="VALUE_MISMATCH">Expected: '125000'
+Actual: '119500'</failure>
+  </testcase>
+  <testcase classname="Margin.ANY.Tests.dax" name="Gross Margin Structural Test" />
+  <testcase classname="Margin.ANY.Tests.dax" name="Gross Margin Aggregation Check">
+    <failure message="Passed value was blank or unrecognized." type="BLANK_RESULT">Expected: 'NOT_BLANK'
+Actual: None</failure>
+  </testcase>
+</testsuite>

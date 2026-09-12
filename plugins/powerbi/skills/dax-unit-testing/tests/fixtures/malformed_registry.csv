@@ -1,0 +1,5 @@
+MeasureName,TestName,TestCategory,FilterExpression,ExpectedValue,Tolerance,Owner,Status,ApprovalSource,ApprovedBy,ApprovedOn,Severity,RequirementId,LastReviewed
+Total Sales,Total Sales Structural Test,Structural,,NOT_BLANK,0,N/A,Approved,Structural,N/A,N/A,Major,,2025-01-01
+Total Sales,Total Sales Structural Test,Structural,,NOT_BLANK,0,N/A,Approved,Structural,N/A,N/A,Major,,2025-01-01
+Total Sales,Total Sales West Region,Certification,,TBD,0,TBD,Approved,Business,jane@example.com,2025-01-15,Critical,REQ-1,2025-01-15
+Total Sales,Total Sales East Region,Certification,"Region[Name] = ""East""",99000,100,jane@example.com,Approved,Structural,jane@example.com,2025-01-15,Critical,REQ-2,2025-01-15
