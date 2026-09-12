@@ -1,0 +1,17 @@
+[project]
+name = "dax-test-framework"
+version = "0.1.0"
+description = "Reusable dual-profile (DEV/CLOUD) execution framework for PQL.Assert DAX Query View tests."
+requires-python = ">=3.10"
+dependencies = [
+    "pythonnet>=3.0.3 ; sys_platform == 'win32'",
+    "pyadomd>=0.1.1 ; sys_platform == 'win32'",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[tool.uv]
+package = false

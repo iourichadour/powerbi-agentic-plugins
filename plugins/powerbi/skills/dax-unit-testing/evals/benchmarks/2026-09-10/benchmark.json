@@ -1,0 +1,86 @@
+{
+  "metadata": {
+    "skill_name": "dax-unit-testing",
+    "skill_path": "plugins/powerbi/skills/dax-unit-testing",
+    "executor_model": "copilot-cli-general-purpose-agent",
+    "analyzer_model": "copilot-cli (self-graded against evals.json expectations)",
+    "timestamp": "2026-09-10T13:20:00Z",
+    "evals_run": [1],
+    "runs_per_configuration": 1,
+    "scope_note": "Scoped-down benchmark: 1 of 3 evals x 1 run per configuration (not the full 3-eval x 3-run matrix) due to session time constraints. Full replication can be run later using this same harness."
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "Legacy registry migration refuses ambiguous approval provenance",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 331,
+        "tokens": null,
+        "tool_calls": 8,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Identifies the legacy 11-column vs. target 14-column schema and explains the difference", "passed": true, "evidence": "Read legacy-registry-migration.md and certify_measures.py, then built a fixture matching the exact legacy schema"},
+        {"text": "Automatically maps Structural/Approved rows using ApprovalSource=Structural and the N/A sentinel", "passed": true, "evidence": "Reported: 'The Structural/Approved legacy row is compatible with automatic migration'"},
+        {"text": "Does not assign ApprovalSource=Developer/Business to the ambiguous row without being told", "passed": true, "evidence": "No provenance was assigned; migration was blocked instead"},
+        {"text": "Explicitly asks for / reports a blocking migration error rather than silently completing", "passed": true, "evidence": "Quoted the real tool output: 'Migration blocked: 1 ambiguous approved row(s) require an explicit mapping' and asked the user for ApprovalSource/ApprovedBy/ApprovedOn"}
+      ],
+      "notes": [
+        "Actually created a scratch legacy fixture and ran certify_measures.py migrate-legacy, then reported the genuine exit code and error message"
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "Legacy registry migration refuses ambiguous approval provenance",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 2,
+        "failed": 2,
+        "total": 4,
+        "time_seconds": 293,
+        "tokens": null,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Identifies the legacy vs. target schema and explains a *compatible* difference", "passed": false, "evidence": "Proposed appending ApprovalSource/ApprovedBy/ApprovedOn after LastReviewed, producing a 14-column order incompatible with the actual MeasureCertification.csv contract (which places them before Severity/RequirementId/LastReviewed)"},
+        {"text": "Automatically maps Structural/Approved rows using ApprovalSource=Structural and the N/A sentinel", "passed": false, "evidence": "Proposed a single blanket rule for all Approved rows regardless of TestCategory; no Structural special-case or N/A sentinel concept"},
+        {"text": "Does not assign ApprovalSource=Developer/Business to the ambiguous row without being told", "passed": true, "evidence": "Correctly refused to fabricate ApprovedBy/ApprovedOn"},
+        {"text": "Blocks completion / asks for missing provenance rather than silently completing", "passed": true, "evidence": "Proposed leaving the row unapproved (invented status values 'PendingApproval'/'NeedsReview' not in the real Pending/Approved/Retired vocabulary) and asking for real approval evidence"}
+      ],
+      "notes": [
+        "Baseline's instinct not to fabricate approval data was correct, but it reinvented an incompatible schema and status vocabulary rather than the actual registry contract"
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "time_seconds": {"mean": 331, "stddev": 0, "min": 331, "max": 331},
+      "tokens": {"mean": null, "stddev": null, "min": null, "max": null}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.5, "stddev": 0.0, "min": 0.5, "max": 0.5},
+      "time_seconds": {"mean": 293, "stddev": 0, "min": 293, "max": 293},
+      "tokens": {"mean": null, "stddev": null, "min": null, "max": null}
+    },
+    "delta": {
+      "pass_rate": "+0.50",
+      "time_seconds": "+38.0",
+      "tokens": "n/a (token telemetry not exposed to the grading agent in this environment)"
+    }
+  },
+  "notes": [
+    "Both configurations shared the correct instinct not to fabricate approval provenance — a good sign for baseline safety — but only the with-skill run produced a registry that is actually schema-compatible with this repo's real MeasureCertification.csv contract and error-type vocabulary.",
+    "This is a single representative eval (1 of 3) run once per configuration, not the full 3-eval x 3-run replication matrix; treat pass-rate figures as directional, not statistically robust.",
+    "Token counts were not exposed by the runtime for background sub-agents in this session; time_seconds uses wall-clock elapsed time as a proxy."
+  ]
+}

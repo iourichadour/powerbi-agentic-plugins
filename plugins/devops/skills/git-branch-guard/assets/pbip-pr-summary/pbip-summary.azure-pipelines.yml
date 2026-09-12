@@ -1,0 +1,84 @@
+# PBIP Change Summary (Azure DevOps)
+#
+# Azure Repos equivalent of pbip-summary.yml (GitHub Actions). Posts a sticky,
+# plain-English PR comment summarizing PBIP/PBIR changes via
+# post_pr_comment_ado.py. Requires the build service account to have
+# "Contribute to pull requests" allowed on this repo (Project Settings >
+# Repositories > <repo> > Security), and the pipeline must have
+# "Allow scripts to access the OAuth token" enabled (Pipeline > Edit >
+# Triggers/Settings, or set on the job below).
+
+trigger: none
+
+pr:
+  branches:
+    include:
+      - '*'
+  paths:
+    include:
+      - '**/*.json'
+      - '**/*.tmdl'
+      - '**/*.m'
+      - '**/*.pqm'
+      - '**/*.pbip'
+      - '**/.Report/**'
+      - '**/.SemanticModel/**'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - checkout: self
+    fetchDepth: 0
+    persistCredentials: true
+    displayName: 'Checkout PR head with full history'
+
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.11'
+
+  - bash: |
+      set -e
+      git fetch --no-tags origin "$(System.PullRequest.TargetBranch)":"refs/remotes/origin/pr-target"
+      BASE_SHA=$(git rev-parse refs/remotes/origin/pr-target)
+      HEAD_SHA="$(System.PullRequest.SourceCommitId)"
+      echo "Base SHA: $BASE_SHA"
+      echo "Head SHA: $HEAD_SHA"
+      echo "##vso[task.setvariable variable=BASE_SHA]$BASE_SHA"
+      echo "##vso[task.setvariable variable=HEAD_SHA]$HEAD_SHA"
+    displayName: 'Resolve base/head commits'
+
+  - bash: |
+      set -e
+      mkdir -p .pbip-summary
+      git worktree add .pbip-summary/base "$(BASE_SHA)"
+      git worktree add .pbip-summary/head "$(HEAD_SHA)"
+    displayName: 'Materialize base and head trees'
+
+  - bash: |
+      set -e
+      REPO_URL="$(System.CollectionUri)$(System.TeamProject)/_git/$(Build.Repository.Name)"
+      python .azuredevops/scripts/pbip_change_reviewer.py \
+        --old .pbip-summary/base \
+        --new .pbip-summary/head \
+        --output .pbip-summary/summary.md \
+        --repo-url "$REPO_URL" \
+        --head-sha "$(HEAD_SHA)" \
+        --pr-number "$(System.PullRequest.PullRequestId)" \
+        --platform azure-devops
+      echo "----- summary -----"
+      cat .pbip-summary/summary.md
+      echo "----- end -----"
+    displayName: 'Generate PBIP change summary'
+
+  - bash: |
+      set -e
+      python .azuredevops/scripts/post_pr_comment_ado.py \
+        --org-uri "$(System.CollectionUri)" \
+        --project "$(System.TeamProject)" \
+        --repo-id "$(Build.Repository.ID)" \
+        --pr-id "$(System.PullRequest.PullRequestId)" \
+        --summary-file .pbip-summary/summary.md
+    displayName: 'Post or update sticky PR comment'
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)

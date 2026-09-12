@@ -1,7 +1,7 @@
 # Skill Evaluation Report
 
 **Skill Name:** `prep-powerbi-for-report-copilot`
-**Evaluation Date:** 2026-08-29 01:14:49
+**Evaluation Date:** 2026-09-11 21:25:17
 **Evaluator Version:** 1.2.3
 
 ---

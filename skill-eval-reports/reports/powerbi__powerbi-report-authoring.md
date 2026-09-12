@@ -1,34 +1,34 @@
 # Skill Evaluation Report
 
 **Skill Name:** `powerbi-report-authoring`
-**Evaluation Date:** 2026-08-29 01:14:48
+**Evaluation Date:** 2026-09-11 21:25:15
 **Evaluator Version:** 1.2.3
 
 ---
 
 ## Executive Summary
 
-### Overall Score: 96.2/100
+### Overall Score: 63.8/100
 
-**Recommendation:** ✅ HIGHLY RECOMMENDED
+**Recommendation:** ❌ DO NOT INSTALL - Critical security risks
 
-**Risk Level:** Low
+**Risk Level:** Critical
 
 ### Score Breakdown
 
 | Dimension | Score | Weight |
 |-----------|-------|--------|
-| **Security** | 100.0/100 | 35% |
-| **Quality** | 95.0/100 | 25% |
+| **Security** | 10.0/100 | 35% |
+| **Quality** | 91.5/100 | 25% |
 | **Utility** | 100.0/100 | 20% |
 | **Compliance** | 87.0/100 | 20% |
-| **Overall** | **96.2/100** | **100%** |
+| **Overall** | **63.8/100** | **100%** |
 
 ### Key Findings
 
-- ✅ **Strong security posture** with no major vulnerabilities
+- ⚠️ **8 HIGH-risk security issues** identified
 - ✅ **Excellent code quality** and documentation
-- **Overall Recommendation:** ✅ HIGHLY RECOMMENDED
+- **Overall Recommendation:** ❌ DO NOT INSTALL - Critical security risks
 
 ---
 
@@ -36,33 +36,55 @@
 
 ### 1. Security Analysis
 
-**Score:** 100.0/100
-**Risk Level:** Low
+**Score:** 10.0/100
+**Risk Level:** Critical
 
 #### Vulnerabilities Found
 
-No security vulnerabilities detected.
+#### ⚠️ High-Risk Issues
+
+- **Command Injection** in `scripts\report_reference_scan.py:107`
+  - compile() with external code
+
+- **Command Injection** in `scripts\report_reference_scan.py:112`
+  - compile() with external code
+
+- **Command Injection** in `scripts\report_reference_scan.py:117`
+  - compile() with external code
+
+- **Command Injection** in `scripts\report_reference_scan.py:126`
+  - compile() with external code
+
+- **Command Injection** in `scripts\report_reference_scan.py:139`
+  - compile() with external code
+
+#### Medium-Risk Issues (4 found)
+
+- Path Traversal and other issues found. Review security report for details.
+
 
 #### Security Strengths
 
-- No major security vulnerabilities detected
-- Follows security best practices
-- Implements safe coding patterns
+- Limited security issues detected
 
 #### Security Recommendations
 
-- Continue following security best practices
-- Regularly update dependencies
-- Stay informed about new vulnerabilities
+**Priority Actions:**
+- Fix Command Injection: Use subprocess with list arguments and shell=False. Validate all inputs.
+
+**General Recommendations:**
+- Review all flagged security issues
+- Implement input validation and sanitization
+- Follow principle of least privilege
 
 ---
 
 ### 2. Quality Assessment
 
-**Score:** 95.0/100
+**Score:** 91.5/100
 
 #### Breakdown
-- **Code Quality:** 25.0/25
+- **Code Quality:** 21.5/25
 - **Documentation:** 22.0/25
 - **Structure & Organization:** 23.0/25
 - **Functionality:** 25.0/25
@@ -182,7 +204,7 @@ No critical fixes required.
 
 ## Conclusion
 
-This skill demonstrates excellent quality, security, and compliance. It is highly recommended for installation and use.
+This skill has critical issues that must be addressed before it can be safely used or distributed. Do not install until security and compliance issues are resolved.
 
 ---
 

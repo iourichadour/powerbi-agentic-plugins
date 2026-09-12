@@ -1,0 +1,31 @@
+{
+  "skill_name": "skill-merge-planner",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use the skill-merge-planner skill to compare the local Power BI skills collection at C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills against the reference skill collection at C:\\Users\\IOURICHADOUR\\.copilot\\installed-plugins\\powerbi-agentic-plugins\\skill-creator\\skills. Focus on matching skills by function, do not modify repository files, and write an evaluation-only migration plan to the supplied outputs directory.",
+      "expected_output": "A structured migration plan with an inventory/disposition table, quality rubric scores, validation results, phased implementation steps, verification checks, decisions, and explicit treatment of unmatched skills.",
+      "files": [],
+      "expectations": [
+        "The response recognizes and uses the supplied local and reference paths instead of inventing a missing default path.",
+        "The plan includes a skill-by-skill inventory with an explicit disposition for every relevant local-only, reference-only, or matched skill.",
+        "The plan scores matched skill pairs across all seven rubric dimensions and includes validation results or clearly reports validation limitations.",
+        "The plan separates architectural scoring from cost-effective content additions and includes phased implementation and verification sections.",
+        "The response does not modify repository files when asked for an evaluation-only output."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use the skill-merge-planner skill to plan a comparison of C:\\Development\\powerbi-agentic-plugins\\plugins\\powerbi\\skills against the default sibling reference collection. The default reference collection is intentionally unavailable in this environment. Do not modify repository files. Explain the required next input, preserve the scope boundary that this skill only produces a plan, and save any evaluation notes to the supplied outputs directory.",
+      "expected_output": "A safe, explicit response that identifies the unavailable default reference path, requests or states the required reference path, does not fabricate comparison results, and preserves the plan-only scope.",
+      "files": [],
+      "expectations": [
+        "The response detects or states that the default sibling reference collection is unavailable.",
+        "The response does not fabricate rubric scores, matched pairs, or a migration plan without a valid reference collection.",
+        "The response asks for or clearly specifies the missing reference path needed to continue.",
+        "The response preserves the scope boundary that the skill produces a plan and does not execute file merges or deletions.",
+        "The response does not modify repository files when asked for an evaluation-only output."
+      ]
+    }
+  ]
+}

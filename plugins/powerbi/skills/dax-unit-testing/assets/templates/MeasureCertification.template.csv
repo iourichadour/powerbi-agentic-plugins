@@ -1,0 +1,6 @@
+MeasureName,TestName,TestCategory,FilterExpression,ExpectedValue,Tolerance,Owner,Status,ApprovalSource,ApprovedBy,ApprovedOn,Severity,RequirementId,LastReviewed
+Sample Measure,Sample Measure Structural Test,Structural,,NOT_BLANK,0,N/A,Approved,Structural,N/A,N/A,Major,,2025-01-01
+Another Sample Measure,Another Sample Measure Certification Test,Certification,,TBD,0,TBD,Pending,,,,Major,TBD,2025-01-01
+Sample Revenue Measure,Sample Revenue Measure West Region Certification,Certification,"Sample Region[Region] = ""West""",125000,500,dev.baseline@example.com,Approved,Developer,dev.baseline@example.com,2025-01-15,Critical,REQ-EXAMPLE-1,2025-01-15
+Sample Category Totals Measure,Sample Category Totals Sum To Grand Total,Aggregation,"SUMMARIZE(Sample Category, Sample Category[Category])",>=0,0,business.owner@example.com,Approved,Business,business.owner@example.com,2025-02-01,Critical,REQ-EXAMPLE-2,2025-02-01
+Sample Closed Period Measure,Sample Closed Period Regression Test,Regression,"Sample Date[Month] = ""2024-12""",98000,100,dev.baseline@example.com,Retired,Developer,dev.baseline@example.com,2024-12-20,Minor,REQ-EXAMPLE-3,2025-01-01

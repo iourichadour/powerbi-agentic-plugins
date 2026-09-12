@@ -1,0 +1,39 @@
+{
+  "skill_name": "dax-unit-testing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "This project has an existing 11-column DAX test registry (no ApprovalSource/ApprovedBy/ApprovedOn columns). Use the dax-unit-testing skill to migrate it to the current schema. One row is TestCategory=Certification, Status=Approved, and I haven't told you who approved it or when.",
+      "expected_output": "The agent uses certify_measures.py migrate-legacy, automatically maps Structural/Approved rows to ApprovalSource=Structural with ApprovedBy/ApprovedOn=N/A, and refuses to guess Developer vs. Business provenance for the ambiguous Certification/Approved row — it stops and asks for an explicit mapping rather than picking one.",
+      "expectations": [
+        "The agent identifies the legacy 11-column schema and the target 14-column schema and explains the difference",
+        "The agent automatically maps Structural/Approved legacy rows without asking, using ApprovalSource=Structural and the N/A sentinel",
+        "The agent does not assign ApprovalSource=Developer or ApprovalSource=Business to the ambiguous Certification/Approved row without being told which one",
+        "The agent explicitly asks the user (or reports a blocking migration error) for the missing provenance rather than silently completing the migration"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Sync the measure certification registry for our Sales semantic model using dax-unit-testing, then certify a developer baseline for the Total Sales measure's certification test — I just ran it with Region='West' and got exactly 125000, tolerance 500.",
+      "expected_output": "The agent runs certify_measures.py sync (auto-generating/approving Structural rows and appending Pending Certification placeholders for uncovered measures), then explicitly records the developer-supplied value (125000, tolerance 500, filter Region='West') as Status=Approved, ApprovalSource=Developer with an ApprovedBy/ApprovedOn — without inventing any additional measure's business value that wasn't supplied.",
+      "expectations": [
+        "The agent runs sync before attempting any certification, and does not skip straight to editing the registry by hand",
+        "The Total Sales certification row ends up Status=Approved with ApprovalSource=Developer, using exactly the supplied ExpectedValue (125000) and Tolerance (500)",
+        "The agent does not invent or approve an ExpectedValue for any other measure's Certification/Aggregation/Regression row that the user did not mention",
+        "The agent does not require or wait for a business owner's approval before making the Total Sales baseline executable",
+        "The agent modifies only Certification/MeasureCertification.csv — it does not edit the Total Sales measure's DAX expression, any table, or any relationship in the model"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Give me a test coverage report for our semantic model using dax-unit-testing — I want to know what percentage of measures are covered, broken down by how they were approved.",
+      "expected_output": "The agent runs coverage_report.py and presents the % of measures with any registry row (vs. untested), % with executable Structural coverage, % with developer-certified coverage, and % with business-certified coverage as separate figures — not collapsed into one number — and confirms the report is read-only (no changes to the registry or model).",
+      "expectations": [
+        "The agent reports untested-measure percentage/list, not just an aggregate pass rate",
+        "The agent reports Structural, Developer-certified, and Business-certified coverage as three distinct figures rather than one combined 'tested %' number",
+        "The agent states or otherwise makes clear that generating the coverage report does not modify the registry or the model",
+        "The agent does not claim coverage percentage as proof that the underlying tests currently pass"
+      ]
+    }
+  ]
+}

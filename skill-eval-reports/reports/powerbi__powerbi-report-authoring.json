@@ -1,17 +1,126 @@
 {
   "security": {
-    "score": 100.0,
+    "score": 10.0,
     "critical_count": 0,
-    "high_count": 0,
-    "medium_count": 0,
+    "high_count": 8,
+    "medium_count": 4,
     "low_count": 0,
-    "issues": [],
+    "issues": [
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 107,
+        "code_snippet": "return re.compile(rf\"'{escaped}'\\s*\\[|\\b{escaped}\\b\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 112,
+        "code_snippet": "return re.compile(rf'\"Entity\"\\s*:\\s*\"{escaped}\"')",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 117,
+        "code_snippet": "return re.compile(rf'\"Property\"\\s*:\\s*\"{escaped}\"')",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 126,
+        "code_snippet": "return re.compile(",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 139,
+        "code_snippet": "table_re = re.compile(r\"^\\s*table\\s+'?([^']+)'?\\s*$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 140,
+        "code_snippet": "measure_re = re.compile(r\"^\\s*measure\\s+'?([^'=]+)'?\\s*=\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 141,
+        "code_snippet": "calc_column_re = re.compile(r\"^\\s*column\\s+'?([^'=]+)'?\\s*=\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 142,
+        "code_snippet": "regular_column_re = re.compile(r\"^\\s*column\\s+'?([^'=]+)'?\\s*$\")",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 629,
+        "code_snippet": "root = Path(args.root)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 651,
+        "code_snippet": "output_path = Path(args.output)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "File open without validation",
+        "file_path": "scripts\\report_reference_scan.py",
+        "line_number": 653,
+        "code_snippet": "with output_path.open(\"w\", encoding=\"utf-8\", newline=\"\\n\") as output_file:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\tests\\test_report_reference_scan.py",
+        "line_number": 20,
+        "code_snippet": "self.root = Path(self.temp_dir.name)",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      }
+    ],
     "layers": [
       {
         "name": "Layer 1: Input Validation & Sanitization",
-        "passed": true,
-        "score": 100.0,
-        "issue_count": 0
+        "passed": false,
+        "score": 0.0,
+        "issue_count": 12
       },
       {
         "name": "Layer 2: Execution Environment Control",
@@ -40,8 +149,8 @@
     ]
   },
   "quality": {
-    "score": 95.0,
-    "code_quality": 25.0,
+    "score": 91.5,
+    "code_quality": 21.5,
     "documentation": 22.0,
     "structure": 23.0,
     "functionality": 25.0,
@@ -80,19 +189,19 @@
     "auto_fail": false
   },
   "overall": {
-    "overall_score": 96.2,
-    "recommendation": "\u2705 HIGHLY RECOMMENDED",
-    "risk_level": "Low",
+    "overall_score": 63.8,
+    "recommendation": "\u274c DO NOT INSTALL - Critical security risks",
+    "risk_level": "Critical",
     "breakdown": {
-      "security": 100.0,
-      "quality": 95.0,
+      "security": 10.0,
+      "quality": 91.5,
       "utility": 100.0,
       "compliance": 87.0
     }
   },
   "metadata": {
     "skill_name": "powerbi-report-authoring",
-    "evaluation_date": "2026-08-29T01:14:48.661360",
+    "evaluation_date": "2026-09-11T21:25:15.664727",
     "evaluator_version": "1.0.0",
     "mode": "full"
   }

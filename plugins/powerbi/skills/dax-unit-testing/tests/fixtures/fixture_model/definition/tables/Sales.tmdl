@@ -1,0 +1,17 @@
+table Sales
+
+	measure 'Total Sales' = SUM(Sales[Amount])
+		formatString: #,0
+
+	measure 'Untested Measure' = COUNTROWS(Sales)
+		formatString: #,0
+
+	measure 'Developer Certified Measure' = AVERAGE(Sales[Amount])
+		formatString: #,0
+
+	measure 'Business Certified Measure' = MAX(Sales[Amount])
+		formatString: #,0
+
+	column Amount
+		dataType: double
+		sourceColumn: Amount

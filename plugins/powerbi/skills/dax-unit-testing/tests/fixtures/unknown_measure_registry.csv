@@ -1,0 +1,2 @@
+MeasureName,TestName,TestCategory,FilterExpression,ExpectedValue,Tolerance,Owner,Status,ApprovalSource,ApprovedBy,ApprovedOn,Severity,RequirementId,LastReviewed
+Nonexistent Measure,Nonexistent Structural Test,Structural,,NOT_BLANK,0,N/A,Approved,Structural,N/A,N/A,Major,,2025-01-01

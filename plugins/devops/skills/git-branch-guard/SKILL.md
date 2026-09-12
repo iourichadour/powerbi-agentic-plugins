@@ -42,9 +42,20 @@ A valid development branch must:
 
 ## Script to run
 
+On Windows / PowerShell environments:
+
 ```powershell
-powershell -ExecutionPolicy Bypass -File check_git_branch_guard.txt
+powershell -ExecutionPolicy Bypass -File check_git_branch_guard.ps1
 ```
+
+On Bash-based environments (e.g. Claude Code):
+
+```bash
+bash check_git_branch_guard.sh
+```
+
+Both scripts are equivalent, native implementations — use whichever matches
+the current environment.
 
 ## Example valid branches
 - bugfix/BI-123-fix-allocation-bug

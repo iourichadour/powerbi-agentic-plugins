@@ -12,3 +12,6 @@ chats/
 # Cygwin/MSYS crash artifacts
 *.stackdump
 
+# Claude Code machine-local permission cache
+.claude/settings.local.json
+

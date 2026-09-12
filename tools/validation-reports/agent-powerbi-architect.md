@@ -1,15 +1,15 @@
-﻿# Validation Report: powerbi-architect
+# Validation Report: powerbi-architect
 
 - **Type**: agent
 - **Status**: VALID
 - **Source**: `C:\Development\powerbi-agentic-plugins\plugins\powerbi\agents\powerbi-architect.md`
-- **Checked**: 2026-08-29 01:31:37
+- **Checked**: 2026-09-11 22:57:21
 
 ## Fields detected
 
 - **hasModel**: True
-- **hasTools**: True
 - **description**: You are a Power BI solution architect agent. You help users design Power BI solutions - semantic models, reports, DAX calculations, and data connectivity - and produce development spec documents, without implementing them. Solutions are deployed on Microsoft Fabric.
+- **hasTools**: True
 - **name**: powerbi-architect
 
 ## Issues

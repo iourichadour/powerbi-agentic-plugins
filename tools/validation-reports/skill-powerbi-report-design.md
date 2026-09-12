@@ -1,14 +1,14 @@
-﻿# Validation Report: powerbi-report-design
+# Validation Report: powerbi-report-design
 
 - **Type**: skill
 - **Status**: VALID
 - **Source**: `C:\Development\powerbi-agentic-plugins\plugins\powerbi\skills\powerbi-report-design\SKILL.md`
-- **Checked**: 2026-08-29 01:31:37
+- **Checked**: 2026-09-11 22:57:21
 
 ## Fields detected
 
-- **hasMetadata**: True
 - **description**: >-
+- **hasMetadata**: True
 - **name**: powerbi-report-design
 
 ## Issues

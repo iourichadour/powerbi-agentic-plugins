@@ -1,14 +1,14 @@
-﻿# Validation Report: semantic-model-authoring
+# Validation Report: semantic-model-authoring
 
 - **Type**: skill
 - **Status**: VALID
 - **Source**: `C:\Development\powerbi-agentic-plugins\plugins\powerbi\skills\semantic-model-authoring\SKILL.md`
-- **Checked**: 2026-08-29 01:31:37
+- **Checked**: 2026-09-11 22:57:21
 
 ## Fields detected
 
-- **hasMetadata**: True
 - **description**: >
+- **hasMetadata**: True
 - **name**: semantic-model-authoring
 
 ## Issues

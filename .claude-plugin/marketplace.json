@@ -5,14 +5,14 @@
     },
     "metadata": {
         "description": "Skills and tools for agentic Power BI and Fabric development including Semantic Modeling, TMDL, PBIR, Best Practices, and CRUD operations on Fabric resources.",
-        "version": "0.4.0"
+        "version": "0.5.0"
     },
     "plugins": [
         {
             "name": "powerbi",
             "description": "Skills and tools for agentic Power BI development including Semantic Modeling, TMDL, PBIR, Best Practices.",
             "source": "./plugins/powerbi",
-            "version": "0.3.0",
+            "version": "0.5.0",
             "keywords": [
                 "power-bi",
                 "tmdl",
@@ -36,7 +36,7 @@
             "name": "devops",
             "description": "Skills and agent instructions for branch hygiene and Azure DevOps policy workflows.",
             "source": "./plugins/devops",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "keywords": [
                 "devops",
                 "azure-devops",
@@ -54,6 +54,18 @@
                 "skill-authoring",
                 "evals",
                 "anthropic"
+            ]
+        },
+        {
+            "name": "spec-lifecycle",
+            "description": "Optional OpenSpec bridge for powerbi-architect specs — adds change-tracking, status, and archive history on top of specs/<Name>.spec.md without altering how those specs are authored.",
+            "source": "./plugins/spec-lifecycle",
+            "version": "0.1.0",
+            "keywords": [
+                "openspec",
+                "spec-tracking",
+                "archive",
+                "change-management"
             ]
         }
     ]

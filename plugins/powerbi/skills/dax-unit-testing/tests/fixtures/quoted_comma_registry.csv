@@ -1,0 +1,2 @@
+MeasureName,TestName,TestCategory,FilterExpression,ExpectedValue,Tolerance,Owner,Status,ApprovalSource,ApprovedBy,ApprovedOn,Severity,RequirementId,LastReviewed
+Regional Sales,Regional Sales Comma Filter,Certification,"Region[Name] IN {""East, Coast"", ""West""}",50000,100,dev@example.com,Approved,Developer,dev@example.com,2025-01-15,Major,REQ-9,2025-01-15

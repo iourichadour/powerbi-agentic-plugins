@@ -1,0 +1,207 @@
+{
+  "security": {
+    "score": 40.0,
+    "critical_count": 0,
+    "high_count": 2,
+    "medium_count": 10,
+    "low_count": 0,
+    "issues": [
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "scripts\\dax_test_helpers.py",
+        "line_number": 38,
+        "code_snippet": "_SCRATCH_FILE_RE = re.compile(r\"^Query \\d+$\", re.IGNORECASE)",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "HIGH",
+        "category": "Command Injection",
+        "description": "compile() with external code",
+        "file_path": "scripts\\dax_test_helpers.py",
+        "line_number": 39,
+        "code_snippet": "_TEST_FILE_RE = re.compile(r\".*(Tests?)$\", re.IGNORECASE)",
+        "recommendation": "Use subprocess with list arguments and shell=False. Validate all inputs."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\conftest.py",
+        "line_number": 52,
+        "code_snippet": "Path(model_dir_opt),",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\dax_test_helpers.py",
+        "line_number": 97,
+        "code_snippet": "return Path(local_app_data) / \"Microsoft\" / \"Power BI Desktop\" / \"AnalysisServicesWorkspaces\"",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\dax_test_helpers.py",
+        "line_number": 223,
+        "code_snippet": "def _ensure_adomd_on_sys_path() -> None:",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\dax_test_helpers.py",
+        "line_number": 240,
+        "code_snippet": "candidates.append(Path(adomd_dir))",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\dax_test_helpers.py",
+        "line_number": 242,
+        "code_snippet": "program_files_root = Path(os.environ.get(\"ProgramFiles\", r\"C:\\Program Files\")) / \"Microsoft.NET\" / \"",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\dax_test_helpers.py",
+        "line_number": 251,
+        "code_snippet": "Path(base) / \"NuGet\" / \"packages\" / \"microsoft.analysisservices.adomdclient\",",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\dax_test_helpers.py",
+        "line_number": 252,
+        "code_snippet": "Path(base) / \".nuget\" / \"packages\" / \"microsoft.analysisservices.adomdclient\",",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\dax_test_helpers.py",
+        "line_number": 278,
+        "code_snippet": "_ensure_adomd_on_sys_path()",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Path Traversal",
+        "description": "Path without resolve()",
+        "file_path": "scripts\\run_dax_tests.py",
+        "line_number": 151,
+        "code_snippet": "parser.add_argument(\"--reports-dir\", type=Path, default=Path(\"reports\"))",
+        "recommendation": "Use Path.resolve() and validate paths are within allowed directories."
+      },
+      {
+        "severity": "MEDIUM",
+        "category": "Information Disclosure",
+        "description": "Logging sensitive data",
+        "file_path": "scripts\\run_dax_tests.py",
+        "line_number": 157,
+        "code_snippet": "print(f\"No test files matched. Available environment tokens: {tokens}\", file=sys.stderr)",
+        "recommendation": "Never log credentials or sensitive data. Use proper error handling."
+      }
+    ],
+    "layers": [
+      {
+        "name": "Layer 1: Input Validation & Sanitization",
+        "passed": false,
+        "score": 0.0,
+        "issue_count": 11
+      },
+      {
+        "name": "Layer 2: Execution Environment Control",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 3: Output Sanitization",
+        "passed": true,
+        "score": 90.0,
+        "issue_count": 1
+      },
+      {
+        "name": "Layer 4: Privilege Management",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      },
+      {
+        "name": "Layer 5: Self-Protection",
+        "passed": true,
+        "score": 100.0,
+        "issue_count": 0
+      }
+    ]
+  },
+  "quality": {
+    "score": 92.9271186440678,
+    "code_quality": 23.927118644067797,
+    "documentation": 19.0,
+    "structure": 25.0,
+    "functionality": 25.0,
+    "breakdown": {
+      "code_quality_max": 25,
+      "documentation_max": 25,
+      "structure_max": 25,
+      "functionality_max": 25
+    }
+  },
+  "utility": {
+    "score": 85.0,
+    "problem_solving": 25.0,
+    "usability": 10.0,
+    "scope": 25.0,
+    "effectiveness": 25.0
+  },
+  "compliance": {
+    "score": 95.0,
+    "violations": [
+      "Description is too long (maximum 500 characters recommended)",
+      "Script conftest.py missing shebang line",
+      "Script dax_test_helpers.py missing shebang line",
+      "Script test_dax_suite.py missing shebang line"
+    ],
+    "standards_met": [
+      "\u2713 SKILL.md exists",
+      "\u2713 YAML frontmatter present",
+      "\u2713 Name field present",
+      "\u2713 Description field present",
+      "\u2713 Name matches directory",
+      "\u2713 Scripts directory exists",
+      "\u2713 Assets directory exists"
+    ],
+    "auto_fail": false
+  },
+  "overall": {
+    "overall_score": 73.2,
+    "recommendation": "\u274c DO NOT INSTALL - Critical security risks",
+    "risk_level": "Critical",
+    "breakdown": {
+      "security": 40.0,
+      "quality": 92.9271186440678,
+      "utility": 85.0,
+      "compliance": 95.0
+    }
+  },
+  "metadata": {
+    "skill_name": "dax-test-framework",
+    "evaluation_date": "2026-09-11T21:25:13.889618",
+    "evaluator_version": "1.0.0",
+    "mode": "full"
+  }
+}

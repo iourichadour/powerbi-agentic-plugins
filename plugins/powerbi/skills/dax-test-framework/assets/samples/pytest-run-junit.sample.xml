@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" errors="1" failures="1" skipped="0" tests="3" time="1.482" timestamp="2025-06-01T09:15:00" hostname="build-agent">
+    <testcase classname="scripts.test_dax_suite" name="test_dax_assertions[Sales Measures.ANY.Tests.dax]" time="0.512" />
+    <testcase classname="scripts.test_dax_suite" name="test_dax_assertions[Margin.ANY.Tests.dax]" time="0.398">
+      <failure message="Gross Margin Aggregation Check: VALUE_MISMATCH (expected='500000', actual='497250')">AssertionError: Gross Margin Aggregation Check: VALUE_MISMATCH (expected='500000', actual='497250')
+assert not failed</failure>
+    </testcase>
+    <testcase classname="scripts.test_dax_suite" name="test_dax_assertions[Regional Sales.DEV.Tests.dax]" time="0.201">
+      <error message="CONNECTION_ERROR: could not open a connection to the local Desktop instance">ConnectionError_: could not open a connection to the local Desktop instance</error>
+    </testcase>
+  </testsuite>
+</testsuites>
