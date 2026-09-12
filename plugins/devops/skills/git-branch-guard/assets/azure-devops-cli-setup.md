@@ -16,11 +16,11 @@ org/project, access verification) are automated by
 — safe to re-run on a machine that already has some or all of it set up.
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File setup_azure_cli.ps1 -Organization "https://dev.azure.com/bayviewasset" -Project "BAMDataServices"
+powershell -ExecutionPolicy Bypass -File setup_azure_cli.ps1 -Organization "https://dev.azure.com/your-organization" -Project "YourProject"
 ```
 
 - `-Organization`/`-Project` are optional (default organization is already
-  `bayviewasset`); omit `-Project` to skip setting a default project.
+  `your-organization`); omit `-Project` to skip setting a default project.
 - Pass `-SkipDefaults` to skip the `az devops configure --defaults` step, or
   `-SkipExtension`/`-SkipPath` to skip those individual steps.
 - `az login` is intentionally **not** run by the script — it opens an
@@ -75,7 +75,7 @@ to run a piece by hand.
 
 6. **Set the default Azure DevOps organization**
    ```powershell
-   az devops configure --defaults organization=https://dev.azure.com/bayviewasset
+   az devops configure --defaults organization=https://dev.azure.com/your-organization
    ```
    - This avoids having to pass `--organization` on every command and avoids
      auto-detect warnings when not inside a git repo with an Azure DevOps remote.
@@ -84,12 +84,10 @@ to run a piece by hand.
    ```powershell
    az devops project list -o table
    ```
-   Confirmed projects returned for org `bayviewasset`:
-   - BAMCloudProjects
-   - BAMDataServices
-   - BAMITAnalytics
-   - Investor Database
-   - Oceanview Actuarial
+   Example projects returned for org `your-organization`:
+   - Project1
+   - Project2
+   - Project3
 
 ## Notes for Team Rollout
 - Each team member needs the `az\` folder distributed (or installed via the
@@ -101,5 +99,5 @@ to run a piece by hand.
   must be run once per machine/user.
 - Optionally set a default project too, e.g.:
   ```powershell
-  az devops configure --defaults project=BAMDataServices
+  az devops configure --defaults project=YourProject
   ```

@@ -5,7 +5,7 @@
 #
 param(
     [string]$InstallDir = "$env:LOCALAPPDATA\GitHubCopilotCLI\az",
-    [string]$Organization = "https://dev.azure.com/bayviewasset",
+    [string]$Organization = "https://dev.azure.com/your-organization",
     [string]$Project,
     [switch]$SkipPath,
     [switch]$SkipExtension,

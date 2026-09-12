@@ -150,12 +150,13 @@ blocking error.
    3. **Show the resolved plan** (repository, source branch, target
       branch, title) to the user and ask for explicit confirmation before
       doing anything else.
-      - **User confirms (`yes`)** → invoke `create_pr.ps1` (from
+      - **User confirms (`yes`)** → invoke `create_pr.ps1` (or the `.sh`
+        equivalent on Bash-based environments, from
         `git-branch-guard/assets/`) with the exact values shown, and
         surface the script's output (including any `az` CLI errors)
         verbatim to the user.
-      - **User declines (`no`)** → do not invoke `create_pr.ps1`; take no
-        further action.
+      - **User declines (`no`)** → do not invoke `create_pr.ps1`/`create_pr.sh`;
+        take no further action.
 
 5. **On an explicit PBIP commit/PR summary request** — match the user's
    message (case-insensitive) against trigger phrases: "generate commit summary",

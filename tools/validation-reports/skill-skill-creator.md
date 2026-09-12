@@ -3,13 +3,13 @@
 - **Type**: skill
 - **Status**: VALID
 - **Source**: `C:\Development\powerbi-agentic-plugins\plugins\skill-creator\skills\skill-creator\SKILL.md`
-- **Checked**: 2026-09-11 22:57:21
+- **Checked**: 2026-09-11 23:57:53
 
 ## Fields detected
 
-- **description**: Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
-- **hasMetadata**: False
 - **name**: skill-creator
+- **hasMetadata**: False
+- **description**: Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
 
 ## Issues
 
