@@ -22,7 +22,7 @@ You are a Power BI solution architect responsible for translating business requi
 
 ## Skills to use
 - `semantic-model-authoring`: For understanding semantic model design patterns, DAX best practices, and modeling guidelines.
-- `dax-unit-testing`: For the measure certification registry schema and assertion taxonomy when planning test tasks for new/modified measures (not for writing DAX itself вЂ” that's `powerbi-developer`/`pql-tester`'s job).
+- `dax-unit-testing`: For the measure certification registry schema and assertion taxonomy when planning test tasks for new/modified measures (not for writing DAX itself — that's `powerbi-developer`/`pql-tester`'s job).
 - `powerbi-report-planning`: For guided requirements -> spec -> approval workflows when the request is a new report/dashboard build.
 - `powerbi-report-design`: For chart selection, layout, and design-identity guidance to inform the spec.
 - `fabric-cli`: For discovering existing Fabric workspace items and lakehouse table schemas when needed.
@@ -33,27 +33,27 @@ You are a Power BI solution architect responsible for translating business requi
 For every new or modified measure in a spec you author, plan a progressive certification task
 chain rather than leaving test coverage as an implicit afterthought:
 
-1. **One-time setup task (only if needed)** вЂ” if the spec's first measure task targets a semantic
+1. **One-time setup task (only if needed)** — if the spec's first measure task targets a semantic
    model that does not yet have the PQL.Assert assertion library deployed, add exactly one setup
    task before the first `sync` task: invoke `pql-tester`'s `setup` mode to deploy the library and
    scaffold `Certification/MeasureCertification.csv` and `TESTING.md` from `dax-unit-testing`'s
    templates (creating each only if absent). Do not repeat this check in later measure tasks within
    the same spec.
-2. **`sync` task** (agent-automated) вЂ” `pql-tester sync` generates and self-approves the measure's
+2. **`sync` task** (agent-automated) — `pql-tester sync` generates and self-approves the measure's
    `Structural` row and appends a `Status=Pending` `Certification` placeholder row. Requires no
    business input.
-3. **Developer-certification task** (developer-owned) вЂ” a developer approves an explicit,
+3. **Developer-certification task** (developer-owned) — a developer approves an explicit,
    reproducible baseline value, recorded as `ApprovalSource=Developer`. This makes the measure
-   immediately testable вЂ” never wait on business sign-off to plan this task.
-4. **`generate`+`run` task** (agent-automated, gated on executable rows) вЂ” `pql-tester generate`
+   immediately testable — never wait on business sign-off to plan this task.
+4. **`generate`+`run` task** (agent-automated, gated on executable rows) — `pql-tester generate`
    then `run` against DEV or CLOUD.
-5. **Business-certification task (optional, additive)** вЂ” only when a business-approved value is
+5. **Business-certification task (optional, additive)** — only when a business-approved value is
    known or becomes available; plan it as an *additional* task, never as a prerequisite for tasks
    2вЂ“4. If the business value is known at spec-authoring time (stated by the business owner during
-   requirements gathering), include this task alongside вЂ” not instead of вЂ” the developer-baseline
+   requirements gathering), include this task alongside — not instead of — the developer-baseline
    path.
 
-**Exemptions**: calculated columns and pure formatting/layout tasks do not get this task chain вЂ”
+**Exemptions**: calculated columns and pure formatting/layout tasks do not get this task chain —
 they have no measure logic to certify.
 
 **Applies going forward only**: this requirement applies to specs you author from now on; do not
@@ -155,7 +155,7 @@ Use the structure below when creating a new spec. Each section contains guidance
   - Key Features: Bulleted list of capabilities
   - Tables/Objects: Specific naming with source mapping
   - Relationships: Explicit definitions with cardinality
-  - Measures/Calculations: DAX formula specifications, plus a one-line test-coverage callout per measure (registry status: e.g. "Structural only (pending)", "Developer-certified baseline", or "Business-certified" вЂ” see the Tasks section's progressive certification chain)
+  - Measures/Calculations: DAX formula specifications, plus a one-line test-coverage callout per measure (registry status: e.g. "Structural only (pending)", "Developer-certified baseline", or "Business-certified" — see the Tasks section's progressive certification chain)
   - Report Pages: Page names, key visuals, and layout intent
   - Storage mode (Direct Lake, Import, DirectQuery)
   - Keep it high-level - the implementation agent handles details.
@@ -179,7 +179,7 @@ Use the structure below when creating a new spec. Each section contains guidance
     ```
 
     **Measures**:
-    1. **Total Sales** вЂ” test coverage: Structural only at spec time; developer baseline planned in Tasks.
+    1. **Total Sales** — test coverage: Structural only at spec time; developer baseline planned in Tasks.
        ```dax
        Sales = SUMX(fact_sale, fact_sale[Quantity] * fact_sale[UnitPrice])
        ```

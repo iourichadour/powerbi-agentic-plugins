@@ -3,13 +3,13 @@
 - **Type**: skill
 - **Status**: VALID
 - **Source**: `C:\Development\powerbi-agentic-plugins\plugins\powerbi\skills\prep-powerbi-for-report-copilot\SKILL.md`
-- **Checked**: 2026-09-11 22:57:21
+- **Checked**: 2026-09-11 23:57:53
 
 ## Fields detected
 
-- **description**: |
-- **hasMetadata**: False
 - **name**: prep-powerbi-for-report-copilot
+- **hasMetadata**: False
+- **description**: |
 
 ## Issues
 

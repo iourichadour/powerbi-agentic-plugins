@@ -3,13 +3,13 @@
 - **Type**: skill
 - **Status**: VALID
 - **Source**: `C:\Development\powerbi-agentic-plugins\plugins\powerbi\skills\powerbi-report-management\SKILL.md`
-- **Checked**: 2026-09-11 22:57:21
+- **Checked**: 2026-09-11 23:57:53
 
 ## Fields detected
 
-- **description**: Manage Power BI report workspace items in Microsoft Fabric via `az rest` CLI against the Fabric REST API. Use when the user wants to: (1) create reports from PBIR definitions, (2) get or download report definitions, (3) update report definitions or properties, (4) list workspace reports, (5) delete reports. For report layout authoring (pages, visuals, filters, formatting), use `powerbi-report-authoring`. Triggers: upload Power BI report, download PBIR definition, publish Power BI report to Fabric, manage Power BI reports.
-- **hasMetadata**: True
 - **name**: powerbi-report-management
+- **hasMetadata**: True
+- **description**: Manage Power BI report workspace items in Microsoft Fabric via `az rest` CLI against the Fabric REST API. Use when the user wants to: (1) create reports from PBIR definitions, (2) get or download report definitions, (3) update report definitions or properties, (4) list workspace reports, (5) delete reports. For report layout authoring (pages, visuals, filters, formatting), use `powerbi-report-authoring`. Triggers: upload Power BI report, download PBIR definition, publish Power BI report to Fabric, manage Power BI reports.
 
 ## Issues
 
