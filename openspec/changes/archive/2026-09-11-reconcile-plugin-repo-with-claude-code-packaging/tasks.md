@@ -29,4 +29,4 @@
 
 - [x] 4.1 Re-run the file-list diff between this file tree and the git clone (same method used during the initial review) and verify the only remaining differences are expected in-flight/local artifacts (e.g. `.git/`), with no unexplained unique files on either side — verified: the only remaining differences are `plans/*.md` working-note files unique to each location (not in this change's declared scope), no unexplained differences in `openspec/`, `.agents/`, `.claude/`, `.github/`, `plugins/`, `.claude-plugin/marketplace.json`, `tools/`, or `skill-eval-reports/`
 - [x] 4.2 Present a summary of all copied/deleted files to the user for review before any `git add`/`git commit` is executed in the clone
-- [ ] 4.3 On explicit user approval, commit the reconciliation in the git clone with a descriptive message referencing this change, and verify `git status` is clean afterward
+- [x] 4.3 On explicit user approval, commit the reconciliation in the git clone with a descriptive message referencing this change, and verify `git status` is clean afterward — committed as `76d6ed4` on `feature/SCRUM-2-skill-merge` and pushed to `origin`
