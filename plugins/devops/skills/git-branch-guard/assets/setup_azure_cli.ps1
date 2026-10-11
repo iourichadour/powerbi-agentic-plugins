@@ -5,7 +5,7 @@
 #
 param(
     [string]$InstallDir = "$env:LOCALAPPDATA\GitHubCopilotCLI\az",
-    [string]$Organization = "https://dev.azure.com/your-organization",
+    [string]$Organization = "https://dev.azure.com/wunderanalytics",
     [string]$Project,
     [switch]$SkipPath,
     [switch]$SkipExtension,

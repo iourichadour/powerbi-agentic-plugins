@@ -16,11 +16,11 @@ org/project, access verification) are automated by
 — safe to re-run on a machine that already has some or all of it set up.
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File setup_azure_cli.ps1 -Organization "https://dev.azure.com/your-organization" -Project "YourProject"
+powershell -ExecutionPolicy Bypass -File setup_azure_cli.ps1 -Organization "https://dev.azure.com/wunderanalytics" -Project "YourProject"
 ```
 
 - `-Organization`/`-Project` are optional (default organization is already
-  `your-organization`); omit `-Project` to skip setting a default project.
+  `wunderanalytics`); omit `-Project` to skip setting a default project.
 - Pass `-SkipDefaults` to skip the `az devops configure --defaults` step, or
   `-SkipExtension`/`-SkipPath` to skip those individual steps.
 - `az login` is intentionally **not** run by the script — it opens an
@@ -75,7 +75,7 @@ to run a piece by hand.
 
 6. **Set the default Azure DevOps organization**
    ```powershell
-   az devops configure --defaults organization=https://dev.azure.com/your-organization
+   az devops configure --defaults organization=https://dev.azure.com/wunderanalytics
    ```
    - This avoids having to pass `--organization` on every command and avoids
      auto-detect warnings when not inside a git repo with an Azure DevOps remote.
@@ -84,7 +84,7 @@ to run a piece by hand.
    ```powershell
    az devops project list -o table
    ```
-   Example projects returned for org `your-organization`:
+   Example projects returned for org `wunderanalytics`:
    - Project1
    - Project2
    - Project3
