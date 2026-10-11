@@ -135,6 +135,15 @@ function Test-AgentFile {
     $fm = Get-Frontmatter $content
     $issues = @()
 
+    # Get-Content strips a UTF-8 byte order mark, so check the raw bytes. Claude Code
+    # cannot parse frontmatter that does not start at byte 0, so the agent is not listed.
+    $head = New-Object byte[] 3
+    $stream = [System.IO.File]::OpenRead($Path)
+    try { $read = $stream.Read($head, 0, 3) } finally { $stream.Dispose() }
+    if ($read -ge 3 -and $head[0] -eq 0xEF -and $head[1] -eq 0xBB -and $head[2] -eq 0xBF) {
+        $issues += "File starts with a UTF-8 byte order mark (EF BB BF); frontmatter must start at byte 0 so Claude Code can parse it"
+    }
+
     if (-not $fm) {
         $issues += "No YAML frontmatter found (file must start with '---' and close with '---')"
         return [PSCustomObject]@{ Issues = $issues; Fields = @{} }
@@ -216,6 +225,66 @@ function Write-PerFileReport {
     }
 }
 
+function Get-TriggerPhrasesFromSkill {
+    param([string]$Path)
+    $text = (Get-Content -Path $Path -Raw) -replace "`r", ""
+    $m = [regex]::Match($text, '## Step 2.*?\*\*Trigger phrases\*\*[^\n]*\n(?:[^\n]*\n)*?(?<list>(?:- "[^"\n]+"\n)+)', 'Singleline')
+    if (-not $m.Success) { return $null }
+    return @([regex]::Matches($m.Groups['list'].Value, '- "([^"\n]+)"') | ForEach-Object { $_.Groups[1].Value })
+}
+
+function Get-TriggerPhrasesFromAgent {
+    param([string]$Path)
+    # Agent files wrap the list across lines, so collapse whitespace before matching.
+    $text = (Get-Content -Path $Path -Raw) -replace '\s+', ' '
+    $m = [regex]::Match($text, 'trigger list documented in `jira-workflow` Step 2 \((?<list>[^)]*)\)')
+    if (-not $m.Success) { return $null }
+    return @([regex]::Matches($m.Groups['list'].Value, '"([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+}
+
+# Checks that the devops persona agent's three dialects and the jira-workflow skill list the same
+# start-ticket trigger phrases, and that "work on <KEY>" is among them. Returns a list of problems.
+function Test-DevopsTriggerParity {
+    param([string]$PluginsRoot)
+
+    $devopsRoot = Join-Path $PluginsRoot "devops"
+    $sources = [ordered]@{
+        "jira-workflow SKILL.md" = @{ Path = Join-Path $devopsRoot "skills/jira-workflow/SKILL.md"; Reader = "skill" }
+        "devops.md"              = @{ Path = Join-Path $devopsRoot "agents/devops.md";               Reader = "agent" }
+        "devops.agent.md"        = @{ Path = Join-Path $devopsRoot "agents/devops.agent.md";         Reader = "agent" }
+        "devops.toml"            = @{ Path = Join-Path $devopsRoot "agents/devops.toml";             Reader = "agent" }
+    }
+
+    $problems = @()
+    $lists = @{}
+    foreach ($label in $sources.Keys) {
+        $src = $sources[$label]
+        if (-not (Test-Path $src.Path)) {
+            $problems += "${label}: file not found at $($src.Path)"
+            continue
+        }
+        $phrases = if ($src.Reader -eq "skill") { Get-TriggerPhrasesFromSkill $src.Path } else { Get-TriggerPhrasesFromAgent $src.Path }
+        if ($null -eq $phrases -or $phrases.Count -eq 0) {
+            $problems += "${label}: could not find the start-ticket trigger phrase list"
+            continue
+        }
+        $lists[$label] = $phrases
+        if ($phrases -notcontains 'work on <KEY>') {
+            $problems += "${label}: missing start-ticket phrase 'work on <KEY>'"
+        }
+    }
+
+    $union = @($lists.Values | ForEach-Object { $_ } | Sort-Object -Unique)
+    foreach ($label in $lists.Keys) {
+        foreach ($phrase in $union) {
+            if ($lists[$label] -notcontains $phrase -and $phrase -ne 'work on <KEY>') {
+                $problems += "${label}: missing start-ticket phrase '$phrase' that another file lists"
+            }
+        }
+    }
+    return $problems
+}
+
 # --- Main ---
 
 $skillFiles = Get-ChildItem -Path $PluginsRoot -Filter "SKILL.md" -Recurse -ErrorAction SilentlyContinue
@@ -279,6 +348,30 @@ foreach ($file in $agentFiles) {
     }
 }
 
+# Hard failures make the script exit non-zero: a byte order mark stops Claude Code from loading
+# the agent, and trigger-phrase drift stops "work on <KEY>" from reaching jira-workflow.
+$hardFailures = @()
+foreach ($item in $summary | Where-Object { $_.Type -eq "agent" }) {
+    foreach ($issue in $item.Issues) {
+        if ($issue -like "*byte order mark*") { $hardFailures += "$($item.SourcePath): $issue" }
+    }
+}
+
+Write-Host "`n=== Checking devops start-ticket trigger-phrase parity ===" -ForegroundColor Cyan
+if (Test-Path (Join-Path $PluginsRoot "devops")) {
+    $parityProblems = Test-DevopsTriggerParity -PluginsRoot $PluginsRoot
+    if ($parityProblems.Count -eq 0) {
+        Write-Host "[OK] devops.md, devops.agent.md, devops.toml and jira-workflow SKILL.md list the same trigger phrases, including 'work on <KEY>'"
+    } else {
+        foreach ($problem in $parityProblems) {
+            Write-Host "[!!] $problem" -ForegroundColor Red
+            $hardFailures += "Trigger-phrase parity: $problem"
+        }
+    }
+} else {
+    Write-Host "[--] No devops plugin under $PluginsRoot; skipped"
+}
+
 # Summary index (Markdown)
 $summaryMdPath = Join-Path $ReportsDir "_summary.md"
 $validCount   = ($summary | Where-Object { $_.Status -eq "VALID" }).Count
@@ -309,3 +402,9 @@ Write-Host "`n=== SUMMARY ===" -ForegroundColor Cyan
 Write-Host "Total: $($summary.Count)  Valid: $validCount  Warnings: $warningCount"
 Write-Host "Per-file reports: $ReportsDir"
 Write-Host "Summary index: $summaryMdPath"
+
+if ($hardFailures.Count -gt 0) {
+    Write-Host "`nFAILED: $($hardFailures.Count) blocking problem(s)" -ForegroundColor Red
+    $hardFailures | ForEach-Object { Write-Host "  - $_" -ForegroundColor Red }
+    exit 1
+}

@@ -19,7 +19,8 @@ workflow, and Azure DevOps policy workflows on Windows.
 - Apply standard Azure DevOps branch policies with the `azure-devops-standard-branch-policy` skill.
 - Detect existing local/remote branches for a ticket key before creating a
   new one, and offer to switch instead of duplicating.
-- Create Azure DevOps pull requests (`git-branch-guard/assets/create_pr.ps1`)
+- Create pull requests (`git-branch-guard/assets/create_pr.ps1`; `gh pr create` for
+  GitHub remotes, `az repos pr create` for Azure DevOps remotes)
   only on explicit request or an accepted post-commit offer, always gated on
   explicit user confirmation of the shown plan.
 - Keep repository policy changes explicit, reversible, and user-confirmed.
@@ -30,7 +31,8 @@ workflow, and Azure DevOps policy workflows on Windows.
 |---|---|---|
 | `atlassian-rovo-mcp` or `com.atlassian/atlassian-mcp-server` | Fetch/assign/transition Jira tickets, add comments | Required for automatic Jira workflow (jira-workflow Steps 1-4) |
 | Git / PowerShell | Branch validation and creation | Always |
-| Azure DevOps CLI (`az` + `azure-devops` extension, authenticated, org/project defaults configured) | Create pull requests via `create_pr.ps1` | Required only for PR creation (Step 4); not required for branch validation/creation |
+| GitHub CLI (`gh`, authenticated) | Create pull requests on `github.com` remotes via `create_pr.ps1` | Required only for PR creation (Step 4) on GitHub repos |
+| Azure DevOps CLI (`az` + `azure-devops` extension, authenticated, org/project defaults configured) | Create pull requests on `dev.azure.com` remotes via `create_pr.ps1` | Required only for PR creation (Step 4) on Azure DevOps repos; never needed for GitHub repos or for branch validation/creation |
 
 If neither Atlassian MCP server is connected, `jira-workflow` falls back to
 its manual flow automatically (see its SKILL.md) — do not treat this as a
@@ -49,12 +51,16 @@ blocking error.
 ## Numbered orchestration (follow in order — do not skip Step 0)
 
 1. **On a start-ticket trigger phrase** — match the user's message against
-   the exact trigger list documented in `jira-workflow` Step 2 ("I want to
-   work on <KEY>", "let's work on <KEY>", "start <KEY>", "pick up <KEY>",
-   "I'm starting <KEY>"):
+   the exact trigger list documented in `jira-workflow` Step 2 ("work on
+   <KEY>", "I want to work on <KEY>", "let's work on <KEY>", "I'm going to
+   work on <KEY>", "start <KEY>", "pick up <KEY>", "I'm starting <KEY>"). If
+   the message says "work on" without a key matching `[A-Z]+-\d+`, ask which
+   ticket key to use and never guess one:
    1. Invoke `jira-workflow` first. It will run its own Step 0 (tool
       discovery) — never assume Jira MCP tool names without that discovery
-      having happened in the current session.
+      having happened in the current session. For the named ticket it
+      assigns the user and moves the ticket to In Progress without asking;
+      comments, and writes on any other ticket, ask first.
       - IF `jira-workflow` succeeds → it returns `ticket_key` and
         `short_description`.
       - IF `jira-workflow` falls back (MCP unavailable) → it returns the
@@ -156,13 +162,17 @@ blocking error.
    (case-insensitive) against trigger phrases such as "create a PR", "open
    a PR for this", "create a pull request", "open a pull request", or the
    post-commit offer in Step 3.2 being accepted:
-   1. Verify the Azure DevOps CLI prerequisites: the `azure-devops`
-      extension is installed, the CLI session is authenticated, and an
-      organization/project is resolvable (via `az devops configure
-      --defaults` or explicit `-Org`/`-Project` values). If any prerequisite
-      is missing, report the specific missing piece to the user instead of
-      attempting PR creation or failing silently — see
-      `git-branch-guard/assets/azure-devops-cli-setup.md`.
+   1. Detect the host with `git remote get-url origin`: `github.com` uses
+      `gh pr create`, `dev.azure.com` uses `az repos pr create`, and any
+      other host is reported as unsupported with no PR created. Then verify
+      the prerequisites for that host only. GitHub: `gh` is installed and
+      authenticated. Azure DevOps: the `azure-devops` extension is installed,
+      the CLI session is authenticated, and an organization/project is
+      resolvable (via `az devops configure --defaults` or explicit
+      `-Org`/`-Project` values). `az` is never required for a GitHub remote.
+      If any prerequisite is missing, report the specific missing piece to
+      the user instead of attempting PR creation or failing silently — see
+      `git-branch-guard/assets/azure-devops-cli-setup.md` for Azure DevOps.
    2. Resolve the PR plan:
       - **Repository**: resolve from the current repo context (or ask the
         user if ambiguous).
@@ -178,7 +188,7 @@ blocking error.
       doing anything else.
       - **User confirms (`yes`)** → invoke `create_pr.ps1` (from
         `git-branch-guard/assets/`) with the exact values shown, and
-        surface the script's output (including any `az` CLI errors)
+        surface the script's output (including any `gh` or `az` CLI errors)
         verbatim to the user.
       - **User declines (`no`)** → do not invoke `create_pr.ps1`; take no
         further action.

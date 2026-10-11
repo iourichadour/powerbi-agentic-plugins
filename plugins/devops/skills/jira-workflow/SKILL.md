@@ -93,13 +93,21 @@ string returned by `tool_search_tool` may not exactly match the theoretical
 
 **Trigger phrases** (case-insensitive match against the user's message; the
 ticket key is any token matching the regex `[A-Z]+-\d+`):
+- "work on <KEY>"
 - "I want to work on <KEY>"
 - "let's work on <KEY>"
+- "I'm going to work on <KEY>"
 - "start <KEY>"
 - "pick up <KEY>"
 - "I'm starting <KEY>"
 
+If the message says "work on" but has no token matching `[A-Z]+-\d+`, ask the
+user which ticket key to use; never guess one.
+
 When one of these matches, extract `<KEY>` and do the following, in order.
+Assigning the ticket (2.3) and moving it to In Progress (2.4) happen for the
+named ticket **without asking for confirmation**. Comments (Step 4), and any
+write on a different ticket, still require an explicit yes.
 **Parameter shapes below are confirmed from a live run — use them exactly,
 do not invent alternate field names like `issue_key`, `assignee` (flat), or
 `transition_id`:**
@@ -150,6 +158,9 @@ do not invent alternate field names like `issue_key`, `assignee` (flat), or
    branch. Ask the user which of `feature` or `bugfix` applies if the
    ticket's `issuetype` (from Step 2.1) does not make it obvious (e.g.
    `issuetype` containing "Bug" → `bugfix`; anything else → `feature`).
+   Never create or switch to a ticket branch directly (for example with
+   `git checkout -b`); the branch is created or validated only through
+   `git-branch-guard`, and no code change starts until the guard passes.
 
 ### Step 2.7 — Mandatory architecture and work-category gate
 

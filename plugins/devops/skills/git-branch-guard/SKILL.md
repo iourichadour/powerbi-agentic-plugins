@@ -17,6 +17,12 @@ This check must run before:
 - notebook or pipeline edits
 - documentation changes tied to implementation work
 
+## Handoff from jira-workflow
+When a start-ticket trigger such as "work on <KEY>" runs, `jira-workflow` hands this
+skill the `ticket_key` and `short_description`. A ticket branch is created, renamed, or
+switched to only through this skill, never directly with `git checkout -b` or
+`git switch -c`, and no code change starts until the check below passes.
+
 ## Branch requirements
 A valid development branch must:
 1. Not be a protected or shared branch:
@@ -120,10 +126,21 @@ distribution reason as `assets/pbip-pr-summary/` above: only files inside a
 skill's own folder travel with the plugin when installed elsewhere. The
 accompanying `assets/setup_azure_cli.ps1` automates it end to end.
 
-## Dependency: Azure DevOps CLI
+## Dependency: PR host CLI (`gh` for GitHub, `az` for Azure DevOps)
 
-PR creation (`assets/create_pr.ps1`) requires the Azure DevOps CLI to be
-installed and ready:
+PR creation (`assets/create_pr.ps1`, or `assets/create_pr.sh` under Bash) detects
+the host from `git remote get-url origin` and uses the matching CLI:
+
+| Origin host | CLI used | Command |
+|---|---|---|
+| `github.com` | GitHub CLI (`gh`) | `gh pr create --base <target> --head <source> --title <title> --body <body>` |
+| `dev.azure.com` | Azure CLI (`az`) | `az repos pr create --repository <repo> --source-branch <source> --target-branch <target> --title <title>` |
+| anything else | none | Reported as unsupported; no PR is created |
+
+**GitHub remotes need only `gh`**, installed and authenticated (`gh auth login`).
+`az` is not required and is never checked for a GitHub remote.
+
+**Azure DevOps remotes need the Azure DevOps CLI to be installed and ready:**
 - The `az` CLI itself, plus the `azure-devops` extension (`az extension add
   --name azure-devops`).
 - An authenticated session (`az login`).
@@ -131,9 +148,12 @@ installed and ready:
   --defaults organization=... project=...`), or the equivalent `-Org`/
   `-Project` values passed explicitly to `create_pr.ps1`.
 
-This is a one-time, per-machine setup — see
+If a prerequisite for the detected host is missing, the script reports the
+specific one and exits without creating a PR.
+
+The Azure setup is a one-time, per-machine step — see
 `assets/azure-devops-cli-setup.md` for the manual steps and
 `assets/setup_azure_cli.ps1` for an idempotent script that automates all of
 them. Branch validation/creation (`check_git_branch_guard.ps1`) does not
-depend on the Azure DevOps CLI; only PR creation does.
+depend on either CLI; only PR creation does.
 

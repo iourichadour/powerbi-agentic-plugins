@@ -15,7 +15,7 @@ Validate my branch name
 ```
 
 Expected agent behavior: runs
-`check_git_branch_guard.txt`, reports whether the current branch is
+`check_git_branch_guard.ps1` (Windows) or `check_git_branch_guard.sh` (Bash), reports whether the current branch is
 protected, missing a Jira key, or missing the `feature/`/`bugfix/` prefix,
 and suggests a compliant replacement name if it fails.
 

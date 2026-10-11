@@ -145,6 +145,19 @@ Before you start, ensure you have:
   - VS Code with GitHub Copilot Chat extension
   - Or both!
 
+- **Optional, for pull requests from the devops plugin** (only the CLI for your repo's host is needed)
+  - **GitHub repos** (`github.com` remote): the GitHub CLI, installed and logged in.
+    ```powershell
+    gh auth status
+    ```
+    Not installed? Get it from https://cli.github.com, then run `gh auth login`.
+  - **Azure DevOps repos** (`dev.azure.com` remote): the Azure CLI (`az`) with the `azure-devops` extension, logged in.
+    ```powershell
+    az --version
+    ```
+    `az` is needed **only for Azure DevOps repos**. GitHub repos never need it. See
+    `plugins/devops/skills/git-branch-guard/assets/azure-devops-cli-setup.md` for the one-time setup.
+
 ### Step-by-Step Installation
 
 #### 1. Clone the Repository
