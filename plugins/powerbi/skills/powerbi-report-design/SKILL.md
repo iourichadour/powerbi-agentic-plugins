@@ -6,12 +6,12 @@ description: >-
   archetypes, chart types, layout, color, typography, theme direction, or
   accessibility approach, (2) redesign/restyle an existing report, apply a
   brand, or critique chart/layout choices, (3) produce a design contract for
-  `powerbi-report-authoring`. For end-to-end requirements, approval, and build
-  sequencing, use `powerbi-report-planning`. Triggers: "design Power BI report",
+  `powerbi-report-authoring`. For requirements discovery and approval before a new
+  report specification, use `powerbi-report-planning`. Triggers: "design Power BI report",
   "make dashboard look professional", "choose chart type", "apply brand to
   report", "redesign report", "create design brief".
 metadata:
-  version: 0.2.0
+  version: 0.2.1
 ---
 
 > **Update Check — explicit only**
@@ -60,7 +60,7 @@ This root file covers the end-to-end workflow, theme, gotchas, and the design co
 | `references/tables-and-matrices.md` | **Read before** configuring a table or matrix — column selection, sorting, conditional formatting, sizing |
 | `references/filter-pane.md` | Read when deciding lock/hide/visible filter cards, card naming, or Applied/Available styling |
 | `references/mobile.md` | Read when the report needs a phone/portrait layout |
-| `references/custom-visuals.md` | Read when a built-in visual can't satisfy the requirement — build-vs-buy decision and routing to `power-bi-custom-visuals` |
+| `references/custom-visuals.md` | Read when a built-in visual can't satisfy the requirement — build-vs-buy decision and boundary for separately installed custom-visual development tooling |
 | `references/tooltips-and-annotations.md` | Read when adding report-page tooltips, reference lines, callouts, or guided-analytics narrative chrome |
 | `references/color.md` | Read if defining palette, color semantics, gradients, or conditional formatting |
 | `references/typography.md` | Read if overriding font sizes, type pairings, or weight conventions |
@@ -138,8 +138,9 @@ Emit a structured `Design Brief:` YAML block. This is the contract with
 `powerbi-report-authoring`. Populate every field with concrete values from Steps
 0-5 and include a mechanical `layout_contract` per page.
 
-When this skill is used inside the planner workflow, embed this YAML block in
-`_brief/report-spec.md` under a "Canonical design contract" section. For the
+When this skill is used inside the planner workflow, provide this YAML block to the
+planner for the approved `brief.md`. The architect later embeds it verbatim in the
+canonical specification under `Design > Report Design Contract`. For the
 full template, field rationale, brownfield current/target fields,
 minimal-brief escape hatch, page-level mechanical schema, examples, and
 validation checklist, read `references/design-brief.md`.

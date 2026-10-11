@@ -13,6 +13,11 @@ from it), prefer its `plugins/powerbi/skills/*` skills over ad-hoc guidance.
 **Semantic model layer:**
 - **semantic-model-authoring** -- create/edit models, DAX, TMDL, Direct Lake, DAX performance optimization, AI/Copilot readiness, deployment
 
+**Measure testing:**
+- **dax-unit-testing** -- PQL.Assert assertion library, CSV measure certification registry (schema, TestCategory taxonomy, progressive Structural/Developer/Business approval), validate/generate/certify/coverage scripts
+- **dax-test-framework** -- dual-profile (DEV Desktop / CLOUD Fabric XMLA) DAX Query View test execution, smoke gate, CLI/pytest/notebook runners, JUnit/Markdown reports, HTML dashboard
+- One-time `pql-tester setup` scaffolds a target project's `TESTING.md` and starter `MeasureCertification.csv` from `dax-unit-testing`'s templates -- identical behavior whether invoked from the Copilot CLI or Claude Code.
+
 **Data quality:**
 - **dax-data-quality** -- Power Query + DAX metadata-driven DQ framework for semantic models
 - **sql-data-quality** -- T-SQL audit-view DQ framework with approval gate
@@ -22,6 +27,7 @@ from it), prefer its `plugins/powerbi/skills/*` skills over ad-hoc guidance.
 - **prep-powerbi-for-report-copilot** -- prep reports/models for Report Copilot pane readiness
 - **check-updates** -- checks for skills-for-fabric marketplace updates; only run when the user explicitly asks (never automatically)
 
-**Agents:** `powerbi-architect` (design specs, no implementation) and
-`powerbi-developer` (implementation) live under `plugins/powerbi/agents/`.
+**Agents:** `powerbi-architect` (design specs, no implementation),
+`powerbi-developer` (implementation), and `pql-tester` (DAX Query View test
+setup/certification/execution) live under `plugins/powerbi/agents/`.
 <!-- powerbi-agentic-plugins:end -->

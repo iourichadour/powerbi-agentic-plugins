@@ -82,24 +82,35 @@ Use parentheses to denote the unit when a measure has multiple variants:
 | `Turnover $$$` | Excessive symbols | `Turnover` |
 | `SM pct 1YP` | Multiple issues | `Standard Margin (ly) (%)` |
 
+## Measure Table Names
+
+Measures live in exactly two dedicated tables, not scattered across fact/dimension tables — see
+[modeling-guidelines.md § Measures & DAX](modeling-guidelines.md#measures--dax) for the classification rules:
+
+- `_Measures` - reusable business measures (KPIs, aggregations, time intelligence).
+- `_ReportMeasures` - report-only presentation/utility measures (titles, formatting, navigation).
+
+The leading underscore is an intentional, allowed exception to the "no technical prefix" rule above — it
+sorts both tables to the top of the field list and visually signals they are utility/measure-only tables,
+not business entities.
+
 ## Display Folder Organization
 
-Use `displayFolder` to organize measures into logical groups within tables. Use a consistent folder structure across all tables of the same type.
+Use `displayFolder` to organize measures into logical groups **within** `_Measures` and `_ReportMeasures`.
 
-Example folder structure for fact tables:
+Example folder structure for `_Measures`:
 ```
-Measures\
-    Value\
-    Quantity\
-    Counts\
-Facts
-Keys
+Value\
+Quantity\
+Counts\
+Time Intelligence\
 ```
 
-Example folder structure for dimension tables:
+Example folder structure for `_ReportMeasures`:
 ```
-Attributes
-Keys
+Titles\
+Formatting\
+Navigation\
 ```
 
 ## Descriptions

@@ -7,9 +7,10 @@ description: Fetches, assigns, and transitions Jira tickets via the Atlassian MC
 
 ## Purpose
 
-Automate the Jira side of starting and finishing ticket work, and posting
-progress comments, using whatever Atlassian/Jira MCP server is connected in
-the current session. This skill is written as a **strict numbered algorithm**.
+Automate the Jira side of starting and finishing ticket work, posting progress
+comments, and selecting the correct downstream planning workflow, using
+whatever Atlassian/Jira MCP server is connected in the current session. This
+skill is written as a **strict numbered algorithm**.
 Follow the steps in order, exactly as written. Do not skip steps. Do not
 invent tool names. Do not guess status/transition IDs.
 
@@ -24,6 +25,7 @@ the separate `git-branch-guard` skill. This skill only supplies
 | `com.atlassian/atlassian-mcp-server` MCP server (primary, confirmed) | Fetch/assign/transition Jira tickets, add comments | Preferred — try first in Step 0 |
 | `atlassian-rovo-mcp` MCP server (alternate name, some orgs) | Same as above | Only if the primary is not connected |
 | `git` / `git-branch-guard` skill | Creates the branch using `ticket_key` + `short_description` | Always, after Step 2 |
+| `git-branch-guard/assets/pbip-pr-summary/commit_diff_summary.ps1`/`.sh` | Grounded, structurally-diffed PBIP change summary for a single commit | Optional, Step 4.3.2 — only when the commit touches files under a `*.Report/` or `*.SemanticModel/` project folder |
 
 `com.atlassian/atlassian-mcp-server` is the server actually registered in
 this environment's `~/.copilot/mcp.json` / `mcp-config.json` (gallery entry,
@@ -149,6 +151,111 @@ do not invent alternate field names like `issue_key`, `assignee` (flat), or
    ticket's `issuetype` (from Step 2.1) does not make it obvious (e.g.
    `issuetype` containing "Bug" → `bugfix`; anything else → `feature`).
 
+### Step 2.7 — Mandatory architecture and work-category gate
+
+After Jira assignment, status transition, and branch validation, ask the user
+to select exactly one category. Present these choices verbatim:
+
+1. **Bug**
+2. **Report Development Story**
+3. **Fabric Development**
+4. **Other**
+
+Show the Jira summary and description as context, but never infer or silently
+select a category from Jira metadata, issue type, wording, or branch name.
+This prompt is required for every started ticket, including tickets already in
+`In Progress` and tickets started through the fallback algorithm.
+
+If the user declines, cancels, or gives an unresolved answer, stop before
+planning or implementation and report: `Routing remains unresolved; no
+planning or implementation workflow was started.`
+
+#### Report Development Story subtype gate
+
+For **Report Development Story**, ask the user to select exactly one subtype:
+
+1. **New report or dashboard** → invoke `powerbi-report-planning`. Resume a
+   matching `specs/<JIRA>-<slug>/` folder when present; otherwise let the
+   planning skill create it. Require `brief.md` with `status: approved`, then
+   hand off to `powerbi-architect` for the canonical `<Name>.spec.md`. Wait for
+   an explicit implementation request before `powerbi-developer` acts.
+2. **Existing report change** → route to `powerbi-report-design`,
+   `powerbi-report-authoring`, or `powerbi-architect` according to the request.
+   Do not force a new-report brief. A direct specialist request remains valid.
+3. **Model-only work** → route to `semantic-model-authoring` (or the applicable
+   model specialist). Do not require a new-report brief.
+4. **Report publishing or management** → route to
+   `powerbi-report-management` or the applicable Fabric resource workflow. Do
+   not require a new-report brief.
+
+If the subtype is declined or unresolved, stop before planning or
+implementation and report that report routing remains unresolved.
+
+#### Fabric Development routing
+
+For development, architecture, migration, or cross-workload Fabric work,
+derive a lowercase kebab-case slug and use the Jira-linked OpenSpec name
+`<JIRA>-<slug>`. Before creating anything, search `openspec/changes/` (or
+`openspec list --json`) for an existing change whose name starts with the Jira
+key. Report its exact path and `openspec status --change <name> --json` state,
+then resume it. Never create a duplicate and never run OpenSpec apply
+automatically from this gate.
+
+If no matching change exists, create one with `openspec new change
+<JIRA>-<slug>`, report its path and status, and stop at planning. A completed
+proposal, requirements/specification, design, and tasks record is a planning
+handoff only. On a later explicit implementation request, hand off to
+`FabricDataEngineer` or `FabricMigrationEngineer` and use
+`openspec-apply-change` for the selected change.
+
+Discovery, read-only querying, monitoring, or a simple operational Fabric
+request may route directly to its applicable Fabric capability without
+OpenSpec. If the user asks for a durable plan, use OpenSpec even for an
+otherwise operational request.
+
+#### Bug and Other routing
+
+For **Bug**, invoke `troubleshooting-workflow`. For **Other**, ask whether the
+request is investigative. Investigative Other follows the same troubleshooting
+workflow; non-investigative Other pauses and asks the user to specify the
+affected surface, desired workflow, required tools, and whether a durable
+planning record is wanted. Do not invent a route.
+
+Troubleshooting must read or bootstrap `TROUBLESHOOTING.md`, resume a matching
+`## <JIRA>` section in place, and record evidence, blockers, unresolved root
+causes, status, and actions. A confirmed root cause is not implementation
+authorization. After resolution, extract reusable environment facts,
+diagnostic shortcuts, known limitations, prevention rules, or remediation
+patterns into the shared guidance section before the Jira findings handoff.
+
+When the user chooses to fix a confirmed root cause, ask for the fix surface
+(Power BI report, semantic model, Fabric, or Other) and the intended change.
+Propose **substantial** when a reference scan finds dependents of a renamed or
+removed object, or when the change adds a new object or structural element;
+otherwise propose **surgical**. Ask when uncertain, let the user confirm or
+override, and record the decision in the ticket section. A surgical fix goes
+directly to the applicable specialist with the troubleshooting section as
+context and no new planning record. A substantial fix resumes the existing
+route for the selected surface. In either case, wait for a separate explicit
+implementation request.
+
+#### Route state and handoff contract
+
+Always report the selected route, current state, required next planning action,
+exact recovery-record path, and implementation handoff. Route recovery records
+are `specs/<JIRA>-<slug>/` for new reports, `openspec/changes/<JIRA>-<slug>/`
+for Fabric development, and the matching `## <JIRA>` section in
+`TROUBLESHOOTING.md` for investigations and surgical fixes. Update that record's
+status or task markers as work completes. Planning completion never starts
+implementation automatically; a later explicit request is required.
+
+The repository record roles are fixed: `MEMORY.md` contains only durable,
+vendor-neutral facts; route records contain planned work and progress;
+`TROUBLESHOOTING.md` contains investigation history and shared guidance;
+`SESSION_RESUME.md` is a local, gitignored convenience only; Jira contains
+external ticket status and comments. No workflow step may depend on
+`SESSION_RESUME.md` existing.
+
 ## Step 3 — Finish-ticket trigger
 
 **Trigger phrases** (case-insensitive):
@@ -183,16 +290,30 @@ When one of these matches:
 Run this after **every** `git commit` the agent performs during this
 session, in order:
 
-1. Ask the user directly, verbatim: "Add a summary comment to the Jira
+1. Confirm that the local `SESSION_RESUME.md` was updated after the commit
+   with the commit identifier, validation performed, current planning or
+   implementation state, and next resume point. It is gitignored, untracked,
+   and must not be staged. If validation failed or the handoff is incomplete,
+   record that state before continuing.
+2. Ask the user directly, verbatim: "Add a summary comment to the Jira
    ticket for this commit?"
-2. IF the user answers no / declines → do nothing further; continue with
+3. IF the user answers no / declines → do nothing further; continue with
    whatever comes next.
-3. IF the user answers yes:
+4. IF the user answers yes:
    1. Determine `<KEY>` using the exact same procedure as Step 3.1.
-   2. Write a 1-3 sentence **plain-English summary** of what the commit
+   2. IF the commit touched any files under a `*.Report/` or
+      `*.SemanticModel/` project folder → run
+      `../git-branch-guard/assets/pbip-pr-summary/commit_diff_summary.ps1`
+      (or `.sh`) with no arguments (it defaults to `HEAD~1..HEAD`) to get a
+      grounded, structurally-diffed bullet list instead of reading the raw
+      JSON yourself — UI/JSON changes (slicer field order, formatting,
+      filters) are unreliable to summarize by eye. Use its output as the
+      basis for the summary below; if the script errors or isn't available,
+      fall back to reading the diff directly.
+   3. Write a 1-3 sentence **plain-English summary** of what the commit
       changed and why — a human-readable explanation, not the raw commit
       message or diff pasted verbatim.
-   3. Call the add-comment tool with `{ cloudId, issueIdOrKey: <KEY>,
+   4. Call the add-comment tool with `{ cloudId, issueIdOrKey: <KEY>,
       commentBody: <the plain-English summary> }`. Note the body parameter
       is named `commentBody`, not `body`.
       - IF it errors → tell the user the exact error text and that they
@@ -210,10 +331,10 @@ session, in order:
    2. "Give me a short kebab-case description for the branch name."
 3. Hand off the user's two answers directly to `git-branch-guard` to
    create/validate the branch, exactly as it works today. Do not attempt any
-   further Jira MCP calls for the rest of this flow (Steps 1-4 above are
-   skipped entirely in fallback mode; Step 4's post-commit prompt should
-   still be offered, but if the user says yes, tell them the comment can't
-   be posted automatically and they should add it manually in Jira).
+   further Jira MCP calls for the rest of this flow. After branch validation,
+   continue with Step 2.7's category gate. Step 4's post-commit prompt should
+   still be offered, but if the user says yes, tell them the comment can't be
+   posted automatically and they should add it manually in Jira.
 
 ---
 

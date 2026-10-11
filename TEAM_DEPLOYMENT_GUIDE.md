@@ -149,7 +149,7 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 .\setup-team-plugins.ps1 -RepositoryPath "C:\Development\powerbi-agentic-plugins"
 
 # Verify
-copilot /plugin list
+copilot plugin list
 ```
 
 **Support:** Designate a "Skill Champion" (see Phase C) for troubleshooting
@@ -498,3 +498,14 @@ Why/why not? [...]
 
 **Latest Version:** [Date]  
 **Fork:** https://github.com/YuriChadour/powerbi-agentic-plugins
+# Harness targets
+
+The setup entry point supports Codex and Copilot independently. An omitted target means `All`:
+
+```powershell
+.\setup-team-plugins.ps1 -Target Codex
+.\setup-team-plugins.ps1 -Target Copilot
+.\setup-team-plugins.ps1 -Target All -Force
+```
+
+Codex owns only its projection under `%USERPROFILE%\.codex` and its managed entries in `config.toml`; Copilot owns only `.copilot`. Same-name MCP entries that are not marked as installer-owned are reported as conflicts and are never overwritten; remove or rename the user-owned entry before retrying. Backups are timestamped below the selected target, and artifacts older than seven days are pruned. To recover, restore the latest target backup and rerun with the corresponding `-Target`.

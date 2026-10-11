@@ -35,12 +35,19 @@ For Claude Code: `.\setup-claude-plugins.ps1 -PluginName devops`
 ### `jira-workflow`
 
 Fetches, assigns, and transitions Jira tickets via the Atlassian MCP when a
-user starts work ("I want to work on FIN-1740" → assigns to the current user
-and transitions to **In Progress**) or finishes work ("I'm done with this
-ticket" → transitions to **Ready to Test**). After every commit, asks the
-user whether to post a plain-English summary comment to the ticket. Falls
-back to asking for ticket type (feature/bugfix) and a short description when
-no Jira/Atlassian MCP is available. See
+user starts or finishes work. After branch validation, it always asks the user
+to choose exactly **Bug**, **Report Development Story**, **Fabric Development**,
+or **Other**; Jira metadata never selects the route. Report stories then choose
+new report/dashboard, existing report change, model-only, or publishing/
+management. New reports use the approved `brief.md` → `powerbi-architect`
+canonical specification → explicit `powerbi-developer` handoff. Fabric
+development uses a Jira-prefixed OpenSpec change, while bugs and investigative
+Other work use the resumable `TROUBLESHOOTING.md` record. Planning never starts
+implementation automatically, and cancellation leaves routing unresolved.
+
+After every commit, the skill asks whether to post a plain-English summary
+comment to the ticket. It falls back to asking for ticket type (feature/bugfix)
+and a short description when no Jira/Atlassian MCP is available. See
 `.github/prompts/jira-workflow.md` for sample prompts.
 
 ### `git-branch-guard`

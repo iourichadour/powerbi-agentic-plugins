@@ -1,7 +1,7 @@
 # Spec Lifecycle
 
 Optional OpenSpec bridge for `powerbi-architect`-authored specs. Adds change-tracking, status, and
-archive history on top of the existing `specs/<Name>.spec.md` format — without changing where
+archive history on top of the existing `specs/<work-item>/<Name>.spec.md` format — without changing where
 specs live or how `powerbi-architect` authors them.
 
 ## What it does
@@ -19,7 +19,7 @@ using OpenSpec's proposal/specs/design/tasks lifecycle.
 
 ### `openspec-bridge`
 
-Converts an existing `specs/<Name>.spec.md` into OpenSpec change artifacts (`proposal.md`,
+Converts an existing `specs/<work-item>/<Name>.spec.md` into OpenSpec change artifacts (`proposal.md`,
 `specs/<capability>/spec.md`, `design.md`, `tasks.md`), preserving all content — including any
 verbatim reference implementation — instead of re-deriving it. Includes an explicit decision rule
 for when OpenSpec tracking is worth adopting versus when a spec should stay a plain single file.

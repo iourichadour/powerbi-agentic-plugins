@@ -24,7 +24,20 @@ resolves the cloudId, fetches FIN-1740, assigns it to you, transitions it to
 **In Progress**, slugifies the ticket summary into a branch short
 description, then hands off to `git-branch-guard` to create
 `feature/FIN-1740-<short-description>` (or `bugfix/...` if the ticket is a
-bug).
+bug). After the branch is valid, it must ask the user to choose exactly one
+of **Bug**, **Report Development Story**, **Fabric Development**, or **Other**;
+the Jira issue type and wording are context only and never select the answer.
+
+For **Report Development Story**, the follow-up choices are new report or
+dashboard, existing report change, model-only, and publishing/management. New
+reports require `powerbi-report-planning` to approve
+`specs/<JIRA>-<slug>/brief.md`, then `powerbi-architect` to create the
+canonical specification before an explicit `powerbi-developer` request.
+Fabric development creates or resumes a Jira-prefixed OpenSpec change without
+running apply automatically. Bugs and investigative Other work resume a
+matching `TROUBLESHOOTING.md` section; non-investigative Other pauses for the
+user to name the surface, workflow, tools, and planning-record preference.
+Cancelling any category prompt stops before planning or implementation.
 
 ## Finishing a ticket
 

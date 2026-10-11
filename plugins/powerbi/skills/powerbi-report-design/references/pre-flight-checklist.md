@@ -10,9 +10,9 @@ For brownfield mode, also walk
 
 ## Identity (Step 1)
 
-- [ ] **Single source of truth** — if writing files, `_brief/report-spec.md`
-      contains the user-readable report spec and exactly one fenced `yaml`
-      block beginning with `Design Brief:`.
+- [ ] **Single source of truth** — for planned report work, the approved architect
+      specification contains exactly one fenced `yaml` block beginning with
+      `Design Brief:`. The planning brief is an upstream input.
 - [ ] **Markdown/YAML alignment** — every page, core visual, design identity,
       model requirement, and delivery boundary promised in Markdown is present
       in the embedded YAML. If they conflict, fix the spec before authoring.

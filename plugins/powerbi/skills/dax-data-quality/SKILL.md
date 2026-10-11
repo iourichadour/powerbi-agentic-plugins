@@ -32,7 +32,7 @@ This skill creates a **repeatable Data Quality (DQ) framework** with **separatio
 
 This skill generates **Power Query (M) transformations** to add per-row DQ flags, plus **TMDL files** for DAX aggregation logic in PBIP projects. Before implementing output:
 
-1. **Read the [PBIP skill](../pbip/SKILL.md)** — Covers Power BI Project structure, `.pbip` filesystem layout, and cascading renames.
+1. **Read the [PBIP project guidance](../semantic-model-authoring/references/pbip.md)** — Covers Power BI Project structure and `.pbip` filesystem layout.
 2. **Read the [TMDL skill](../tmdl/SKILL.md)** — For DAX measures and `DQ_Rules` table structure (indentation rules, name quoting, property depth, `///` descriptions).
 3. **Ensure `pbip-validator` agent is available** — You will run it in Step 5 to validate generated TMDL before opening in Power BI Desktop.
 

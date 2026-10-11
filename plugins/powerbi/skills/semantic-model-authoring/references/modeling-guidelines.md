@@ -101,19 +101,28 @@ Calculated columns are evaluated during data refresh for every row. Use them spa
 
 > For DAX language coding patterns, syntax rules, and best practices, see [dax-guidelines.md](dax-guidelines.md).
 
+Every measure lives in exactly one of two dedicated tables — never scattered across fact/dimension tables:
+
+- `_Measures` - reusable business measures: KPIs, aggregations, ratios, time intelligence, variances, or anything that could be reused by other reports, dashboards, Excel, paginated reports, Data Agents, or Copilot.
+- `_ReportMeasures` - report-only presentation/utility measures: dynamic titles/subtitles, selected-filter labels, tooltip text, conditional-formatting colors, SVG measures, sort-order/navigation/bookmark logic.
+
+Classify each measure in order, first match wins: represents a business metric/KPI/reusable calculation -> `_Measures`; could reasonably be reused outside the current report -> `_Measures`; may be consumed by Data Agents, Copilot, Excel, paginated reports, or future reports -> `_Measures`; exists only to support report rendering, formatting, navigation, or visual interactions -> `_ReportMeasures`; uncertain -> default to `_Measures`. The semantic model is the enterprise business layer and reports are consumers of it, so never place a reusable business calculation in `_ReportMeasures`. When reorganizing an existing model, actively promote misplaced business measures out of report/utility tables and into `_Measures`.
+
+Both tables are hidden, relationship-less calculated tables (the [Table Creation Rules](#tables) exception for utility tables) — see [tmdl-guidelines.md § Calculated Tables](tmdl-guidelines.md#calculated-tables) for the TMDL pattern.
+
 **DO:**
 - Create explicit measures for aggregatable numeric columns. When creating a measure, make sure the numeric column is hidden and doesn't have the same name.
-- Distribute measures across relevant tables (avoid the single "Measures" table).
+- Store every measure in `_Measures` or `_ReportMeasures` per the classification above — do not scatter measures across fact/dimension tables.
 - Verify referenced columns/tables exist
 - Always set an appropriate `formatString` for the measure (see [Format String Reference](#format-string-reference)).
 - Add `description` to measures to explain business logic, especially for complex calculations.
-- Use `displayFolder` to organize measures into logical groups within each table.
+- Use `displayFolder` to organize measures into logical groups within `_Measures`/`_ReportMeasures`.
 - **Only when working against a online database**
   - When creating a measure test it with a simple query.
   - Ensure the measure has no errors. Run the query `EVALUATE INFO.MEASURES()` and inspect the column `ErrorMessage`.
 
 **DON'T:**
-- Store all measures in a single dedicated table.
+- Place a reusable business calculation in `_ReportMeasures`.
 - Create untested measures.
 - Set `dataType` — measure data types are inferred from DAX expressions at runtime.
 - Create duplicate measures (two measures with the same DAX expression).

@@ -82,9 +82,11 @@ repo's own `TROUBLESHOOTING.md`.
    (created alongside `TROUBLESHOOTING.md` — see
    `assets/repo-memory-convention.template.md`) and any other repo-memory
    notes.
-2. IF present → read it before doing fresh discovery. It exists to hold
-   durable facts (e.g. which environment/workspace to query, known
-   gotchas) that are cheaper to remember than to rediscover every session.
+2. IF present → read `MEMORY.md` through the pointer before doing fresh
+   discovery. The pointer must reference only `MEMORY.md`; it is for durable,
+   vendor-neutral project facts, not ticket status or active investigation
+   state. Read `TROUBLESHOOTING.md` separately for ticket history and shared
+   troubleshooting guidance.
 3. IF absent (first run in this repo) → create it from
    `assets/repo-memory-convention.template.md` now, alongside the
    `TROUBLESHOOTING.md` bootstrap in Step 3.
@@ -150,6 +152,23 @@ depends entirely on what this repo's data platform actually is.
    the shared "Standard troubleshooting environment" section (not just the
    ticket's own section).
 
+4. If evidence is unavailable, the connection is not permitted, or candidates
+   cannot be confirmed, record the blocker and leave the ticket status as
+   `Unresolved`, `Blocked`, or another explicitly non-resolved state. Never
+   convert an unverified candidate into a confirmed root cause.
+
+5. After updating the ticket-specific section, extract reusable facts into the
+   shared guidance area when the investigation produced any of these:
+   - a known-good environment, connection, profile, or tool;
+   - a diagnostic shortcut or repeatable query/check;
+   - a known platform or repository limitation;
+   - a prevention rule or guardrail; or
+   - a remediation pattern that applies beyond this ticket.
+
+   Keep the shared entry vendor-neutral where possible, factual, and usable by
+   a cold-start agent. Do not move ticket status, branch names, next steps, or
+   unresolved hypotheses into shared guidance.
+
 ## Step 9 — Report back to Jira (hand off to `jira-workflow`)
 
 1. Invoke `jira-workflow` Step 4 (post-commit-style comment flow, or its
@@ -162,6 +181,38 @@ depends entirely on what this repo's data platform actually is.
    the issue first, defer it, or route it differently. Use
    `jira-workflow` Step 3 only after the user explicitly confirms which
    transition they want.
+
+3. Ask the user to choose what happens next: **fix**, **defer**, or
+   **transition**. Root-cause confirmation and the Jira findings comment do
+   not authorize implementation.
+
+## Step 10 — Apply the post-diagnosis fix gate
+
+Run this step only when the user chooses **fix** after a confirmed root cause.
+
+1. Ask for the fix surface: **Power BI report**, **semantic model**,
+   **Fabric**, or **Other**. Ask the user to state the intended change in one
+   sentence. Do not reuse the original Jira category as the fix surface
+   without asking; the correct surface may only become clear after diagnosis.
+2. Run the applicable reference scan before classifying a rename or removal.
+   For report and model objects, use the `powerbi-report-authoring`
+   reference-scan capability. Propose **substantial** when either trigger is
+   present:
+   - a rename or removal has dependents; or
+   - the fix introduces a new object or structural change, such as a TMDL
+     table, role, calculation group, relationship, or report page.
+3. Propose **surgical** when neither trigger applies. If the scan is
+   unavailable or the blast radius is unclear, ask the user rather than
+   guessing. The user may confirm or override the proposal; record the final
+   classification and rationale in the ticket's `TROUBLESHOOTING.md` section.
+4. For a surgical fix, hand off directly to the applicable specialist with the
+   ticket section as the planning record. Do not create a new brief,
+   specification, or OpenSpec change.
+5. For a substantial fix, resume or create the existing planning route for the
+   selected surface, using the troubleshooting section as input. Report the
+   exact handoff record and wait for an explicit implementation request.
+6. Selecting a surface and size only chooses a destination. It never starts
+   implementation automatically.
 
 ## Worked example (compressed)
 

@@ -4,12 +4,28 @@ Plugins that turn GitHub Copilot into a specialist for Power BI and Microsoft Fa
 
 ## 📦 Plugins
 
+### Team setup (Codex, Copilot, or both)
+
+Run the unified installer from a checkout. With no target specified it installs both harnesses:
+
+```powershell
+.\setup-team-plugins.ps1
+.\setup-team-plugins.ps1 -Target Codex
+.\setup-team-plugins.ps1 -Target Copilot -PluginName powerbi
+.\setup-team-plugins.ps1 -Target Codex -AllowGitMetadataWrites
+```
+
+Codex skills are projected to `$env:USERPROFILE\.codex\skills`, and checked-in Codex `.toml` adapters for top-level agent Markdown files are projected under `.codex\agents` (the source agent Markdown remains in the repository for Copilot/Claude). Source MCP definitions are registered in `.codex\config.toml`. Copilot remains under `.copilot`; the two targets do not share configuration. Use `-Force` to update installer-owned files; backups are timestamped under the selected target's directory and artifacts older than seven days are pruned. A same-named user-owned Codex MCP entry is preserved and setup stops with remediation instead of overwriting it. Restart Codex after installation. Custom agents are spawnable subagents, not replacements for the primary persona; ask Codex to spawn `powerbi-architect` or `powerbi-developer` by name, then use `/agent` to inspect or switch to the resulting thread.
+
+`-AllowGitMetadataWrites` is opt-in for trusted repositories. It backs up and updates the user-scoped Codex config so agents can perform Git metadata operations; it does not add the user config to this repository.
+
 | Plugin                           | What it does                                                                                                                      | 
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | 
-| **[powerbi](./plugins/powerbi)** | Create semantic models, author reports in PBIR, write DAX queries, explore published datasets, apply modeling best practices, and **optimize reports for Report Copilot pane readiness**. | 
+| **[powerbi](./plugins/powerbi)** | Create semantic models, author interactive PBIR/PBIP and paginated RDL reports, write DAX queries, explore published datasets, apply modeling best practices, and **optimize reports for Report Copilot pane readiness**. |
 | **[fabric](./plugins/fabric)**   | Navigate workspaces, import/export item definitions, call Fabric & Power BI REST APIs, run jobs, and manage OneLake files.        |
 | **[devops](./plugins/devops)**   | Enforce branch hygiene, standard Azure DevOps branch policies, and team-safe Git workflows.                                      |
 | **[skill-creator](./plugins/skill-creator)** | Official Anthropic skill-authoring toolkit — create new skills, run with-skill/baseline benchmark evals, optimize trigger descriptions, and package `.skill` files. Vendored unmodified from [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official). |
+| **[spec-lifecycle](./plugins/spec-lifecycle)** | Optional OpenSpec bridge for `powerbi-architect` specs — adds change-tracking, status, and archive history on top of `specs/<work-item>/<Name>.spec.md` without altering how those specs are authored. |
 
 Every plugin follows the same structure:
 
@@ -55,7 +71,7 @@ If you're setting up plugins for a **team or group**, use the team-friendly setu
 
 3. **Verify installation** (each team member):
    ```powershell
-   copilot /plugin list
+   copilot plugin list
    ```
 
 **Benefits:**
@@ -92,6 +108,30 @@ claude plugin list                              # verify: powerbi, fabric, devop
 Restart Claude Code (or run `/plugin`) after installing so the new skills and agents load.
 The Copilot/VS Code path (`setup-team-plugins.ps1`) is independent — running one does not
 affect the other.
+### End-of-session handoff
+
+Update durable facts in `MEMORY.md` and route progress in the route recovery
+record. Use the local `SESSION_RESUME.md` only as a convenience, then run the
+handoff script with the exact publishable files. It validates OpenSpec, stages
+only the declared handoff files, commits, updates the local resume after the
+commit, pushes the current Jira branch, and can create a pull request targeting
+`DEV`:
+
+```powershell
+.\scripts\end-session.ps1 `
+  -OpenSpecChange enable-local-vscode-dax-tests `
+  -ResumePath SESSION_RESUME.md `
+  -StagePath @('MEMORY.md','openspec/changes/enable-local-vscode-dax-tests/tasks.md') `
+  -CommitMessage "docs: update session handoff"
+```
+
+For report work, add `-PowerBiRecoveryPath specs/<JIRA>-<slug>` to stage only
+that explicitly selected recovery folder. `-ResumePath` is never staged. If
+only the local handoff changed, the script reports that no publishable handoff
+changes exist and does not commit. It prints a Jira-ready update containing the
+commit SHA, PR URL, change name, and remaining task count; post that update
+through the configured Jira workflow, which does not embed Jira credentials or
+guess ticket transitions.
 
 ### GitHub Copilot CLI Setup (Individual Users)
 
@@ -216,10 +256,12 @@ See [prep-powerbi-for-report-copilot skill](plugins/powerbi/skills/prep-powerbi-
 
 ### Spec driven development
 
-- Create a Fabric workspace
-- Using the [powerbi-architect](plugins/powerbi/agents/powerbi-architect.md) agent
-- Run the prompt below
-- Using the [powerbi-developer](plugins/powerbi/agents/powerbi-developer.md) agent ask to implement the spec created by the architect agent
+For a new report, start with `powerbi-report-planning`. It creates an approved
+`specs/<JIRA>-<slug>/brief.md`; [powerbi-architect](plugins/powerbi/agents/powerbi-architect.agent.md)
+then creates the canonical `<Name>.spec.md` in the same folder, and
+[powerbi-developer](plugins/powerbi/agents/powerbi-developer.agent.md) implements it. See the
+[Power BI new report workflow](plugins/powerbi/README.md#new-report-workflow) for ownership and
+the optional mock input.
 
 Prompt:
 ```

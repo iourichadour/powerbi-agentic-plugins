@@ -13,7 +13,7 @@ Prefer in-repo code paths over packaged third-party visuals. In-repo code (Deneb
 6. Private .pbiviz            -- avoid; external risk plus you own the build pipeline
 ```
 
-Reach for a packaged custom visual only when the interaction model genuinely requires it: a rich pre-built hierarchy/network slicer, a specialized gauge type, or a visual category with no reasonable in-repo alternative. If the user wants a fully custom-built visual (a `.pbiviz`), use the `power-bi-custom-visuals` skill to scaffold, build, and package it.
+Reach for a packaged custom visual only when the interaction model genuinely requires it: a rich pre-built hierarchy/network slicer, a specialized gauge type, or a visual category with no reasonable in-repo alternative. If the user wants a fully custom-built visual (a `.pbiviz`), explain that scaffolding, building, and packaging it requires separately installed custom-visual development tooling outside this report-design skill.
 
 ## AppSource and Org-Store Tradeoffs
 

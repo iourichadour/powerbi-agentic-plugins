@@ -168,8 +168,8 @@ A: Yes! All output files (markdown + scripts) are version-controlled. Commit to 
 ## Support
 
 - 📖 **Documentation:** See [SKILL.md](SKILL.md) for detailed workflow, templates, and troubleshooting
-- 🐛 **Report Issues:** [GitHub Issues](../../issues)
-- 💬 **Discussions:** [GitHub Discussions](../../discussions)
+- 🐛 **Report Issues:** [GitHub Issues](https://github.com/YuriChadour/powerbi-agentic-plugins/issues)
+- 💬 **Discussions:** [GitHub Discussions](https://github.com/YuriChadour/powerbi-agentic-plugins/discussions)
 - 🤝 **Contributing:** See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Roadmap

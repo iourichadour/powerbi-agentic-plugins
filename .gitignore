@@ -15,3 +15,10 @@ chats/
 # Claude Code machine-local permission cache
 .claude/settings.local.json
 
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+Microsoft/
+
+/SESSION_RESUME.md
