@@ -46,3 +46,10 @@
 - [x] 7.2 Add installer backup cleanup using a seven-day retention boundary; delete only artifacts older than seven days, preserve current artifacts, tolerate a missing backup directory, and verify the behavior with dated fixtures
 - [x] 7.3 Make Codex MCP projection ownership-safe: create missing registrations, update installer-owned registrations, and fail without modifying non-installer-owned collisions; verify all three branches with isolated fixtures
 - [x] 7.4 Update setup documentation and acceptance output to describe conditional ADOMD.NET provisioning, backup cleanup, and Codex collision remediation, then run the setup integration tests, MCP smoke test, and strict OpenSpec validation
+
+## 8. Claude Code compatibility
+
+- [x] 8.1 Rewrite Claude agent files `plugins/powerbi/agents/powerbi-architect.md` and `powerbi-developer.md` with the planning-brief, embedded Design Brief, and work-folder contract, keeping their Claude frontmatter (`name`, Claude `tools`, `model`); verify no Copilot-only tool names (`vscode`, `todo`) or Copilot model IDs remain
+- [x] 8.2 Add Bash to the architect's Claude tools, since its research step runs the `fab` CLI and downloads files; verify the tool list covers every step the body requires
+- [x] 8.3 Run `claude plugin validate --strict` on `plugins/powerbi/agents` and `plugins/powerbi/skills`; verify both pass
+- [ ] 8.4 Decide whether the Copilot-format `.agent.md` and `.toml` duplicates stay alongside the Claude `.md` agents; verify whether Claude Code loads both copies of a same-named agent before any removal

@@ -30,7 +30,7 @@ The Jira workflow currently treats assignment, `In Progress`, and branch setup a
 
 ## Impact
 
-- Affected workflow documentation and agent orchestration under `plugins/devops/`.
+- Affected workflow documentation and agent orchestration under `plugins/devops/`, including the Claude Code agent `plugins/devops/agents/devops.md`.
 - Power BI report-planning and architect handoff documentation under `plugins/powerbi/`.
 - Fabric planning and implementation orchestration under `plugins/fabric/`.
 - `TROUBLESHOOTING.md` and the troubleshooting workflow's shared guidance contract.

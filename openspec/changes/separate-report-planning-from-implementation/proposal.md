@@ -39,6 +39,7 @@ The planning workflow should behave as a planning-only gate, similar to `openspe
 
 - `plugins/powerbi/skills/powerbi-report-planning/SKILL.md` and its template under `assets/templates/`
 - `plugins/powerbi/agents/powerbi-architect.agent.md` and `.toml`
+- `plugins/powerbi/agents/powerbi-architect.md` and `powerbi-developer.md` (Claude Code agents)
 - `plugins/powerbi/agents/powerbi-developer.agent.md` and `.toml`
 - `plugins/powerbi/skills/powerbi-report-authoring/SKILL.md`
 - `plugins/powerbi/skills/powerbi-report-design/SKILL.md`, `references/design-brief.md`, `references/pre-flight-checklist.md`

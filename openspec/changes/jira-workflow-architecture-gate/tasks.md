@@ -39,3 +39,9 @@
 - [x] 5.2 Update `plugins/devops/skills/troubleshooting-workflow/SKILL.md` with the reusable-guidance and post-resolution handoff rules; verify it remains compatible with the existing Jira and branch handoffs
 - [x] 5.3 Add or update validation fixtures for every top-level category, report subtype, Fabric OpenSpec state, troubleshooting resume/update path, Other cancellation path, `SESSION_RESUME.md` local commit handoff, and `end-session.ps1` staging behavior
 - [x] 5.4 Run `openspec validate jira-workflow-architecture-gate --strict` and repository-local documentation/agent checks; verify all revised artifacts and referenced paths are valid
+
+## 6. Claude Code compatibility
+
+- [x] 6.1 Update the Claude agent `plugins/devops/agents/devops.md` with the category gate (Step 2.7), its route handoffs, and the `SESSION_RESUME.md` step after each commit; keep its Claude-only Bash `.sh` convention and Bash tooling; verify the post-commit numbering matches `devops.agent.md`
+- [x] 6.2 Run `claude plugin validate --strict` on `plugins/devops/agents` and `plugins/devops/skills`; verify both pass
+- [x] 6.3 Verify the Step 2.7 and Step 4 references in `devops.md` resolve to sections in `plugins/devops/skills/jira-workflow/SKILL.md`
