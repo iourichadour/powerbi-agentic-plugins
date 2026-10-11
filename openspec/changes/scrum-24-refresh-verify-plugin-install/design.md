@@ -14,7 +14,6 @@
 **Non-Goals**
 
 - Changing the Jira MCP server or its tool contract.
-- Installing `az` on this machine.
 - Changing the protected-branch list or the `[A-Z]+-\d+` key rule.
 
 ## Decisions
@@ -138,7 +137,7 @@ flowchart TD
     E -- approved --> G[Run setup-claude-plugins.ps1 to refresh the marketplace and install powerbi, fabric, devops, skill-creator]
     E -- declined --> H[Record decision, skip]
     G --> M{FabricIQ MCP server missing?}
-    M -- restore --> N[Ask before changing MCP config]
+    M -- restore --> N[Comes with the fabric plugin .mcp.json; FabricIQ auth helper needs az; az installed 2026-10-11, works after az login]
     M -- skip --> O[Record decision]
     N --> I
     O --> I
@@ -193,6 +192,7 @@ flowchart TD
 - Trigger lists are duplicated, so they can drift. Mitigation: the spec is the source of truth, and the test plan checks both files.
 - URL-based host detection misses unusual remote hosts. Mitigation: unknown hosts are reported as unsupported, not guessed.
 - The change edits the `~/.claude` install, which affects every project on this machine. Mitigation: the install step waits for explicit approval and uses the supported `setup-claude-plugins.ps1`.
+- The fabric plugin's `.mcp.json` registers two MCP servers when the plugin loads: `fabric-mcp-server` (runs `npx -y @microsoft/fabric-mcp@latest`) and `FabricIQ` (HTTP, auth via `az account get-access-token`). So `az` is also needed for FabricIQ, not only for Azure DevOps PRs. Mitigation: `az` is now installed (task 5.4), so FabricIQ works once the user runs `az login`; documented in tasks 3.3 and 5.1; the user can disable the servers if unwanted.
 - The byte order mark may not be the only reason `pql-tester` fails to load. Mitigation: task 4.4 checks in a fresh session and falls back to the `tools:` MCP name.
 - The trigger-phrase parity check in `tools/validate-skills.ps1` adds validator scope. It is required, not optional: it is what guarantees "work on <KEY>" triggers `jira-workflow` in every dialect, so a future edit to one file cannot silently break triggering.
 - Adding Claude-format Fabric agents adds files that must stay equivalent to the other dialects. Mitigation: only added with approval.

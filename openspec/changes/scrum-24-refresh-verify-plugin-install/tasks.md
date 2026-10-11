@@ -16,14 +16,14 @@
 
 ## 3. Plugin install refresh (needs approval: `~/.claude`)
 
-- [ ] 3.0 Plan the refresh around `setup-claude-plugins.ps1` (registers or refreshes the marketplace, installs all or one plugin); show the user the exact command and what it will change in `~/.claude` before running it
-- [ ] 3.1 Compare installed powerbi (0.3.0), fabric (0.2.0, same version number but different content), devops (0.1.0), and skill-creator with the repo marketplace.json; compare content as well as version numbers, because fabric matches by number but not by content; list missing skills, `common/` docs, and scripts; verify the list before any change
-- [ ] 3.2 Install missing powerbi skills (dax-test-framework, dax-unit-testing, paginated-report-authoring); verify every repo powerbi skill is in the cache
-- [ ] 3.3 Install the 12 missing fabric skills and `common/` docs; decide whether to restore the FabricIQ HTTP MCP server (MCP config change, needs approval); verify skill list matches the repo
-- [ ] 3.4 Install the devops troubleshooting-workflow skill and .ps1/.sh scripts; verify devops version reads 0.2.0
-- [ ] 3.5 Replace the cached devops `git-branch-guard` script `check_git_branch_guard.txt` with the repo's `check_git_branch_guard.ps1` and `.sh` (version 0.2.0); verify the cache has no `.txt` copy and `SKILL.md` references resolve
+- [x] 3.0 Plan the refresh around `setup-claude-plugins.ps1` (registers or refreshes the marketplace, installs all or one plugin); show the user the exact command and what it will change in `~/.claude` before running it Done 2026-10-11: ran `setup-claude-plugins.ps1 -PluginName <p> -Force -SkipDesktopBridge` for powerbi, fabric, devops with the user's approval; `-SkipDesktopBridge` avoided the global npm install of the Desktop Bridge CLI
+- [x] 3.1 Compare installed powerbi (0.3.0), fabric (0.2.0, same version number but different content), devops (0.1.0), and skill-creator with the repo marketplace.json; compare content as well as version numbers, because fabric matches by number but not by content; list missing skills, `common/` docs, and scripts; verify the list before any change Done 2026-10-11: compared version and content per plugin against the cache
+- [x] 3.2 Install missing powerbi skills (dax-test-framework, dax-unit-testing, paginated-report-authoring); verify every repo powerbi skill is in the cache Done 2026-10-11: powerbi 0.5.0 cache has all 14 repo skills (dax-test-framework, dax-unit-testing, paginated-report-authoring added) and all 11 agent files
+- [x] 3.3 Install the 12 missing fabric skills and `common/` docs; decide whether to restore the FabricIQ HTTP MCP server (MCP config change, needs approval); verify skill list matches the repo Done 2026-10-11: fabric cache now has all 11 repo skills, 4 agent files, and `common/`. The plugin's `.mcp.json` came with it and defines `fabric-mcp-server` (npx @microsoft/fabric-mcp) and `FabricIQ` (HTTP). FabricIQ's auth helper runs `az account get-access-token`, so it will fail to authenticate while `az` is not installed
+- [x] 3.4 Install the devops troubleshooting-workflow skill and .ps1/.sh scripts; verify devops version reads 0.2.0 Done 2026-10-11: devops 0.2.0 cache has the troubleshooting-workflow skill, `.ps1`/`.sh` scripts, and all 3 agent files
+- [x] 3.5 Replace the cached devops `git-branch-guard` script `check_git_branch_guard.txt` with the repo's `check_git_branch_guard.ps1` and `.sh` (version 0.2.0); verify the cache has no `.txt` copy and `SKILL.md` references resolve Done 2026-10-11: active devops 0.2.0 has `check_git_branch_guard.ps1` and `.sh`; the old 0.1.0 folder (with the `.txt`) is still on disk but inactive
 - [x] 3.6 Decide on installing spec-lifecycle (0.1.0); if installed, enable it at user scope; record the decision in this file. Decision (2026-10-11): installed and enabled at user scope by the user's request, using `setup-claude-plugins.ps1 -PluginName spec-lifecycle`; `claude plugin list` shows `spec-lifecycle@powerbi-agentic-plugins` 0.1.0 enabled. The run also refreshed the local marketplace registration from the repo; no other plugin was changed (powerbi 0.3.0 and devops 0.1.0 remain stale). Restart Claude Code or run `/plugin` to load it
-- [ ] 3.7 Confirm installed versions match the repo `marketplace.json` (powerbi 0.5.0, fabric 0.2.0, devops 0.2.0, skill-creator 1.0.0) and every repo skill folder is present in the cache; record the check result
+- [x] 3.7 Confirm installed versions match the repo `marketplace.json` (powerbi 0.5.0, fabric 0.2.0, devops 0.2.0, skill-creator 1.0.0) and every repo skill folder is present in the cache; record the check result Done 2026-10-11: `claude plugin list` shows powerbi 0.5.0, fabric 0.2.0, devops 0.2.0, skill-creator 1.0.0, spec-lifecycle 0.1.0, all enabled; every repo skill and agent file is present in the matching cache folder. The stale `powerbi/0.3.0` and `devops/0.1.0` cache folders were sent to the Recycle Bin on 2026-10-11 with the user's approval; nothing in `installed_plugins.json` pointed at them
 
 ## 4. Agent updates
 
@@ -44,7 +44,9 @@
 
 - [x] 5.1 Document in devops SKILL.md and DEVELOPER_SETUP.md that `az` is needed only for Azure DevOps repos; verify the note matches the PR-host behavior
 - [x] 5.2 Confirm `gh` is authenticated for the GitHub path (`gh auth status`, account `iourichadour`); record the output in the change Result 2026-10-11: `gh auth status` shows logged in to github.com as `iourichadour` (keyring, https)
-- [x] 5.3 Check `az --version` in PowerShell and record whether `az` is on PATH; no install happens without approval Result 2026-10-11: `az` is not on PATH in Git Bash or PowerShell; not installed, nothing installed
+- [x] 5.3 Check `az --version` in PowerShell and record whether `az` is on PATH; no install happens without approval Result 2026-10-11: `az` was not on PATH in Git Bash or PowerShell. Then installed at the user's request (see 5.4)
+
+- [x] 5.4 Installed Azure CLI 2.91.0 and the azure-devops extension on 2026-10-11 at the user's request, using `plugins/devops/skills/git-branch-guard/assets/setup_azure_cli.ps1 -SkipDefaults` (Microsoft zip, no admin; installed to `%LOCALAPPDATA%\GitHubCopilotCLI\az`, user PATH updated, default organization not set). Not logged in: the user runs `az login` interactively; open a new terminal for PATH
 
 ## 6. Validation
 
