@@ -5,7 +5,9 @@
       "command": "npx",
       "args": [
         "-y",
-        "@microsoft/powerbi-modeling-mcp@1.0.0"
+        "@microsoft/powerbi-modeling-mcp@1.0.0",
+        "--start",
+        "--accept-eula"
       ],
       "tools": [
         "*"
