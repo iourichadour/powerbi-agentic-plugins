@@ -13,6 +13,7 @@ Activated when a user needs to design, build, or maintain Power BI solutions. Co
 | Direct Lake models | "Set up a Direct Lake semantic model pointing to my lakehouse tables" |
 | DAX performance | "Why is this measure slow? Optimize it for me" |
 | Solution architecture | "Design a semantic model spec for my inventory data" |
+| Measure testing | "Certify a test for my Total Sales measure and run it" |
 | Deployment | "Deploy the semantic model to the Production workspace" |
 | **Report Copilot optimization** | **"Optimize my report so Copilot answers questions using existing visuals"** |
 
@@ -20,7 +21,7 @@ Activated when a user needs to design, build, or maintain Power BI solutions. Co
 
 ### `powerbi-developer`
 
-Activated when a user needs to implement Power BI solutions — creating and editing semantic models, writing and optimizing DAX, building reports in PBIR format, and deploying to Fabric workspaces. Uses the `semantic-model-authoring`, `powerbi-report-authoring`, and `fabric-cli` skills.
+Activated when a user needs to implement Power BI solutions — creating and editing semantic models, writing and optimizing DAX, building interactive PBIR/PBIP or paginated RDL reports, and deploying to Fabric workspaces. Uses the `semantic-model-authoring`, `powerbi-report-authoring`, `paginated-report-authoring`, and `fabric-cli` skills.
 
 ### Sample install prompt
 
@@ -32,7 +33,11 @@ For Claude Code: `.\setup-claude-plugins.ps1 -PluginName powerbi`
 
 ### `powerbi-architect`
 
-Activated when a user needs to design a Power BI solution before implementation. Analyzes data sources, designs star schemas, and produces detailed spec documents (`specs/*.spec.md`) for the `powerbi-developer` agent to execute. Does not implement — only designs.
+Activated when a user needs to design a Power BI solution before implementation. Analyzes data sources, designs star schemas, and produces detailed spec documents (`specs/*.spec.md`) for the `powerbi-developer` agent to execute. Does not implement — only designs. Plans a progressive measure-test task chain (`sync` → developer certification → `generate`+`run`, with optional additive business certification) for every new/modified measure using the `dax-unit-testing` skill's registry contract.
+
+### `pql-tester`
+
+Activated for DAX Query View test creation, measure certification, and test execution. Composes the `dax-unit-testing` registry (`setup`/`scan`/`sync`/`generate` modes) and the `dax-test-framework` execution engine (`run`/`report`/`diagnose` modes against DEV Power BI Desktop or CLOUD Fabric XMLA). Never fabricates a business-approved value, never widens a tolerance to silence a failure, and never edits a measure's own DAX expression — only its own registry, test files, and reports.
 
 ## Skills
 
@@ -43,6 +48,10 @@ Activated for any semantic model operation — creating or editing tables, measu
 ### `powerbi-report-authoring`
 
 Activated for any report operation — creating or editing Power BI reports in PBIR format, configuring visuals and pages, applying themes, rebinding reports to different semantic models, and deploying reports to Fabric workspaces.
+
+### `paginated-report-authoring`
+
+Activated for RDL paginated report workflows: semantic-model discovery, DAX-backed dataset generation, parameters and filters, tablix layouts, XML validation, and safe publication through the Power BI Imports API. Interactive PBIR/PBIP authoring remains owned by `powerbi-report-authoring`.
 
 ### `powerbi-report-design`
 
@@ -67,6 +76,14 @@ Activated when optimizing Power BI reports and semantic models for Report Copilo
 ### `dax-data-quality`
 
 Activated for building a metadata-driven Power BI Data Quality framework — Power Query row-level checks plus DAX measures for a rules registry and exceptions view.
+
+### `dax-unit-testing`
+
+Activated for DAX Query View unit-testing — the PQL.Assert assertion library, the CSV-based measure certification registry (schema, `TestCategory` taxonomy, progressive Structural/Developer/Business approval lifecycle), and deterministic validate/generate/certify/coverage automation scripts. Tests the **model** (measure logic, relationships, partitions) — a distinct concern from `dax-data-quality`/`sql-data-quality`, which test the **data**.
+
+### `dax-test-framework`
+
+Activated for executing PQL.Assert DAX Query View test suites. A reusable dual-profile (DEV Power BI Desktop / CLOUD Fabric XMLA) execution framework — typed ADOMD.NET transport, dynamic Desktop port discovery, a mandatory smoke gate, CLI/pytest/notebook entry points, JUnit XML + Markdown reports, and a runtime HTML dashboard.
 
 ### `sql-data-quality`
 

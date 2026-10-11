@@ -11,7 +11,7 @@ description: >-
   "make dashboard look professional", "choose chart type", "apply brand to
   report", "redesign report", "create design brief".
 metadata:
-  version: 0.2.0
+  version: 0.2.1
 ---
 
 > **Update Check — explicit only**
@@ -60,7 +60,7 @@ This root file covers the end-to-end workflow, theme, gotchas, and the design co
 | `references/tables-and-matrices.md` | **Read before** configuring a table or matrix — column selection, sorting, conditional formatting, sizing |
 | `references/filter-pane.md` | Read when deciding lock/hide/visible filter cards, card naming, or Applied/Available styling |
 | `references/mobile.md` | Read when the report needs a phone/portrait layout |
-| `references/custom-visuals.md` | Read when a built-in visual can't satisfy the requirement — build-vs-buy decision and routing to `power-bi-custom-visuals` |
+| `references/custom-visuals.md` | Read when a built-in visual can't satisfy the requirement — build-vs-buy decision and boundary for separately installed custom-visual development tooling |
 | `references/tooltips-and-annotations.md` | Read when adding report-page tooltips, reference lines, callouts, or guided-analytics narrative chrome |
 | `references/color.md` | Read if defining palette, color semantics, gradients, or conditional formatting |
 | `references/typography.md` | Read if overriding font sizes, type pairings, or weight conventions |

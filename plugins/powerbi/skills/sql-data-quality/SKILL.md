@@ -27,7 +27,7 @@ This skill creates a **repeatable Data Quality (DQ) framework** inside SQL Serve
 1. **SQL Server 2016+** (for `CREATE OR ALTER VIEW` and `TRY_CAST`)
    - For SQL Server 2012–2014, see fallback patterns in `references/sql-check-patterns.md` (`ISNUMERIC()`, `ISDATE()`)
 2. **MSSQL MCP tools available (optional)** — skill will auto-detect and use if present; otherwise prompts user for connection details
-3. **Read the [pbip skill](../pbip/SKILL.md)** — if deploying to PBIP projects (Power BI Desktop)
+3. **Read the [PBIP project guidance](../semantic-model-authoring/references/pbip.md)** — if deploying to PBIP projects (Power BI Desktop)
 4. **Ensure user understands the approval workflow** — no auto-execution; all VIEW generation requires explicit sign-off
 
 ---

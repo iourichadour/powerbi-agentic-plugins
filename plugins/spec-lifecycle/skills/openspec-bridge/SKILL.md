@@ -1,6 +1,6 @@
 ---
 name: openspec-bridge
-description: Bridges a powerbi-architect-authored specs/<Name>.spec.md into OpenSpec's change-tracking and archive lifecycle, without changing where the spec lives or how it's authored. Use when the user wants to "track this spec with OpenSpec", "archive this spec", "check the status of this spec/change", or "adopt OpenSpec tracking" for an existing single-file Power BI spec.
+description: Backfills a completed powerbi-architect-authored specs/<Name>.spec.md into OpenSpec's archive lifecycle, without changing where the spec lives or how it's authored. Use when the user wants to track, archive, or check the status of an existing single-file Power BI spec.
 ---
 
 # OpenSpec Bridge for powerbi-architect Specs
@@ -8,27 +8,25 @@ description: Bridges a powerbi-architect-authored specs/<Name>.spec.md into Open
 ## Purpose
 
 `powerbi-architect` authors durable, single-file specs at `specs/<Name>.spec.md` (Overview /
-Requirements / Design / Tasks). That format is intentionally self-contained and diagram-rich —
-good for a one-shot build, weak at tracking status across repeated revisions or leaving an audit
-trail when a spec is superseded or retired.
+Requirements / Design / Tasks). This skill backfills a completed spec into OpenSpec's archive
+history, preserving an audit trail without creating a second source of truth during active work.
 
 This skill does **not** change how `powerbi-architect` authors specs and does **not** replace
 `specs/*.spec.md` as the content of record. It adds an optional, opt-in lifecycle layer on top,
 using the [OpenSpec](https://github.com/openspec-dev/openspec) CLI's proposal → specs → design →
-tasks → apply → archive workflow, for the subset of specs that actually benefit from it.
+tasks → validate → archive workflow.
 
 ## When to use this (decision rule)
 
-| Situation | Use OpenSpec tracking? |
+| Situation | Outcome |
 |---|---|
-| Spec is implemented and stable — a historical record | No — leave the single file as-is |
-| One-shot build, unlikely to be revised again | No — the overhead isn't worth it |
-| Spec has already been revised more than once (version bumps, corrected sections) | Yes — delta tracking and archive history pay for themselves |
-| Spec is actively being iterated across multiple sessions/PRs | Yes |
-| User explicitly asks to "track" or "archive" a spec | Yes |
+| Spec is implemented and stable, not yet archived | **Backfill now** |
+| Spec is still being actively revised | **Skip** — wait until it is complete |
+| Spec is trivial/disposable or the user explicitly declines tracking | **Skip** |
 
-Do not suggest migrating every spec wholesale. Ask which specific spec the user means if it's
-ambiguous, and default to leaving implemented/one-shot specs untouched.
+Classify the candidate into exactly one outcome before taking action. Do not suggest migrating
+every spec wholesale. Ask which specific spec the user means if it is ambiguous. This supplement
+records finished work; it does not create a parallel lifecycle for an actively edited source spec.
 
 ## Precondition
 
@@ -41,7 +39,7 @@ specs) and OpenSpec's `openspec/specs/` (archived, delta-tracked capability spec
 different directories with the same base name. Never conflate them in conversation or in file
 paths.
 
-## Workflow: adopt tracking for an existing spec
+## Workflow: backfill archive history for an already-completed spec
 
 1. Read the target `specs/<Name>.spec.md` in full.
 2. Derive a kebab-case change name from its title (e.g. "Python DAX Test Framework" →
@@ -52,9 +50,11 @@ paths.
 4. For each required artifact, run `openspec instructions <artifact-id> --change "<name>" --json`
    and populate it **from the existing spec.md**, mapping sections instead of re-deriving them:
    - `Overview` → `proposal.md`'s Why / What Changes / Capabilities / Impact
-   - `Requirements` (EARS `THE System SHALL...` acceptance criteria) → `specs/<capability>/spec.md`,
-     converting each acceptance criterion into a `### Requirement` with `#### Scenario` (WHEN/THEN)
-     blocks per OpenSpec's delta-spec format
+    - `Requirements` (EARS `THE System SHALL...` acceptance criteria) → `specs/<capability>/spec.md`,
+      converting each acceptance criterion into a `### Requirement` with `#### Scenario` (WHEN/THEN)
+      blocks per OpenSpec's delta-spec format. For a first-time backfill, place every requirement
+      under `## ADDED Requirements` because there is no existing main spec to diff against; do not
+      invent MODIFIED, REMOVED, or RENAMED sections.
    - `Design` (architecture, diagram, components, decisions) → `design.md`'s Context / Decisions /
      Risks sections; carry the Mermaid diagram over verbatim if one exists — OpenSpec's schema
      doesn't forbid diagrams, it just doesn't prompt for one
@@ -62,17 +62,25 @@ paths.
      `specs`/`design` rules → keep it anyway, as a clearly-labeled "Reference Implementation"
      appendix at the end of `design.md`, so nothing is lost by moving to OpenSpec's stricter
      what/how separation
-   - `Tasks` → `tasks.md`, preserving the checkbox format and requirement traceability
-5. Validate with `openspec validate "<name>" --strict`.
-6. Add a one-line pointer at the top of the original `specs/<Name>.spec.md` noting it's now
-   tracked via `openspec/changes/<name>` — do not delete or rewrite the original file's content.
+    - `Tasks` → `tasks.md`, preserving the checkbox format and requirement traceability, but mark
+      every task checkbox `[x]` because the work is already complete.
+5. Run `openspec validate "<name>" --strict`.
+6. Immediately invoke the repo's `openspec-archive-change` skill for `<name>` (never assume a bare
+   `openspec archive` CLI call). Follow that skill's contract: sync the delta spec into
+   `openspec/specs/<capability-path>/spec.md` and verify the merge before moving the change; if
+   sync fails, stop and do not move the change. Archive the folder as
+   `openspec/changes/archive/<YYYY-MM-DD>-<name>/`, adding today's date only when `<name>` does
+   not already have a date prefix.
+7. Add a one-line pointer at the top of the original `specs/<Name>.spec.md` noting it is now
+   tracked via the archived OpenSpec change — do not delete or rewrite the original file's
+   content.
 
 ## Workflow: check status / archive
 
 - Status: `openspec status --change "<name>"` (or `--json` for programmatic use).
-- Once implementation is complete and verified: follow the repo's `openspec-archive-change` skill
-  (if present) or run `openspec archive "<name>"` to fold the change into `openspec/specs/` and
-  close out the lifecycle.
+- Once implementation is complete and verified, use the backfill workflow above. The archive handoff
+  must follow the repo's `openspec-archive-change` skill so delta sync and validation happen before
+  the change folder is moved.
 - Report status back to the user in plain language (not raw JSON) unless they ask for the JSON.
 
 ## Explicitly out of scope

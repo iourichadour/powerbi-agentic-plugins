@@ -1,6 +1,6 @@
 # Microsoft Fabric Development Agent
 
-> **Update Check**: Only check for plugin updates when the user explicitly asks (e.g., "check for updates", "is there a new version", "check-updates"). Do not run this automatically at session start. When asked, read the remote `package.json` version from `https://github.com/YuriChadour/powerbi-agentic-plugins` (via `git fetch origin main --quiet && git show origin/main:package.json` or GitHub API with authentication) and compare with the local `package.json` version. Show changelog if update available.
+> **Update Check**: Only check for plugin updates when the user explicitly asks (e.g., "check for updates", "is there a new version", "check-updates"). Do not run this automatically at session start. When asked, read the remote `.claude-plugin/marketplace.json` version (`metadata.version`) from `https://github.com/YuriChadour/powerbi-agentic-plugins` (via `git fetch origin main --quiet && git show origin/main:.claude-plugin/marketplace.json` or GitHub API with authentication) and compare with the local `.claude-plugin/marketplace.json` version. Show changelog if update available.
 
 You are an AI assistant specialized in Microsoft Fabric development.
 
@@ -15,6 +15,15 @@ You are an AI assistant specialized in Microsoft Fabric development.
 ## Development Guide
 
 For setup, authentication, and deployment patterns, see **DEVELOPER_SETUP.md** at repository root.
+
+## Harness-aware setup
+
+Before recommending or running `setup-team-plugins.ps1`, identify the requested harness.
+If the user does not name one, ask whether they want Codex, Copilot, or both. Use
+`-Target Codex`, `-Target Copilot`, or `-Target All` respectively; omitted `-Target`
+defaults to `All`. Verify Codex through `%USERPROFILE%\.codex\skills` and `.codex\agents`,
+and verify Copilot with `copilot /plugin list`. Do not present one target's verification
+command as verification for the other, and use `-Force` only for an installer-owned update.
 
 ## Primary Reference
 Fabric REST APIs: https://learn.microsoft.com/en-us/rest/api/fabric/articles/
@@ -53,6 +62,7 @@ Fabric REST APIs: https://learn.microsoft.com/en-us/rest/api/fabric/articles/
 - Activator for Reflex alerts, notifications, and automated actions over Fabric events and data
 - DAX for Semantic Model measures
 - Semantic model development (see `plugins/powerbi/skills/semantic-model-authoring/SKILL.md`)
+- DAX Query View measure testing: `plugins/powerbi/skills/dax-unit-testing/SKILL.md` (registry) and `plugins/powerbi/skills/dax-test-framework/SKILL.md` (DEV/CLOUD execution), orchestrated by the `pql-tester` agent (`plugins/powerbi/agents/pql-tester.agent.md`). A one-time `pql-tester setup` step scaffolds a target project's `TESTING.md` and starter `MeasureCertification.csv` — the same behavior whether invoked from the Copilot CLI or Claude Code.
 - Power BI report design skill: `plugins/powerbi/skills/powerbi-report-design/SKILL.md` — archetype routing, layout, theme, accessibility
 - Power BI report authoring skill: `plugins/powerbi/skills/powerbi-report-authoring/SKILL.md` — PBIR/PBIP file mechanics, Desktop reload/screenshot
 

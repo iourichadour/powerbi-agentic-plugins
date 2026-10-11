@@ -24,6 +24,7 @@ the separate `git-branch-guard` skill. This skill only supplies
 | `com.atlassian/atlassian-mcp-server` MCP server (primary, confirmed) | Fetch/assign/transition Jira tickets, add comments | Preferred — try first in Step 0 |
 | `atlassian-rovo-mcp` MCP server (alternate name, some orgs) | Same as above | Only if the primary is not connected |
 | `git` / `git-branch-guard` skill | Creates the branch using `ticket_key` + `short_description` | Always, after Step 2 |
+| `git-branch-guard/assets/pbip-pr-summary/commit_diff_summary.ps1`/`.sh` | Grounded, structurally-diffed PBIP change summary for a single commit | Optional, Step 4.3.2 — only when the commit touches files under a `*.Report/` or `*.SemanticModel/` project folder |
 
 `com.atlassian/atlassian-mcp-server` is the server actually registered in
 this environment's `~/.copilot/mcp.json` / `mcp-config.json` (gallery entry,
@@ -189,10 +190,19 @@ session, in order:
    whatever comes next.
 3. IF the user answers yes:
    1. Determine `<KEY>` using the exact same procedure as Step 3.1.
-   2. Write a 1-3 sentence **plain-English summary** of what the commit
+   2. IF the commit touched any files under a `*.Report/` or
+      `*.SemanticModel/` project folder → run
+      `../git-branch-guard/assets/pbip-pr-summary/commit_diff_summary.ps1`
+      (or `.sh`) with no arguments (it defaults to `HEAD~1..HEAD`) to get a
+      grounded, structurally-diffed bullet list instead of reading the raw
+      JSON yourself — UI/JSON changes (slicer field order, formatting,
+      filters) are unreliable to summarize by eye. Use its output as the
+      basis for the summary below; if the script errors or isn't available,
+      fall back to reading the diff directly.
+   3. Write a 1-3 sentence **plain-English summary** of what the commit
       changed and why — a human-readable explanation, not the raw commit
       message or diff pasted verbatim.
-   3. Call the add-comment tool with `{ cloudId, issueIdOrKey: <KEY>,
+   4. Call the add-comment tool with `{ cloudId, issueIdOrKey: <KEY>,
       commentBody: <the plain-English summary> }`. Note the body parameter
       is named `commentBody`, not `body`.
       - IF it errors → tell the user the exact error text and that they
