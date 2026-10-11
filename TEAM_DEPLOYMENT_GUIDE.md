@@ -498,3 +498,14 @@ Why/why not? [...]
 
 **Latest Version:** [Date]  
 **Fork:** https://github.com/YuriChadour/powerbi-agentic-plugins
+# Harness targets
+
+The setup entry point supports Codex and Copilot independently. An omitted target means `All`:
+
+```powershell
+.\setup-team-plugins.ps1 -Target Codex
+.\setup-team-plugins.ps1 -Target Copilot
+.\setup-team-plugins.ps1 -Target All -Force
+```
+
+Codex owns only its projection under `%USERPROFILE%\.codex` and its managed entries in `config.toml`; Copilot owns only `.copilot`. Same-name MCP entries that are not marked as installer-owned are reported as conflicts. Backups are timestamped below the selected target. To recover, restore the latest target backup and rerun with the corresponding `-Target`.

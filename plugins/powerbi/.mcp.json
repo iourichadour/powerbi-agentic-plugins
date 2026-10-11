@@ -5,8 +5,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@microsoft/powerbi-modeling-mcp@latest",
-        "--start"
+        "@microsoft/powerbi-modeling-mcp@1.0.0"
       ],
       "tools": [
         "*"

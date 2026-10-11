@@ -7,7 +7,7 @@ description: This skill should be used as a last resort when the Tabular Editor 
 
 Expert guidance for authoring and editing TMDL (Tabular Model Definition Language) files directly in PBIP projects.
 
-> **Agent Context:** This skill is part of a broader Power BI development workflow. For overall responsibilities, tool selection priority, and common workflows, see [`.github/agent-instructions.md`](../.github/agent-instructions.md). This skill specifically handles TMDL file editing as **Priority 2** in the tool selection hierarchy (when MCP is unavailable but PBIP folder exists).
+> **Agent Context:** This skill is part of a broader Power BI development workflow. For overall responsibilities, tool selection priority, and common workflows, see [`AGENTS.md`](../../../../AGENTS.md). This skill specifically handles TMDL file editing as **Priority 2** in the tool selection hierarchy (when MCP is unavailable but PBIP folder exists).
 
 > **This skill is a last resort.** Direct TMDL file editing lacks the validation, atomicity, and DAX query capabilities of the Tabular Editor CLI, Power BI MCP server, or the `connect-pbid` skill (TOM via PowerShell). Use those tools when available. TMDL editing is appropriate when:
 >
@@ -687,7 +687,7 @@ If Power BI or Fabric still report BOM encoding errors after running the cleanup
 ## Additional Resources
 
 ### Agent Instructions & Workflows
-- **[`.github/agent-instructions.md`](../../agent-instructions.md)** — Central reference for agent responsibilities, tool selection priority, common workflows, and error handling. **Start here for context.**
+- **[`AGENTS.md`](../../../../AGENTS.md)** — Central reference for agent responsibilities, tool selection priority, common workflows, and error handling. **Start here for context.**
 
 ### Reference Files
 

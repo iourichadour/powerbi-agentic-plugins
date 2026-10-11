@@ -384,6 +384,7 @@ table _Measures
 
 	measure 'Total Sales' = SUM(Sales[Amount])
 		formatString: $#,##0.00
+		displayFolder: Value
 
 	column Dummy
 		isHidden
@@ -394,11 +395,29 @@ table _Measures
 		source = ROW("Dummy", BLANK())
 ```
 
+`_ReportMeasures` follows the identical calculated-table pattern, hosting only report-presentation measures:
+
+```tmdl
+table _ReportMeasures
+
+	measure 'Selected Period Title' = SELECTEDVALUE('Date'[Year], "All Years")
+		displayFolder: Titles
+
+	column Dummy
+		isHidden
+		sourceColumn: [Dummy]
+
+	partition _ReportMeasures = calculated
+		mode: import
+		source = ROW("Dummy", BLANK())
+```
+
 ### Key Rules
 
 - Use `partition <Name> = calculated` with `source = <DAX>`
 - Calculated partitions use `mode: import`
 - Useful for measures-only tables (`ROW("Dummy", BLANK())`) and computed date tables
+- See [modeling-guidelines.md § Measures & DAX](modeling-guidelines.md#measures--dax) for which measures belong in `_Measures` vs `_ReportMeasures`
 
 ---
 

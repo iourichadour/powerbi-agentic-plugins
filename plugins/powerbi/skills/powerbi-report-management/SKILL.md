@@ -1,12 +1,16 @@
 ---
 name: powerbi-report-management
-description: "Manage Power BI report workspace items in Microsoft Fabric via `az rest` CLI against the Fabric REST API. Use when the user wants to: (1) create reports from PBIR definitions, (2) get or download report definitions, (3) update report definitions or properties, (4) list workspace reports, (5) delete reports. For report layout authoring (pages, visuals, filters, formatting), use `powerbi-report-authoring`. Triggers: upload Power BI report, download PBIR definition, publish Power BI report to Fabric, manage Power BI reports."
+description: "Manage Power BI report workspace items and PBIR definitions in Microsoft Fabric via `az rest` CLI against the Fabric REST API. Use when the user wants to: (1) upload or publish a PBIR/report definition to Fabric, (2) get or download report definitions, (3) update report item definitions or properties, (4) list workspace reports, (5) delete reports. For editing PBIR files, pages, visuals, filters, themes, or formatting, use `powerbi-report-authoring`. Triggers: upload PBIR report definition, upload Power BI report, download PBIR definition, publish PBIR definition, publish Power BI report to Fabric, manage Power BI reports, list workspace reports."
 metadata:
-  version: 0.1.0
+  version: 0.2.0
 ---
 
 > **Update Check — explicit only**
 > Only run the **check-updates** skill when the user explicitly asks to check for updates (e.g., "check for updates", "is there a new version"). Do not invoke it automatically at session start or the first time this skill is used.
+
+> **Telemetry — MANDATORY.** Every `api.fabric.microsoft.com` call must carry
+> `x-ms-fabric-skill: powerbi-report-management` (`az rest`: `--headers "x-ms-fabric-skill=powerbi-report-management"`),
+> including every LRO poll, `fabric_lro` and retry. Snippets omit it — add it anyway.
 
 > **CRITICAL NOTES**
 > 1. To find the workspace details (including its ID) from workspace name: list all workspaces and, then, use JMESPath filtering
@@ -18,7 +22,10 @@ Manage Power BI reports in Microsoft Fabric workspaces using `az rest` against
 the Fabric REST API. This skill covers the full CRUD lifecycle for report items
 and their PBIR definitions.
 
-> **Scope**: Report item CRUD and definition management only. For report layout
+> **Scope**: Report item CRUD and definition management only. For read-only
+> business questions over an existing report or semantic model, use the
+> `fabriciq` skill when its MCP capability is installed and available. For
+> report layout
 > authoring (pages, visuals, filters, formatting), use `powerbi-report-authoring`.
 
 > **Boundary**: This skill transports PBIR definitions to and from Fabric. PBIR
@@ -34,6 +41,7 @@ Each owns a single concern; route work to the right one.
 | `powerbi-report-authoring` | Report content (PBIR JSON authoring) | Pages, visuals, filters, formatting, themes, expressions, `definition.pbir`, `version.json`, `report.json` |
 | `powerbi-report-management` (this skill) | Report transport to/from Fabric | List, create, get, update, delete report items; download/upload PBIR definitions |
 | Semantic-model authoring skill | Semantic model authoring + deployment | Create/edit measures/tables/relationships, TMDL, deploy semantic models to Fabric |
+| `fabriciq` | Read-only Power BI data consumption | Answer business questions from existing reports and semantic models; use only after FabricIQ availability is verified |
 
 **When publishing a local `.pbip` to Fabric**, this skill is the entry
 point. If the user wants to publish the local semantic model alongside
@@ -47,7 +55,7 @@ the resulting `semanticModelId` and binds the report to it. See the
 | Tool | Role | Install |
 |---|---|---|
 | `az` CLI | **Primary**: `az rest` for Fabric REST API calls, `az login` for auth | Pre-installed in most dev environments |
-| `jq` | Parse and construct JSON payloads | Standard CLI tool — see [COMMON-CLI.md § Tool Selection Rationale](../../common/COMMON-CLI.md#tool-selection-rationale) |
+| `jq` | Parse and construct JSON payloads | Standard CLI tool — see [COMMON-CLI.md § Tool Selection Rationale](../../../../common/COMMON-CLI.md#tool-selection-rationale) |
 | `base64` | Encode/decode PBIR file content for definition payloads | Built-in on Linux/macOS · Windows: use PowerShell `[Convert]::ToBase64String()` / `FromBase64String()` |
 
 > **Agent check** — verify before first operation:
@@ -65,16 +73,16 @@ All calls use the Fabric API audience. Using the wrong audience returns a 401.
 | Fabric Report Items API | `https://api.fabric.microsoft.com` |
 
 For the shared authentication model, token audiences, and identity types, see
-[COMMON-CORE.md § Authentication & Token Acquisition](../../common/COMMON-CORE.md#authentication--token-acquisition).
+[COMMON-CORE.md § Authentication & Token Acquisition](../../../../common/COMMON-CORE.md#authentication--token-acquisition).
 
 For full authentication recipes (interactive, device-code, service principal, managed identity),
-see [COMMON-CLI.md § Authentication Recipes](../../common/COMMON-CLI.md#authentication-recipes).
+see [COMMON-CLI.md § Authentication Recipes](../../../../common/COMMON-CLI.md#authentication-recipes).
 
 ## Finding Workspaces and Reports
 
 > **Shared patterns** — workspace and item resolution, pagination, and LRO polling
 > are documented in the common skill library.
-> Read [COMMON-CLI.md § Finding Workspaces and Items in Fabric](../../common/COMMON-CLI.md#finding-workspaces-and-items-in-fabric)
+> Read [COMMON-CLI.md § Finding Workspaces and Items in Fabric](../../../../common/COMMON-CLI.md#finding-workspaces-and-items-in-fabric)
 > **before** using the CRUD operations below.
 
 ### Resolve Report ID by Name
@@ -287,7 +295,7 @@ az rest --method delete \
 `Create Report`, `Get Report Definition`, and `Update Report Definition` may
 return `202 Accepted` instead of an immediate result. Capture
 `x-ms-operation-id` from the verbose output and poll until terminal state per
-[COMMON-CLI.md § Long-Running Operations](../../common/COMMON-CLI.md#long-running-operations-lro-pattern).
+[COMMON-CLI.md § Long-Running Operations](../../../../common/COMMON-CLI.md#long-running-operations-lro-pattern).
 
 The management-specific guardrails below take precedence over the generic
 pattern when they conflict.
@@ -410,7 +418,7 @@ downloaded from Fabric and only the `.Report` folder is present with a
 workflow instead.
 
 **2. Confirm the target workspace once.** Resolve and store the workspace
-ID by name (per [COMMON-CLI.md](../../common/COMMON-CLI.md#finding-workspaces-and-items-in-fabric)).
+ID by name (per [COMMON-CLI.md](../../../../common/COMMON-CLI.md#finding-workspaces-and-items-in-fabric)).
 This single workspace is reused for both the model deploy (if applicable)
 and the report publish — never split them.
 
@@ -500,7 +508,7 @@ the LRO to terminal success.
 
 ### Modifying an existing report in Fabric
 
-1. **Authenticate** → see [COMMON-CLI.md § Authentication Recipes](../../common/COMMON-CLI.md#authentication-recipes)
+1. **Authenticate** → see [COMMON-CLI.md § Authentication Recipes](../../../../common/COMMON-CLI.md#authentication-recipes)
 2. **Find workspace** → Resolve workspace ID by name
 3. **List/find report** → Resolve report ID by name
 4. **Download definition** → `getDefinition?format=PBIR` → poll LRO → decode parts to local files
@@ -510,7 +518,7 @@ the LRO to terminal success.
 
 ### Creating a new report in Fabric
 
-1. **Authenticate** → see [COMMON-CLI.md § Authentication Recipes](../../common/COMMON-CLI.md#authentication-recipes)
+1. **Authenticate** → see [COMMON-CLI.md § Authentication Recipes](../../../../common/COMMON-CLI.md#authentication-recipes)
 2. **Find workspace** → Resolve workspace ID by name
 3. **Resolve semantic model** → Find the semantic model ID and workspace name for the `definition.pbir` connection string
 4. **Verify semantic-model bindings** → Download the target semantic model definition (TMDL) and compare all PBIR `Entity`, `queryRef`, `nativeQueryRef`, and filter references against the target table/column names. If names differ but structure matches, remap all table-qualified bindings. If models are structurally different, prompt the user before proceeding — explain what doesn't match and ask whether to re-author the affected bindings

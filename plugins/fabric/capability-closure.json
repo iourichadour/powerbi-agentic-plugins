@@ -1,0 +1,45 @@
+{
+  "name": "fabric-data-engineering",
+  "source": "skills-for-fabric/plugins/fabric-skills",
+  "agents": [
+    "FabricDataEngineer.agent.md",
+    "FabricMigrationEngineer.agent.md"
+  ],
+  "skills": [
+    "spark-cli",
+    "sqldw-cli",
+    "eventhouse-cli",
+    "eventstream-cli",
+    "dataflows-cli",
+    "e2e-medallion-architecture",
+    "synapse-migration",
+    "hdinsight-migration",
+    "databricks-migration"
+  ],
+  "common": [
+    "COMMON-CLI.md",
+    "COMMON-CORE.md",
+    "ITEM-DEFINITIONS-CORE.md",
+    "DATAFLOWS-AUTHORING-CORE.md",
+    "DATAFLOWS-CONSUMPTION-CORE.md",
+    "EVENTHOUSE-CONSUMPTION-CORE.md",
+    "EVENTSTREAM-AUTHORING-CORE.md",
+    "EVENTSTREAM-CONSUMPTION-CORE.md",
+    "SPARK-AUTHORING-CORE.md",
+    "SPARK-CONSUMPTION-CORE.md",
+    "SPARK-MONITORING-CORE.md",
+    "SPARK-NOTEBOOK-AUTHORING-CORE.md",
+    "SQLDB-AUTHORING-CORE.md",
+    "SQLDB-CONSUMPTION-CORE.md",
+    "SQLDW-AUTHORING-CORE.md",
+    "SQLDW-CONSUMPTION-CORE.md",
+    "notebook-authoring/context-and-params.md"
+  ],
+  "excluded": [
+    "FabricAdmin",
+    "FabricAppDev",
+    "FabricIQ agent persona",
+    "fabriciq-ontology-cli",
+    "unrelated upstream skills"
+  ]
+}

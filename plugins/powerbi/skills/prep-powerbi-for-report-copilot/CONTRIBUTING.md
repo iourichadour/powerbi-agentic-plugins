@@ -11,7 +11,7 @@ Thank you for your interest in contributing! This document outlines how to contr
 ## Ways to Contribute
 
 ### 1. Report Bugs
-- Check existing [Issues](../../issues) first
+- Check existing [Issues](https://github.com/YuriChadour/powerbi-agentic-plugins/issues) first
 - Provide:
   - Clear description of the problem
   - Steps to reproduce
@@ -105,7 +105,7 @@ docs(quickstart): clarify Python 3.8+ requirement
 ### 5. Share Examples
 - Document your workflow using this skill
 - Share before/after results (anonymized)
-- Post in [Discussions](../../discussions)
+- Post in [Discussions](https://github.com/YuriChadour/powerbi-agentic-plugins/discussions)
 
 ## Roadmap
 
@@ -115,13 +115,13 @@ Planned features:
 - [ ] Power BI Service REST API integration
 - [ ] Multi-language AI instructions
 
-If you're interested in any of these, please comment on [Discussions](../../discussions).
+If you're interested in any of these, please comment on [Discussions](https://github.com/YuriChadour/powerbi-agentic-plugins/discussions).
 
 ## Questions?
 
 - 📖 See [SKILL.md](SKILL.md) for detailed workflow
-- 💬 Open a [Discussion](../../discussions) for questions
-- 🐛 Open an [Issue](../../issues) for bugs
+- 💬 Open a [Discussion](https://github.com/YuriChadour/powerbi-agentic-plugins/discussions) for questions
+- 🐛 Open an [Issue](https://github.com/YuriChadour/powerbi-agentic-plugins/issues) for bugs
 
 ---
 

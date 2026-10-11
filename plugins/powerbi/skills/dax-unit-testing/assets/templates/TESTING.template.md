@@ -11,7 +11,7 @@ skill's `setup_project.py` script) and is safe to edit — it will never be over
 - **Assertion library**: `definition/functions.tmdl` contains the PQL.Assert `PQL.Assert.*` DAX
   user-defined functions used by every generated and hand-authored test.
 - **Registry**: `Certification/MeasureCertification.csv` — one row per measure test. See
-  [certification-registry-schema.md](../../plugins/powerbi/skills/dax-unit-testing/references/certification-registry-schema.md)
+  [certification-registry-schema.md](../../references/certification-registry-schema.md)
   in the `dax-unit-testing` skill for the full column contract, or ask the `pql-tester` agent.
 - **Tests**: `DAXQueries/*.Tests.dax` (or `*.Test.dax`) — DAX Query View files, registered in
   `daxQueries.json`.

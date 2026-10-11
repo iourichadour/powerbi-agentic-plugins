@@ -48,29 +48,22 @@ Before checking, read `~/.config/fabric-collection/last-update-check.json`:
 
 ### Step 1: Get Local Version
 
-Read the `version` field from the local plugin manifest. Two install layouts exist:
+Read the local plugin manifest at `.claude-plugin/marketplace.json` (repo root, or the equivalent path inside whatever install layout you're running from — e.g. `~/.copilot/installed-plugins/<collection>/<plugin>/.claude-plugin/marketplace.json` for a Copilot CLI plugin install, or `.claude-plugin/marketplace.json` at the repo root for a manual git clone).
 
-- **GitHub Copilot CLI plugin install** (`~/.copilot/installed-plugins/fabric-collection/fabric-skills/`): the manifest is `.github/plugin/plugin.json` — there is no `package.json` here.
-- **Manual git clone**: the manifest is `package.json` at the repo root.
-
-Read whichever is present. Both files contain a top-level `"version": "<semver>"` field.
+This file contains a top-level `metadata.version` field (the repo/collection version) and, under `plugins[]`, a per-plugin `version` field for each plugin entry (e.g. `powerbi`, `fabric`). Use the repo-level `metadata.version` for an overall update check, or the specific plugin's `version` entry if the check concerns a single plugin.
 
 ### Step 2: Determine Repository Owner and Name
 
-Read the `repository` field from the same manifest you used in Step 1, and parse the URL to get `owner` and `repo`. The two layouts store the field differently:
+This repo does not currently publish a `repository` field in `.claude-plugin/marketplace.json`. Default to the known repository:
 
-- **Copilot CLI plugin install** (`.github/plugin/plugin.json`) — plain URL string:
-  ```text
-  "repository": "https://github.com/<owner>/<repo>"
-  ```
-- **Manual git clone** (`package.json` at the repo root) — object whose `url` ends with `.git`:
-  ```text
-  "repository": { "type": "git", "url": "https://github.com/<owner>/<repo>.git" }
-  ```
+```text
+owner: YuriChadour
+repo: powerbi-agentic-plugins
+```
 
-There is no bare `plugin.json` at the repo root in either layout, and there is no top-level `package.json` in the Copilot CLI plugin install — always use the path that matches your actual layout.
+If a future version of `.claude-plugin/marketplace.json` adds an explicit `repository` field (e.g. a `"https://github.com/<owner>/<repo>"` URL), prefer that value and parse `owner`/`repo` from it instead of the default above.
 
-> **CRITICAL**: Use the owner string **exactly as it appears** in the URL. Do NOT alter, normalize, or "correct" the owner name — including underscores, mixed case, or any other punctuation. Whatever the manifest's `repository` URL says, that is the correct owner. (LLMs sometimes "auto-correct" underscores to hyphens — don't.)
+> **CRITICAL**: If a `repository` field is present, use the owner string **exactly as it appears** in the URL. Do NOT alter, normalize, or "correct" the owner name — including underscores, mixed case, or any other punctuation. (LLMs sometimes "auto-correct" underscores to hyphens — don't.)
 
 ### Step 3: Fetch Latest Release
 
@@ -80,26 +73,26 @@ Use the available tools in your environment to get the latest version. **Try met
 
 **Method A — Git CLI (preferred for git-clone installs)**
 
-Only available if the skills-for-fabric directory is a Git working tree (i.e. it has a `.git` entry — either a directory in a normal clone, or a file in a worktree/submodule). The Copilot CLI plugin install at `~/.copilot/installed-plugins/fabric-collection/fabric-skills/` has no `.git` entry — for that install layout, skip to Method B. If you want a tool-agnostic check, run `git rev-parse --is-inside-work-tree` and only proceed if it prints `true`.
+Only available if the plugin directory is a Git working tree (i.e. it has a `.git` entry — either a directory in a normal clone, or a file in a worktree/submodule). A Copilot CLI plugin install directory typically has no `.git` entry — for that install layout, skip to Method B. If you want a tool-agnostic check, run `git rev-parse --is-inside-work-tree` and only proceed if it prints `true`.
 
-If you do have a Git clone, fetch the remote `package.json` without pulling:
+If you do have a Git clone, fetch the remote `.claude-plugin/marketplace.json` without pulling:
 
 ```bash
 git fetch origin main --quiet
-git show origin/main:package.json
+git show origin/main:.claude-plugin/marketplace.json
 ```
 
-Extract the `version` field from the JSON output. This method is the most reliable because it uses the already-configured remote URL and authentication, and avoids any owner/repo name parsing.
+Extract the `metadata.version` field (or the relevant plugin's `version` entry under `plugins[]`) from the JSON output. This method is the most reliable because it uses the already-configured remote URL and authentication, and avoids any owner/repo name parsing.
 
 **Method B — GitHub MCP tools (preferred for agentic environments)**
 
-If you have access to GitHub MCP server tools (e.g., `get_file_contents`), use them to read the remote `package.json`. Use the owner and repo extracted in Step 2 **exactly as parsed** (do not modify the strings):
+If you have access to GitHub MCP server tools (e.g., `get_file_contents`), use them to read the remote `.claude-plugin/marketplace.json`. Use the owner and repo from Step 2 **exactly as parsed** (do not modify the strings):
 
 ```text
-get_file_contents(owner: "<owner>", repo: "<repo>", path: "package.json")
+get_file_contents(owner: "YuriChadour", repo: "powerbi-agentic-plugins", path: ".claude-plugin/marketplace.json")
 ```
 
-Extract the `version` field from the response. This method works with private repositories because MCP tools use authenticated GitHub access.
+Extract the `metadata.version` field (or the relevant plugin's `version` entry under `plugins[]`) from the response. This method works with private repositories because MCP tools use authenticated GitHub access.
 
 **Method C — GitHub REST API (fallback only, public repos)**
 
@@ -108,12 +101,12 @@ Extract the `version` field from the response. This method works with private re
 If the repository is public, make a GET request using the owner/repo from Step 2:
 
 ```text
-GET https://api.github.com/repos/<owner>/<repo>/releases/latest
+GET https://api.github.com/repos/YuriChadour/powerbi-agentic-plugins/releases/latest
 ```
 
 Extract the `tag_name` field (e.g., `v0.2.0`) and remove the `v` prefix.
 
-> **Note**: This method returns 404 for private repositories. If you receive a 404 error, do NOT assume the repository doesn't exist — retry with Method A or B.
+> **Note**: This method returns 404 for private repositories, or if no GitHub Release has been published yet. If you receive a 404 error, do NOT assume the repository doesn't exist — retry with Method A or B and fall back to comparing `.claude-plugin/marketplace.json` directly.
 
 ### Step 4: Compare Versions
 
@@ -219,6 +212,6 @@ Users can manually check for updates at any time:
 
 ## Reference
 
-- **GitHub Repository**: https://github.com/microsoft/skills-for-fabric
-- **Releases**: https://github.com/microsoft/skills-for-fabric/releases
+- **GitHub Repository**: https://github.com/YuriChadour/powerbi-agentic-plugins
+- **Releases**: https://github.com/YuriChadour/powerbi-agentic-plugins/releases
 - **CHANGELOG**: See `CHANGELOG.md` in repository root
